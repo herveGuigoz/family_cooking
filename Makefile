@@ -64,7 +64,7 @@ uninstall:
 ##
 
 back-ssh: ## Connect to the container in ssh
-	docker exec -it php sh
+	docker exec -it familly_cooking_php_1 sh
 
 back-db-schema-update: ## Update database schema
 	docker-compose exec php bin/console doctrine:schema:update --dump-sql --force

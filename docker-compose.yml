@@ -32,16 +32,19 @@ services:
       - '8000:80'
 
   db:
-    image: mysql:5.7
+    image: postgres:10-alpine
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: familly_cooking
-      MYSQL_USER: userdb
-      MYSQL_PASSWORD: psw
+      - POSTGRES_DB=familly_cooking
+      - POSTGRES_PASSWORD=psw
+      - POSTGRES_USER=userdb
     volumes:
-      - ./.docker/db/data:/var/lib/mysql:rw
+      # - db-data:/var/lib/postgresql/data:rw
+      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      - ./api/docker/db/data:/var/lib/postgresql/data:rw
     ports:
-      - '3307:3306'
+      - target: 5432
+        published: 5432
+        protocol: tcp
 
   adminer:
     image: adminer
