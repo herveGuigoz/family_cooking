@@ -48,6 +48,11 @@ export default {
     /*
     ** You can extend webpack config here
     */
+    postcss: {
+      plugins: {
+        tailwindcss: './tailwind.config.js'
+      }
+    },
     extend (config, ctx) {
     }
   }

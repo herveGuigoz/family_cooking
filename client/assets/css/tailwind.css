@@ -1,3 +1,26 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@font-face {
+  font-family: 'Avenir-Book';
+  src:  url('../fonts/Avenir-Book.woff') format('woff'), url('../fonts/Avenir-Book.ttf')  format('truetype'), url('../fonts/Avenir-Book.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Avenir-Light';
+  src:  url('../fonts/Avenir-Light.woff') format('woff'), url('../fonts/Avenir-Light.ttf')  format('truetype'), url('../fonts/Avenir-Light.eot') format('embedded-opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+html {
+  font-family: "Avenir-Book","Helvetica", "Arial", sans-serif;
+  font-size: 16px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
