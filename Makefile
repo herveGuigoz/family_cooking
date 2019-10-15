@@ -81,10 +81,10 @@ back-rm-cache: ## Clear cache
 ##
 
 front-ssh: ## Connect to the container in ssh
-	docker exec -it client sh
+	docker exec -it family_cooking_client_1 sh
 
 front-lint: ## Run lint
-	docker-compose exec client yarn lint --fix
+	docker-compose exec family_cooking_client_1 yarn lint --fix
 
 ##
 ## Tests & CI
