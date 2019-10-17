@@ -13,42 +13,42 @@
       <p class="label text-xs tracking-widest uppercase text-grey">Les Recettes</p>
       <ul class>
         <li class="my-2">
-          <menu-button text="Rechercher" link="/">
+          <ui-button text="Rechercher" link="/">
             <icon-search/>
-          </menu-button>
+          </ui-button>
         </li>
         <li class="my-2">
-          <menu-button text="Favoris" link="/">
+          <ui-button text="Favoris" link="/">
             <icon-in-love/>
-          </menu-button>
+          </ui-button>
         </li>
       </ul>
       <p class="label text-xs tracking-widest uppercase text-grey pt-3">Mes Recettes</p>
       <ul class>
         <li class="my-2">
-          <menu-button text="Poster" link="/new">
+          <ui-button text="Poster" link="/new">
             <icon-toast/>
-          </menu-button>
+          </ui-button>
         </li>
         <li class="my-2">
-          <menu-button text="Modifier" link="/">
+          <ui-button text="Modifier" link="/">
             <icon-edit-file/>
-          </menu-button>
+          </ui-button>
         </li>
       </ul>
     </div>
     <div class="flex flex-col items-center justify-end h-full">
       <div v-if="!authenticated">
-        <menu-button text="Login" link="/login">
+        <ui-button text="Login" link="/login">
           <icon-login-as-user/>
-        </menu-button>
+        </ui-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import MenuButton from '~/components/menu/MenuButton.vue'
+  import UiButton from "../UI/UiButton";
   import IconSearch from "../icons/IconSearch";
   import IconInLove from "../icons/IconInLove";
   import IconToast from "../icons/IconToast";
@@ -57,13 +57,16 @@
   //import { mapGetters } from "vuex";
   export default {
     components: {
-      MenuButton,
+      UiButton,
       IconSearch,
       IconInLove,
       IconToast,
       IconEditFile,
       IconLoginAsUser
-    }
+    },
+    data: () => ({
+      authenticated: false // TODO : a supprimer
+    })
   //  computed: {
   //    ...mapGetters({
   //      authenticated: "getAuthenticated"

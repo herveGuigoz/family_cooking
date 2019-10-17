@@ -17,7 +17,7 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private $id;
-
+    // TODO implement Oauth : https://github.com/knpuniversity/oauth2-client-bundle
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
