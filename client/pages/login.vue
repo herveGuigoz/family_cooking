@@ -5,10 +5,25 @@
         <h1 class="title text-brown font-semibold text-center uppercase">Login</h1>
       </div>
       <form @submit.prevent="handleSubmit">
-        <div v-if="error" class="bg-red-400 mb-6 text-white">{{ error }}</div>
         <div class="mt-12">
-          <ui-input id="email" input-label="email" required input-type="email"/>
-          <ui-input id="password" input-label="Password" required input-type="password"/>
+          <ui-input
+            id="email"
+            name="email"
+            label="email"
+            type="email"
+            required
+            :errorMessage="errors.email"
+            @update="getEmailInput"
+          />
+          <ui-input
+            id="password"
+            name="password"
+            label="password"
+            type="password"
+            required
+            :errorMessage="errors.password"
+            @update="getPasswordInput"
+          />
         </div>
         <div class="p-3 flex flex-nowrap">
           <div class="w-24">
@@ -37,21 +52,36 @@
       SignUp4
     },
     data: () => ({
-      error: ""
+      email: '',
+      password: '',
+      errors: {
+        email: null,
+        password: null
+      },
+      error: null,
+      isLoading: false
     }),
     methods: {
-      handleSubmit () {
-        console.log('log')
-      },
-      async login(user) {
-        try {
-          console.log(user)
-        } catch (e) {
-          this.error = e.message;
-        } finally {
-          this.username = "";
-          this.password = "";
-        }
+      getEmailInput (content) { this.email = content },
+      getPasswordInput (content) { this.password = content },
+      handleSubmit() {
+        /*
+        this.$axios
+          .$post('/login', {
+            email: this.email,
+            password: this.password
+          })
+          .then(response => {
+            console.log(response.data);
+            //this.$emit('user-authenticated', userUri);
+            //this.email = '';
+            //this.password = '';
+          }).catch(error => {
+            console.log(error.response.data);
+          }).finally(() => {
+            this.isLoading = false;
+          })
+         */
       }
     }
   }

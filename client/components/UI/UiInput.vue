@@ -3,17 +3,17 @@
     <label
       class="block uppercase tracking-wide text-xs font-bold text-brown mb-2"
       :for="id"
-    >{{ inputLabel }}</label>
+    >{{ label }}</label>
     <input
-      v-model="userInput"
-      :class="{ 'border border-red-500': submitting && validInput }"
+      :class="{ 'border border-red-500': errorMessage }"
       class="appearance-none block w-full bg-white text-brown rounded py-2 px-4 mb-3 leading-tight focus:outline-none"
-      :id="id"
-      :type="inputType"
+      :type="type"
+      :disabled="disabled"
       :required="required"
+      @input="updateValue($event)"
     />
     <div class="px-3 mb-1">
-      <p v-if="error" class="text-red-500 text-xs">❗ {{ errorMessage }}</p>
+      <p v-if="errorMessage" class="text-red-500 text-xs">❗ {{ errorMessage }}</p>
     </div>
   </div>
 </template>
@@ -22,43 +22,34 @@
   export default {
     name: "UI-Input",
     props: {
+      label: {
+        type: String,
+        required: true
+      },
       id: {
         type: String,
         required: true
       },
-      inputLabel: {
-        type: String,
-        required: true
-      },
-      inputType: {
-        type: String,
-        required: true
+      disabled: {
+        type: Boolean,
+        default: false
       },
       required: {
         type: Boolean,
-        required: true
+        default: false
       },
-      regex: {
+      type: {
         type: String,
-        required: false,
-        default: '/[^\\w|_|-]/'
+        default: 'text',
       },
       errorMessage: {
         type: String,
-        required: false,
-        default: ''
+        default: null,
       }
     },
-    data: () => ({
-      userInput: '',
-      error: false
-    }),
-    computed: {
-      submitting () {
-        return this.userInput.length > 0
-      },
-      validInput () {
-        return false// TODO
+    methods: {
+      updateValue (e) {
+        this.$emit('update', e.target.value);
       }
     }
   }
