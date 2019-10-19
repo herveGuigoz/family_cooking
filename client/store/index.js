@@ -2,7 +2,8 @@
 const initialState = () => ({
   authenticated: false,
   email: null,
-  token: null
+  token: null,
+  tokenExpirationDate: null
 });
 
 const state = initialState();
@@ -11,7 +12,8 @@ const state = initialState();
 const getters = {
   isAuthenticated: state => state.authenticated,
   getEmail: state => state.email,
-  getToken: state => state.token
+  getToken: state => state.token,
+  getTokenExpirationDate: state => state.tokenExpirationDate
 }
 
 // Mutations
@@ -26,7 +28,10 @@ const mutations = {
     state.email = email
   },
   SET_TOKEN (state, token) {
-    state.token = token;
+    state.token = token
+  },
+  SET_TOKEN_EXPIRATION_DATE (state, date) {
+    state.tokenExpirationDate = date
   }
 }
 

@@ -10,9 +10,6 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class AuthController extends AbstractController
 {
-    /**
-     * @var UserManager
-     */
     private $userManager;
 
     public function __construct(UserManager $userManager)
@@ -31,17 +28,25 @@ class AuthController extends AbstractController
     {
         $encoder = new JsonEncoder();
         $data = $encoder->decode((string) $request->getContent(), 'json');
+
         try {
-            $user = $this->userManager->createNewUser($data);
+            $email = $data['email'];
+            $password = $data['password'];
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => 'Bad credentials',
+            ], 403);
+        }
+
+        try {
+            $user = $this->userManager->createNewUser($email, $password);
         } catch (\Exception $e) {
             return new JsonResponse([
                 'error' => sprintf('%s', $e->getMessage()),
             ], 403);
         }
 
-        return new JsonResponse([
-            'email' => $user->getEmail(),
-        ], 201);
+        return $this->userManager->authUser($user);
     }
 
     /**
@@ -57,15 +62,23 @@ class AuthController extends AbstractController
         $data = $encoder->decode((string) $request->getContent(), 'json');
 
         try {
-            $user = $this->userManager->refreshPassword($data);
+            $email = $data['email'];
+            $password = $data['password'];
+            $newPassword = $data['newPassword'];
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'error' => 'Bad credentials',
+            ], 403);
+        }
+
+        try {
+            $user = $this->userManager->refreshPassword($email, $password, $newPassword);
         } catch (\Exception $e) {
             return new JsonResponse([
                 'error' => sprintf('%s', $e->getMessage()),
             ], 403);
         }
 
-        return new JsonResponse([
-            'email' => $user->getEmail(),
-        ], 200);
+        return $this->userManager->authUser($user);
     }
 }

@@ -70,9 +70,9 @@
       isLoading: false
     }),
     methods: {
-      getEmailInput (content) { this.email = content },
-      getPasswordInput (content) { this.password = content },
-      getConfirmPasswordInput (content) { console.log(content) },// TODO
+      getEmailInput (content) { this.email = content.trim() },
+      getPasswordInput (content) { this.password = content.trim() },
+      getConfirmPasswordInput (content) { console.log(content.trim()) },// TODO
       handleSubmit () {
         this.isLoading = true;
         this.error = '';
