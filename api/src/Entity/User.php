@@ -4,20 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\HasLifecycleCallbacks()
- * @ApiResource(
- *     normalizationContext={"groups"={"user", "user:read"}},
- *     denormalizationContext={"groups"={"user", "user:write"}},
- *     collectionOperations={"post", "get"},
- *     itemOperations={"put", "delete", "get"}
- * )
  * @UniqueEntity(
  *      fields={"email"},
  *      message= "Un utilisateur uilise daja l'adresse mail '{{ value }}'"
@@ -34,9 +26,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Groups({"user:read", "user:write"})
      * @Assert\NotBlank(message="Il vous faut renseigner un email")
      * @Assert\Email(message = "Cet email:  '{{ value }}' n'est pas valide.")
+     * @Assert\Unique(message= "Un utilisateur uilise daja l'adresse mail '{{ value }}'")
      */
     private $email;
 

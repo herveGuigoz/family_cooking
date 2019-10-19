@@ -72,8 +72,26 @@
     methods: {
       getEmailInput (content) { this.email = content },
       getPasswordInput (content) { this.password = content },
-      getConfirmPasswordInput (content) { console.log(content) },
-      handleSubmit () { return null }
+      getConfirmPasswordInput (content) { console.log(content) },// TODO
+      handleSubmit () {
+        this.isLoading = true;
+        this.error = '';
+        this.$axios
+          .$post('/register', {
+            email: this.email,
+            password: this.password
+          })
+          .then(response => {
+            console.log(response);
+            //this.$emit('user-authenticated', userUri);
+            //this.email = '';
+            //this.password = '';
+          }).catch(error => {
+          console.log(error);
+        }).finally(() => {
+          this.isLoading = false;
+        })
+      }
     }
   }
 </script>
