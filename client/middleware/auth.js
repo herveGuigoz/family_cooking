@@ -1,25 +1,17 @@
 export default function({ app, store }) {
 
-  if (store.getters.isLogged) {
-
-    return null
+  if (store.getters.isAuth) {
+    const user = store.getters.getUser
+    if (app.$moment() > app.$moment(user.lastLogin).add(30, 'days')) {
+      store.commit('RESET')
+      return
+    }
+    return
   }
 
-  const tokenCreationDate = app.$cookie.get('creationDate');
-  const username = app.$cookie.get('username');
-  const token = app.$cookie.get('token');
+  const cookie = app.$cookie.get('auth')
 
-  if (
-    username
-    && token
-    && tokenCreationDate
-    && app.$moment() < app.$moment(tokenCreationDate).add(30, 'days')
-  ) {
-    store.commit("SET_USERNAME", username)
-    store.commit("SET_IS_AUTH", true)
-
-    return null
+  if (cookie && app.$moment() < app.$moment(cookie.lastLogin).add(30, 'days')) {
+    store.commit('SET_USER', cookie)
   }
-
-  store.commit('RESET');
 }

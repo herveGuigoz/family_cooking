@@ -1,13 +1,17 @@
 <template>
   <div class="container">
-    <div>{{ this.$cookie.get('token')}}</div>
+    <div>{{ this.$cookie.get('auth').username }}</div>
   </div>
 </template>
 
 <script>
+  import { mapState } from 'vuex'
 
 export default {
-  middleware: ['restricted'],
+  //middleware: ['restricted'],
+  computed: mapState([
+    'user'
+  ]),
   components: {
 
   },

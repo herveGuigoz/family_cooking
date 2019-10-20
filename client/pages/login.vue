@@ -1,6 +1,6 @@
 <template>
-  <div class="flex bg-grey h-screen">
-    <div class="min-w-450 flex-1 text-brown px-6">
+  <div class="flex bg-grey h-screen flex-col md:flex-row">
+    <div class="min-w-450 flex-1 text-brown px-6 flex flex-col">
       <div class="flex text-3xl justify-center pt-16">
         <h1 class="title text-brown font-semibold text-center uppercase">Login</h1>
       </div>
@@ -36,7 +36,7 @@
         </div>
       </form>
     </div>
-    <div class="w-7/12 hidden md:block flex flex-col justify-end">
+    <div class="md:w-7/12 pt-6 pl-6 flex flex-col justify-end">
       <sign-up4/>
     </div>
   </div>

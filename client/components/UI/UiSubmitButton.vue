@@ -4,9 +4,9 @@
     :class="bgColor"
     type="submit"
   >
-    <slot></slot>
+    <!-- Named slot | verifier mr-3 -->
+    <slot v-if="icon" name="icon" class="mr-3"></slot>
     <span
-      class="pl-3"
       :class="textColor"
     >{{ text }}</span>
   </button>
@@ -30,6 +30,11 @@
         type: String,
         required: false,
         default: 'text-brown'
+      },
+      icon: {
+        type: String,
+        required: false,
+        default: null
       }
     },
     data: () => ({}),
