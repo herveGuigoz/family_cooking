@@ -5,7 +5,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'Family Cooking',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -16,9 +16,15 @@ export default {
     ]
   },
   /*
+   * Global Middleware
+   */
+  router: {
+    middleware: 'auth'
+  },
+  /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { color: '#00D1B2' },
   /*
   ** Global CSS
   */
@@ -35,12 +41,21 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/moment'
   ],
   /*
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/axios',
+    ['cookie-universal-nuxt', { alias: 'cookie' }],
+    'nuxt-purgecss'
   ],
+  axios: {
+    baseURL: 'http://0.0.0.0:8000'
+  },
+  moment: {
+  },
   /*
   ** Build configuration
   */
@@ -55,5 +70,9 @@ export default {
     },
     extend (config, ctx) {
     }
+  },
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
   }
 }
