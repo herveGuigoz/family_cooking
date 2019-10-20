@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "SignUp4"
+    name: "SignUp4IllustrationComponent"
   }
 </script>
 

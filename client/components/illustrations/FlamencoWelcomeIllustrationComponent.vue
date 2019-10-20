@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "FlamencoWelcome"
+    name: "FlamencoWelcomeIllustrationComponent"
   }
 </script>
 

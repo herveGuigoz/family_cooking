@@ -39,16 +39,16 @@
     </div>
     <div class="flex flex-col items-center justify-end h-full">
       <div v-if="!authenticated">
-        <ui-button text="Login" link="/login">
+        <ui-button-component text="Login" link="/login">
           <icon-login-as-user/>
-        </ui-button>
+        </ui-button-component>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import UiButton from "../UI/UiButton";
+  import UiButtonComponent from "../UI/UiButtonComponent";
   import IconSearch from "../icons/IconSearch";
   import IconInLove from "../icons/IconInLove";
   import IconToast from "../icons/IconToast";
@@ -57,7 +57,7 @@
   //import { mapGetters } from "vuex";
   export default {
     components: {
-      UiButton,
+      UiButtonComponent,
       IconSearch,
       IconInLove,
       IconToast,

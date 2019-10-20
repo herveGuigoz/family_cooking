@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-no-wrap">
     <div class="w-48 bg-brown">
-      <sidebar-menu/>
+      <sidebar-menu-component/>
     </div>
     <div class="flex-1">
       <nuxt />
@@ -9,10 +9,10 @@
   </div>
 </template>
 <script>
-  import SidebarMenu from "../components/menu/SidebarMenu";
+  import SidebarMenuComponent from "../components/menu/SidebarMenuComponent";
   export default {
     components: {
-      SidebarMenu
+      SidebarMenuComponent
     }
   }
 </script>
