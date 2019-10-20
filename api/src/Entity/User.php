@@ -33,6 +33,12 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\Unique(message= "Un utilisateur uilise daja le surnom '{{ value }}'")
+     */
+    private $username;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
@@ -65,6 +71,13 @@ class User implements UserInterface
         return $this;
     }
 
+    public function setUsername($username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
     /**
      * A visual identifier that represents this user.
      *
@@ -72,7 +85,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**

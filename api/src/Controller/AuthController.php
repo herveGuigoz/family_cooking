@@ -30,6 +30,7 @@ class AuthController extends AbstractController
         $data = $encoder->decode((string) $request->getContent(), 'json');
 
         try {
+            $username = $data['username'];
             $email = $data['email'];
             $password = $data['password'];
         } catch (\Exception $e) {
@@ -39,7 +40,7 @@ class AuthController extends AbstractController
         }
 
         try {
-            $user = $this->userManager->createNewUser($email, $password);
+            $user = $this->userManager->createNewUser($username, $email, $password);
         } catch (\Exception $e) {
             return new JsonResponse([
                 'error' => sprintf('%s', $e->getMessage()),
@@ -62,7 +63,7 @@ class AuthController extends AbstractController
         $data = $encoder->decode((string) $request->getContent(), 'json');
 
         try {
-            $email = $data['email'];
+            $username = $data['username'];
             $password = $data['password'];
             $newPassword = $data['newPassword'];
         } catch (\Exception $e) {
@@ -72,7 +73,7 @@ class AuthController extends AbstractController
         }
 
         try {
-            $user = $this->userManager->refreshPassword($email, $password, $newPassword);
+            $user = $this->userManager->refreshPassword($username, $password, $newPassword);
         } catch (\Exception $e) {
             return new JsonResponse([
                 'error' => sprintf('%s', $e->getMessage()),

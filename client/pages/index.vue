@@ -1,14 +1,18 @@
 <template>
   <div class="container">
+    <div>{{ this.$cookie.get('token')}}</div>
   </div>
 </template>
 
 <script>
 
 export default {
+  middleware: ['restricted'],
   components: {
 
-  }
+  },
+  data: () => ({
+  })
 }
 </script>
 

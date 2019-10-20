@@ -9,7 +9,8 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+                property: username
+                
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -31,7 +32,7 @@ security:
             provider: app_user_provider
             json_login:
                 check_path: /login
-                username_path: email
+                username_path: username
                 password_path: password
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
@@ -49,5 +50,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST]}
+        - { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST]}
+        - { path: ^/edit, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [POST]}
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: [GET] }
+        - { path: ^/, roles: IS_AUTHENTICATED_FULLY, methods: [POST, PUT, DELETE] }

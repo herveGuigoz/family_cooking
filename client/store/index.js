@@ -1,44 +1,49 @@
+
 // State object
-const initialState = () => ({
-  authenticated: false,
-  email: null,
-  token: null,
-  tokenExpirationDate: null
+export const state = () => ({
+  isAuth: false,
+  username: null
 });
 
-const state = initialState();
-
 // Getter functions
-const getters = {
-  isAuthenticated: state => state.authenticated,
-  getEmail: state => state.email,
-  getToken: state => state.token,
-  getTokenExpirationDate: state => state.tokenExpirationDate
+export const getters = {
+  isLogged: state => state.isAuth,
+  getUsername: state => state.username
 }
 
 // Mutations
-const mutations = {
+export const mutations = {
   RESET (state) {
-    state = initialState();
+    state.isAuth = false;
+    state.username =  null;
   },
-  SET_AUTHENTICATED (state) {
-    state.authenticated = true
+  SET_IS_AUTH (state, bool) {
+    state.isAuth = bool
   },
-  SET_EMAIL (state, email) {
-    state.email = email
-  },
-  SET_TOKEN (state, token) {
-    state.token = token
-  },
-  SET_TOKEN_EXPIRATION_DATE (state, date) {
-    state.tokenExpirationDate = date
+  SET_USERNAME (state, username) {
+    state.username = username
   }
 }
 
 // Actions
-const actions = {
-  reset({ commit }) {
-    commit('RESET');
+export const actions = {
+  reset(state) {
+    state.commit("RESET");
+  },
+  auth(state, { token, username }) {
+    try {
+      this.$cookie.removeAll()
+      const date = Date.now();
+      this.$cookie.set('token', token, { encode: () => {
+          btoa(unescape(encodeURIComponent( token )))
+        }, maxAge: 60 * 60 * 24 * 30 })
+      this.$cookie.set('username', username, { maxAge: 60 * 60 * 60 * 24 * 30 })
+      this.$cookie.set('creationDate', date, { maxAge: 60 * 60 * 60 * 24 * 30 })
+      state.commit("SET_USERNAME", username)
+      state.commit("SET_IS_AUTH", true)
+    } catch (e) {
+      throw new Error(e.message)
+    }
   },
   fetchVariable1({ commit }) {
     return new Promise( (resolve, reject) => {

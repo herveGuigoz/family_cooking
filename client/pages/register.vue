@@ -5,8 +5,17 @@
         <h1 class="title text-brown font-semibold text-center uppercase">Register</h1>
       </div>
       <form @submit.prevent="handleSubmit">
-        <div v-if="error" class="bg-red-400 mb-6 text-white">{{ error }}</div>
+        <div v-if="error" class="text-red-400 px-6 mt-1 -mb-6">{{ error }}</div>
         <div class="mt-12">
+          <ui-input
+            id="username"
+            name="username"
+            label="username"
+            type="text"
+            required
+            :errorMessage="errors.username"
+            @update="getUsernameInput"
+          />
           <ui-input
             id="email"
             name="email"
@@ -60,9 +69,13 @@
       FlamencoWelcome
     },
     data: () => ({
-      email: '',
-      password: '',
+      user : {
+        username: '',
+        email: '',
+        password: '',
+      },
       errors: {
+        username: null,
         email: null,
         password: null
       },
@@ -70,27 +83,43 @@
       isLoading: false
     }),
     methods: {
-      getEmailInput (content) { this.email = content.trim() },
-      getPasswordInput (content) { this.password = content.trim() },
+      getUsernameInput (content) { this.user.username = content.trim() },
+      getEmailInput (content) { this.user.email = content.trim() },
+      getPasswordInput (content) { this.user.password = content.trim() },
       getConfirmPasswordInput (content) { console.log(content.trim()) },// TODO
       handleSubmit () {
         this.isLoading = true;
         this.error = '';
         this.$axios
-          .$post('/register', {
-            email: this.email,
-            password: this.password
-          })
+          .$post('/register', this.user)
           .then(response => {
-            console.log(response);
-            //this.$emit('user-authenticated', userUri);
-            //this.email = '';
-            //this.password = '';
+            this.$store.dispatch('auth', { token: response.token, username: this.user.username })
+            this.$router.push('/')
           }).catch(error => {
-          console.log(error);
-        }).finally(() => {
-          this.isLoading = false;
-        })
+            if (error.response) {
+            /*
+             * The request was made and the server responded with a
+             * status code that falls out of the range of 2xx
+             */
+            if (error.response.status === 403) {
+              this.error = error.response.data.error + ' 😨'
+            }
+            } else if (error.request) {
+              /*
+               * The request was made but no response was received, `error.request`
+               * is an instance of XMLHttpRequest in the browser and an instance
+               * of http.ClientRequest in Node.js
+               */
+              console.log(error.request);
+              this.error = 'Something went wrong 😨'
+            } else {
+              // Something happened in setting up the request and triggered an Error
+              console.log('Error', error.message);
+              this.error = 'Something went wrong 😨'
+            }
+          }).finally(() => {
+            this.isLoading = false;
+          })
       }
     }
   }
