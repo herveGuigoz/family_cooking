@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "Delivery1"
+    name: "Delivery1IllustrationComponent"
   }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <button
-    class="flex flex-no-wrap items-center rounded h-10 px-3"
+    class="hover:border-teal-600  border py-2 px-4 rounded opacity-50 bg-teal-500"
     :class="bgColor"
     type="submit"
   >

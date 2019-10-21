@@ -7,44 +7,38 @@
       <form @submit.prevent="handleSubmit">
         <div v-if="error" class="text-red-400 px-6 mt-1 -mb-6">{{ error }}</div>
         <div class="mt-12">
-          <ui-input
-            id="username"
-            name="username"
-            label="username"
+          <input-component
+            v-model="form.username"
+            :v="$v.form.username"
             type="text"
-            required
-            :errorMessage="errors.username"
-            @update="getUsernameInput"
+            id="username"
+            label="username"
           />
-          <ui-input
-            id="email"
-            name="email"
-            label="email"
+          <input-component
+            v-model="form.email"
+            :v="$v.form.email"
             type="email"
-            required
-            :errorMessage="errors.email"
-            @update="getEmailInput"
+            id="email"
+            label="email"
           />
-          <ui-input
+          <input-component
+            v-model="form.password"
+            :v="$v.form.password"
+            type="password"
             id="password"
-            name="password"
             label="password"
-            type="password"
-            required
-            :errorMessage="errors.password"
-            @update="getPasswordInput"
           />
-          <ui-input
-            id="confirmPassword"
-            name="confirmPassword"
-            label="confirm Password"
+          <input-component
+            v-model="form.confirmPassword"
+            :v="$v.form.confirmPassword"
             type="password"
-            required
-            @update="getConfirmPasswordInput"/>
+            id="confirmPassword"
+            label="Confirm Password"
+          />
         </div>
         <div class="p-3 flex flex-nowrap">
           <div class="w-24">
-            <ui-submit-button text="Submit"/>
+            <submit-button-component text="Submit"/>
           </div>
           <div class="text-xs flex-1 flex flex-nowrap justify-center items-center">
             <nuxt-link to="/login">Already have a FamilyCooking account? <span class="text-teal-500">Login!</span></nuxt-link>
@@ -53,40 +47,46 @@
       </form>
     </div>
     <div class="md:w-7/12 flex flex-col justify-center items-center">
-      <flamenco-welcome/>
+      <flamenco-welcome-illustration-component/>
     </div>
   </div>
 </template>
 
 <script>
-  import UiInput from "../components/UI/UiInput";
-  import UiSubmitButton from "../components/UI/UiSubmitButton";
-  import FlamencoWelcome from "../components/illustrations/FlamencoWelcome";
+  import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
+  import InputComponent from "../components/form/InputComponent";
+  import SubmitButtonComponent from "../components/form/SubmitButtonComponent";
+  import FlamencoWelcomeIllustrationComponent from "../components/illustrations/FlamencoWelcomeIllustrationComponent";
   export default {
     components: {
-      UiInput,
-      UiSubmitButton,
-      FlamencoWelcome
+      InputComponent,
+      SubmitButtonComponent,
+      FlamencoWelcomeIllustrationComponent
     },
     data: () => ({
-      user : {
+      form: {
         username: '',
         email: '',
         password: '',
+        confirmPassword: ''
       },
       errors: {
-        username: null,
         email: null,
+        username: null,
         password: null
       },
-      error: null,
+      error: false,
       isLoading: false
     }),
+    validations: {
+      form: {
+        username: { required, minLength: minLength(4) },
+        email: { required, email },
+        password: { required, minLength: minLength(6) },
+        confirmPassword: { sameAsPassword : sameAs('password') }
+      }
+    },
     methods: {
-      getUsernameInput (content) { this.user.username = content.trim() },
-      getEmailInput (content) { this.user.email = content.trim() },
-      getPasswordInput (content) { this.user.password = content.trim() },
-      getConfirmPasswordInput (content) { console.log(content.trim()) },// TODO
       handleSubmit () {
         this.isLoading = true;
         this.error = '';

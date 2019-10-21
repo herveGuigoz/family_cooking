@@ -15,6 +15,7 @@ import { createStore } from './store.js'
 import nuxt_plugin_cookieuniversalnuxt_4303414c from 'nuxt_plugin_cookieuniversalnuxt_4303414c' // Source: ./cookie-universal-nuxt.js (mode: 'all')
 import nuxt_plugin_axios_31ad2cb8 from 'nuxt_plugin_axios_31ad2cb8' // Source: ./axios.js (mode: 'all')
 import nuxt_plugin_moment_0caf5c74 from 'nuxt_plugin_moment_0caf5c74' // Source: ./moment.js (mode: 'all')
+import nuxt_plugin_vuelidate_4be431c8 from 'nuxt_plugin_vuelidate_4be431c8' // Source: ../plugins/vuelidate.js (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -181,6 +182,10 @@ async function createApp (ssrContext) {
 
   if (typeof nuxt_plugin_moment_0caf5c74 === 'function') {
     await nuxt_plugin_moment_0caf5c74(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_vuelidate_4be431c8 === 'function') {
+    await nuxt_plugin_vuelidate_4be431c8(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

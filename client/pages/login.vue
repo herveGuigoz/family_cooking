@@ -5,30 +5,26 @@
         <h1 class="title text-brown font-semibold text-center uppercase">Login</h1>
       </div>
       <form @submit.prevent="handleSubmit">
-        <div v-if="error" class="text-red-400 px-6 mt-1 -mb-6">{{ error }}</div>
+        <div v-if="requestError" class="text-red-400 px-6 mt-1 -mb-6">{{ error }}</div>
         <div class="mt-12">
-          <ui-input
-            id="username"
-            name="username"
-            label="username"
+          <input-component
+            v-model="form.username"
+            :v="$v.form.username"
             type="text"
-            required
-            :errorMessage="errors.email"
-            @update="getUsernameInput"
+            id="username"
+            label="username"
           />
-          <ui-input
-            id="password"
-            name="password"
-            label="password"
+          <input-component
+            v-model="form.password"
+            :v="$v.form.password"
             type="password"
-            required
-            :errorMessage="errors.password"
-            @update="getPasswordInput"
+            id="password"
+            label="password"
           />
         </div>
         <div class="p-3 flex flex-nowrap">
           <div class="w-24">
-            <ui-submit-button text="Submit"/>
+            <submit-button-component text="Submit"/>
           </div>
           <div class="text-xs flex-1 flex justify-center items-center">
             <nuxt-link to="/register">New to FamilyCooking? <span class="text-teal-500">Create an account!</span></nuxt-link>
@@ -37,39 +33,44 @@
       </form>
     </div>
     <div class="md:w-7/12 pt-6 pl-6 flex flex-col justify-end">
-      <sign-up4/>
+      <sign-up4-illustration-component/>
     </div>
   </div>
 </template>
 
 <script>
-  import UiInput from "../components/UI/UiInput";
-  import UiSubmitButton from "../components/UI/UiSubmitButton";
-  import SignUp4 from "../components/illustrations/SignUp4";
+  import { required, minLength } from "vuelidate/lib/validators";
+  import InputComponent from "../components/form/InputComponent"
+  import SubmitButtonComponent from "../components/form/SubmitButtonComponent";
+  import SignUp4IllustrationComponent from "../components/illustrations/SignUp4IllustrationComponent";
   export default {
     components: {
-      UiInput,
-      UiSubmitButton,
-      SignUp4
+      InputComponent,
+      SubmitButtonComponent,
+      SignUp4IllustrationComponent
     },
     data: () => ({
-      user : {
-        username: '',
-        password: ''
-      },
+       form: {
+         username: '',
+         password: ''
+       },
       errors: {
         email: null,
         password: null
       },
-      error: null,
+      requestError: null,
       isLoading: false
     }),
+    validations: {
+      form: {
+        username: { required, minLength: minLength(4) },
+        password: { required, minLength: minLength(6) }
+      }
+    },
     methods: {
-      getUsernameInput (content) { this.user.username = content.trim() },
-      getPasswordInput (content) { this.user.password = content.trim() },
       handleSubmit () {
         this.isLoading = true;
-        this.error = '';
+        this.requestError = '';
         this.$axios
           .$post('/login', this.user)
           .then(response => {
@@ -82,7 +83,7 @@
              * status code that falls out of the range of 2xx
              */
             if (error.response.status === 401) {
-              this.error = error.response.data.message + ' 😨'
+              this.requestError = error.response.data.message + ' 😨'
               console.log(error.response.data.message)
             }
           } else if (error.request) {
@@ -92,11 +93,11 @@
              * of http.ClientRequest in Node.js
              */
             console.log(error.request);
-            this.error = 'Something went wrong 😨'
+            this.requestError = 'Something went wrong 😨'
           } else {
             // Something happened in setting up the request and triggered an Error
             console.log('Error', error.message);
-            this.error = 'Something went wrong 😨'
+            this.requestError = 'Something went wrong 😨'
           }
         }).finally(() => {
           this.isLoading = false;

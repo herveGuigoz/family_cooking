@@ -13,42 +13,42 @@
       <p class="label text-xs tracking-widest uppercase text-grey">Les Recettes</p>
       <ul class>
         <li class="my-2">
-          <ui-button text="Rechercher" link="/">
+          <ui-button-component text="Rechercher" link="/">
             <icon-search/>
-          </ui-button>
+          </ui-button-component>
         </li>
         <li class="my-2">
-          <ui-button text="Favoris" link="/">
+          <ui-button-component text="Favoris" link="/">
             <icon-in-love/>
-          </ui-button>
+          </ui-button-component>
         </li>
       </ul>
       <p class="label text-xs tracking-widest uppercase text-grey pt-3">Mes Recettes</p>
       <ul class>
         <li class="my-2">
-          <ui-button text="Poster" link="/new">
+          <ui-button-component text="Poster" link="/new">
             <icon-toast/>
-          </ui-button>
+          </ui-button-component>
         </li>
         <li class="my-2">
-          <ui-button text="Modifier" link="/">
+          <ui-button-component text="Modifier" link="/">
             <icon-edit-file/>
-          </ui-button>
+          </ui-button-component>
         </li>
       </ul>
     </div>
     <div class="flex flex-col items-center justify-end h-full">
       <div v-if="!authenticated">
-        <ui-button text="Login" link="/login">
+        <ui-button-component text="Login" link="/login">
           <icon-login-as-user/>
-        </ui-button>
+        </ui-button-component>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import UiButton from "../UI/UiButton";
+  import UiButtonComponent from "../UI/UiButtonComponent";
   import IconSearch from "../icons/IconSearch";
   import IconInLove from "../icons/IconInLove";
   import IconToast from "../icons/IconToast";
@@ -57,7 +57,7 @@
   //import { mapGetters } from "vuex";
   export default {
     components: {
-      UiButton,
+      UiButtonComponent,
       IconSearch,
       IconInLove,
       IconToast,
