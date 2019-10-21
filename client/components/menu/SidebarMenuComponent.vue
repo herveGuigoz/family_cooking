@@ -13,27 +13,27 @@
       <p class="label text-xs tracking-widest uppercase text-grey">Les Recettes</p>
       <ul class>
         <li class="my-2">
-          <ui-button text="Rechercher" link="/">
+          <ui-button-component text="Rechercher" link="/">
             <icon-search/>
-          </ui-button>
+          </ui-button-component>
         </li>
         <li class="my-2">
-          <ui-button text="Favoris" link="/">
+          <ui-button-component text="Favoris" link="/">
             <icon-in-love/>
-          </ui-button>
+          </ui-button-component>
         </li>
       </ul>
       <p class="label text-xs tracking-widest uppercase text-grey pt-3">Mes Recettes</p>
       <ul class>
         <li class="my-2">
-          <ui-button text="Poster" link="/new">
+          <ui-button-component text="Poster" link="/new">
             <icon-toast/>
-          </ui-button>
+          </ui-button-component>
         </li>
         <li class="my-2">
-          <ui-button text="Modifier" link="/">
+          <ui-button-component text="Modifier" link="/">
             <icon-edit-file/>
-          </ui-button>
+          </ui-button-component>
         </li>
       </ul>
     </div>
