@@ -44,10 +44,10 @@ class UserManager
         $isExistingEmail = $this->userRepository->findOneBy(['email' => $email]);
 
         if ($isExistingUsername instanceof User) {
-            throw new \Exception(sprintf("Un utilisateur uilise deja %s", $username));
+            throw new \Exception(sprintf('Un utilisateur uilise deja %s', $username));
         }
         if ($isExistingEmail instanceof User) {
-            throw new \Exception(sprintf("Un utilisateur uilise daja %s", $email));
+            throw new \Exception(sprintf('Un utilisateur uilise daja %s', $email));
         }
 
         $user = new User();
