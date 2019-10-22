@@ -6,9 +6,8 @@ use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
-class UserResourceTest extends ApiTestCase
+class UserActionsTest extends ApiTestCase
 {
     use RefreshDatabaseTrait;
 
@@ -35,7 +34,7 @@ class UserResourceTest extends ApiTestCase
         $this->assertEquals('herveGuigoz', $user->getUsername());
     }
 
-    public function testLoginUser()
+    public function testLoginUser(): void
     {
         $client = self::createClient();
         $em = self::$container->get('doctrine')->getManager();
@@ -60,7 +59,7 @@ class UserResourceTest extends ApiTestCase
         self::assertResponseStatusCodeSame(200);
     }
 
-    public function testResetPassword()
+    public function testResetPassword(): void
     {
         $client = self::createClient();
         $em = self::$container->get('doctrine')->getManager();
@@ -80,7 +79,7 @@ class UserResourceTest extends ApiTestCase
             'json' => [
                 'username' => $user->getUsername(),
                 'password' => '123456',
-                'newPassword' => '654321'
+                'newPassword' => '654321',
             ],
         ]);
 
