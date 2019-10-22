@@ -43,12 +43,12 @@ stop: ## Stop project
 	docker-compose stop
 
 checkout: ## Git checkout helper
-	docker container stop pedro_frontend_1
+	docker container stop family_cooking_client_1
 	docker-compose exec php composer install
 	make back-db-schema-update
 	make back-db-reset
 	docker-compose exec php rm -rf var/cache
-	docker container start pedro_frontend_1
+	docker container start family_cooking_client_1
 
 logs: ## Show logs
 	# Follow the logs.
