@@ -14,12 +14,12 @@
       <ul class>
         <li class="my-2">
           <ui-button-component text="Rechercher" link="/">
-            <icon-search/>
+            <icon-search-component/>
           </ui-button-component>
         </li>
         <li class="my-2">
           <ui-button-component text="Favoris" link="/">
-            <icon-in-love/>
+            <icon-in-love-component/>
           </ui-button-component>
         </li>
       </ul>
@@ -27,12 +27,12 @@
       <ul class>
         <li class="my-2">
           <ui-button-component text="Poster" link="/new">
-            <icon-toast/>
+            <icon-toast-component/>
           </ui-button-component>
         </li>
         <li class="my-2">
           <ui-button-component text="Modifier" link="/">
-            <icon-edit-file/>
+            <icon-edit-file-component/>
           </ui-button-component>
         </li>
       </ul>
@@ -40,7 +40,7 @@
     <div class="flex flex-col items-center justify-end h-full">
       <div v-if="!authenticated">
         <ui-button-component text="Login" link="/login">
-          <icon-login-as-user/>
+          <icon-login-as-user-component/>
         </ui-button-component>
       </div>
     </div>
@@ -49,20 +49,20 @@
 
 <script>
   import UiButtonComponent from "../UI/UiButtonComponent";
-  import IconSearch from "../icons/IconSearch";
-  import IconInLove from "../icons/IconInLove";
-  import IconToast from "../icons/IconToast";
-  import IconEditFile from "../icons/IconEditFile";
-  import IconLoginAsUser from "../icons/IconLoginAsUser";
+  import IconSearchComponent from "../icons/IconSearchComponent";
+  import IconInLoveComponent from "../icons/IconInLoveComponent";
+  import IconToastComponent from "../icons/IconToastComponent";
+  import IconEditFileComponent from "../icons/IconEditFileComponent";
+  import IconLoginAsUserComponent from "../icons/IconLoginAsUserComponent";
   //import { mapGetters } from "vuex";
   export default {
     components: {
       UiButtonComponent,
-      IconSearch,
-      IconInLove,
-      IconToast,
-      IconEditFile,
-      IconLoginAsUser
+      IconSearchComponent,
+      IconInLoveComponent,
+      IconToastComponent,
+      IconEditFileComponent,
+      IconLoginAsUserComponent
     },
     data: () => ({
       authenticated: false // TODO : a supprimer
