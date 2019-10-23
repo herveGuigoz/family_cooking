@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div>{{ this.$cookie.get('auth').username }}</div>
+    <div v-if="user">{{ user }}</div>
   </div>
 </template>
 
