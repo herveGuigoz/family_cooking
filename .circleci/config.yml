@@ -1,0 +1,126 @@
+# PHP CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-php/ for more details
+#
+version: 2.1
+
+executors:
+    php-executor:
+        docker:
+            - image: quay.io/api-platform/php
+              environment:
+                  APP_ENV: test
+                  SERVER_NAME: circleci
+
+    frontend-executor:
+        docker:
+            - image: node:11.5-alpine
+
+    docker-executor:
+        docker:
+            - image: docker/compose:1.23.2
+jobs:
+    # API
+    init-api:
+        executor: php-executor
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - vendor-{{ checksum "api/composer.lock" }}
+                      - vendor-
+            - run:
+                  name: Install Sqlite
+                  command: sudo apt install -y sqlite3 || true
+            - run:
+                  name: Install PHP extensions
+                  command: docker-php-ext-install sockets
+            - run:
+                  name: Add version file
+                  working_directory: api
+                  command: touch .version.txt
+            - run:
+                  name: Install dependencies
+                  working_directory: api
+                  command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+            - run:
+                  name: Install database
+                  working_directory: api
+                  command: bin/console doctrine:schema:update --force --no-interaction
+            - save_cache:
+                  paths:
+                      - api/vendor
+                  key: vendor-{{ checksum "api/composer.lock" }}
+            - run:
+                  name: Build swagger documentation
+                  working_directory: api
+                  command: bin/console api:swagger:export > swagger.json
+            - store_artifacts:
+                  path: api/swagger.json
+                  destination: swagger.json
+            - persist_to_workspace:
+                  root: ./
+                  paths:
+                      - ./api
+            - run:
+                  name: Populate database
+                  working_directory: api
+                  command: bin/console hautelook:fixtures:load -n --purge-with-truncate
+
+    doctrine_schema_validator:
+        executor: php-executor
+        steps:
+            - attach_workspace:
+                  at: ./
+            - run:
+                  name: Doctrine schema validator
+                  working_directory: api
+                  command: bin/console doctrine:schema:validate --skip-sync
+
+    php_cs_fixer:
+        executor: php-executor
+        steps:
+            - attach_workspace:
+                  at: ./
+            - run:
+                  name: PHP CS fixer
+                  working_directory: api
+                  command: vendor/bin/php-cs-fixer fix --dry-run --ansi --verbose
+
+    phpstan:
+        executor: php-executor
+        steps:
+            - attach_workspace:
+                  at: ./
+            - run:
+                  name: PHPStan
+                  working_directory: api
+                  command: vendor/bin/phpstan analyse -c phpstan.neon -l6 --ansi src
+    phpunit:
+        executor: php-executor
+        steps:
+            - attach_workspace:
+                  at: ./
+            - run:
+                  name: PHPUnit
+                  working_directory: api
+                  command: bin/phpunit -d memory_limit=512M
+
+workflows:
+    version: 2
+    test-and-deploy:
+        jobs:
+            # API
+            - init-api
+            - doctrine_schema_validator:
+                  requires:
+                      - init-api
+            - php_cs_fixer:
+                  requires:
+                      - init-api
+            - phpstan:
+                  requires:
+                      - init-api
+            - phpunit:
+                  requires:
+                      - init-api
