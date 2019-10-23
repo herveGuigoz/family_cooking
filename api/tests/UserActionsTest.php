@@ -17,8 +17,8 @@ class UserActionsTest extends ApiTestCase
 
         $client->request('POST', '/register', [
             'json' => [
-                'email' => 'herveGuigoz@mail.com',
-                'username' => 'herveGuigoz',
+                'email' => 'bob@mail.com',
+                'username' => 'bob',
                 'password' => 'password',
             ],
         ]);
@@ -29,9 +29,9 @@ class UserActionsTest extends ApiTestCase
 
         /** @var UserRepository $userRepository */
         $userRepository = self::$container->get('doctrine')->getManager()->getRepository(User::class);
-        $user = $userRepository->findOneBy(['email' => 'herveGuigoz@mail.com']);
+        $user = $userRepository->findOneBy(['email' => 'bob@mail.com']);
         $this->assertInstanceOf(User::class, $user);
-        $this->assertEquals('herveGuigoz', $user->getUsername());
+        $this->assertEquals('bob', $user->getUsername());
     }
 
     public function testLoginUser(): void
@@ -40,8 +40,8 @@ class UserActionsTest extends ApiTestCase
         $em = self::$container->get('doctrine')->getManager();
 
         $user = new User();
-        $user->setEmail('marineGuigoz@mail.com');
-        $user->setUsername('marineGuigoz');
+        $user->setEmail('pepito@mail.com');
+        $user->setUsername('pepito');
 
         $encoded = self::$container->get('security.password_encoder')
             ->encodePassword($user, '123456');
@@ -65,8 +65,8 @@ class UserActionsTest extends ApiTestCase
         $em = self::$container->get('doctrine')->getManager();
 
         $user = new User();
-        $user->setEmail('herve@mail.com');
-        $user->setUsername('herve');
+        $user->setEmail('louis@mail.com');
+        $user->setUsername('louis');
 
         $passwordManager = self::$container->get('security.password_encoder');
         $encoded = $passwordManager->encodePassword($user, '123456');
