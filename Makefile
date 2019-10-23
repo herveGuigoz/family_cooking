@@ -5,19 +5,14 @@
 ## -----
 ##
 
-deploy@prod: ## Deploy in production to all clients
-	# Tip: use this commnand with `--limit "client_0029,client_0032"` to deploy just some clients.
-	ansible-playbook -i .ansible/hosts.ini .ansible/linux/deploy.yml -K
-	ansible-playbook -i .ansible/hosts.ini .ansible/linux/deploy_4padel.yml -K
-	export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
-	ansible-playbook -i .ansible/hosts.ini .ansible/windows/deploy.yml -K
+## TODO Ansible stuff
 
 update: ## Update project
 	./scripts/linux/update_version.sh
 	make back-db-schema-update
 	docker-compose exec php composer install
 	docker-compose exec php bin/console c:c
-	docker-compose exec frontend yarn
+	docker-compose exec client yarn
 
 setup: ## Setup the project
 	docker-compose exec php bin/console doctrine:schema:update --force --no-interaction
@@ -73,6 +68,10 @@ uninstall:
 
 back-ssh: ## Connect to the container in ssh
 	docker exec -it family_cooking_php_1 sh
+
+back-db-test: ## Update database schema
+	docker-compose exec php bin/console doctrine:database:create --env=test
+	docker-compose exec php bin/console doctrine:schema:update --dump-sql --force --env=test
 
 back-db-schema-update: ## Update database schema
 	docker-compose exec php bin/console doctrine:schema:update --dump-sql --force

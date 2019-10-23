@@ -12,13 +12,10 @@ executors:
                   APP_ENV: test
                   SERVER_NAME: circleci
 
-    frontend-executor:
-        docker:
-            - image: node:11.5-alpine
-
     docker-executor:
         docker:
             - image: docker/compose:1.23.2
+              
 jobs:
     # API
     init-api:
@@ -32,6 +29,7 @@ jobs:
             - run:
                   name: Install Sqlite
                   command: sudo apt install -y sqlite3 || true
+                  
             - run:
                   name: Install PHP extensions
                   command: docker-php-ext-install sockets
@@ -43,10 +41,15 @@ jobs:
                   name: Install dependencies
                   working_directory: api
                   command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+            # Database
+            - run:
+                  name: Create databse
+                  working_directory: api
+                  command: bin/console doctrine:database:create --env=test
             - run:
                   name: Install database
                   working_directory: api
-                  command: bin/console doctrine:schema:update --force --no-interaction
+                  command: bin/console doctrine:schema:update --force --no-interaction --env=test
             - save_cache:
                   paths:
                       - api/vendor
