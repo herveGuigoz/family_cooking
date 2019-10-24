@@ -40,7 +40,8 @@ jobs:
             - run:
                   name: Install dependencies
                   working_directory: api
-                  command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+                  command: composer install --prefer-dist --no-suggest
+                  #command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
             # Database
             - run:
                   name: Create databse
