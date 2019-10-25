@@ -44,10 +44,6 @@ jobs:
                   #command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
             # Database
             - run:
-                  name: Create databse
-                  working_directory: api
-                  command: bin/console doctrine:database:create --env=test
-            - run:
                   name: Install database
                   working_directory: api
                   command: bin/console doctrine:schema:update --force --no-interaction --env=test
