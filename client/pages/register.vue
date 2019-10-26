@@ -5,7 +5,6 @@
         <h1 class="title text-brown font-semibold text-center uppercase">Register</h1>
       </div>
       <form @submit.prevent="handleSubmit">
-        <div v-if="error" class="text-red-400 px-6 mt-1 -mb-6">{{ error }}</div>
         <div class="mt-12">
           <input-component
             v-model="form.username"
@@ -13,6 +12,7 @@
             type="text"
             id="username"
             label="username"
+            :error="errors.username"
           />
           <input-component
             v-model="form.email"
@@ -20,6 +20,7 @@
             type="email"
             id="email"
             label="email"
+            :error="errors.email"
           />
           <input-component
             v-model="form.password"
@@ -27,6 +28,7 @@
             type="password"
             id="password"
             label="password"
+            :error="errors.password"
           />
           <input-component
             v-model="form.confirmPassword"
@@ -34,6 +36,7 @@
             type="password"
             id="confirmPassword"
             label="Confirm Password"
+            :error="errors.confirmPassword"
           />
         </div>
         <div class="p-3 flex flex-nowrap">
@@ -53,6 +56,7 @@
 </template>
 
 <script>
+  import 'vuejs-noty/dist/vuejs-noty.css'
   import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
   import InputComponent from "../components/form/InputComponent";
   import SubmitButtonComponent from "../components/form/SubmitButtonComponent";
@@ -73,9 +77,9 @@
       errors: {
         email: null,
         username: null,
-        password: null
+        password: null,
+        confirmPassword: null
       },
-      error: false,
       isLoading: false
     }),
     validations: {
@@ -89,33 +93,40 @@
     methods: {
       handleSubmit () {
         this.isLoading = true;
-        this.error = '';
+        this.errors.email = null
+        this.errors.username = null
+        this.errors.password = null
+        this.errors.confirmPassword = null
+        this.$v.form.$touch();
+        if (this.$v.form.$error) {
+          !this.$v.form.email.required || !this.$v.form.email.email ? this.errors.email = 'Cet email n\'est pas valide'
+            : null
+          !this.$v.form.username.required ? this.errors.username = 'Il manque votre nom d\'utitlisateur'
+            : !this.$v.form.username.minLength ? this.errors.username = 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
+              : null
+          !this.$v.form.password.required ? this.errors.password = 'Il manque votre mot de passe'
+            : !this.$v.form.password.minLength ? this.errors.password = 'Votre mot de passe doit être composé de 6 caractères minimum'
+              : null
+          !this.$v.form.confirmPassword.sameAsPassword ? this.errors.confirmPassword = 'Vos mots de passe ne correspondent pas' : null
+          return
+        }
         this.$axios
           .$post('/register', this.user)
           .then(response => {
             this.$store.dispatch('auth', { token: response.token, username: this.user.username })
+            this.$noty.success(`Nice to meet you ${this.form.username}`)
             this.$router.push('/')
           }).catch(error => {
             if (error.response) {
-            /*
-             * The request was made and the server responded with a
-             * status code that falls out of the range of 2xx
-             */
             if (error.response.status === 403) {
-              this.error = error.response.data.error + ' 😨'
+              this.$noty.error(`${error.response.data.error} 😨`)
             }
             } else if (error.request) {
-              /*
-               * The request was made but no response was received, `error.request`
-               * is an instance of XMLHttpRequest in the browser and an instance
-               * of http.ClientRequest in Node.js
-               */
               console.log(error.request);
-              this.error = 'Something went wrong 😨'
+              this.$noty.error('Something went wrong 😨')
             } else {
-              // Something happened in setting up the request and triggered an Error
               console.log('Error', error.message);
-              this.error = 'Something went wrong 😨'
+              this.$noty.error('Something went wrong 😨')
             }
           }).finally(() => {
             this.isLoading = false;

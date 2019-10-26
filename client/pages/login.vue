@@ -5,7 +5,6 @@
         <h1 class="title text-brown font-semibold text-center uppercase">Login</h1>
       </div>
       <form @submit.prevent="handleSubmit">
-        <div v-if="requestError" class="text-red-400 px-6 mt-1 -mb-6">{{ requestError }}</div>
         <div class="mt-12">
           <input-component
             v-model="form.username"
@@ -13,6 +12,7 @@
             type="text"
             id="username"
             label="username"
+            :error="errors.username"
           />
           <input-component
             v-model="form.password"
@@ -20,6 +20,7 @@
             type="password"
             id="password"
             label="password"
+            :error="errors.password"
           />
         </div>
         <div class="p-3 flex flex-nowrap">
@@ -39,6 +40,7 @@
 </template>
 
 <script>
+  import 'vuejs-noty/dist/vuejs-noty.css'
   import { required, minLength } from "vuelidate/lib/validators";
   import InputComponent from "../components/form/InputComponent"
   import SubmitButtonComponent from "../components/form/SubmitButtonComponent";
@@ -55,7 +57,7 @@
          password: ''
        },
       errors: {
-        email: null,
+        username: null,
         password: null
       },
       requestError: null,
@@ -70,11 +72,24 @@
     methods: {
       handleSubmit () {
         this.isLoading = true;
-        this.requestError = '';
+        this.errors.username = null
+        this.errors.password = null
+        this.$v.form.$touch();
+        if (this.$v.form.$error) {
+          !this.$v.form.username.required ? this.errors.username = 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
+            : !this.$v.form.username.minLength ? this.errors.username = 'Il manque votre username'
+              : null
+          !this.$v.form.password.required ?
+            this.errors.password = 'Il manque votre mot de passe'
+            : !this.$v.form.password.minLength ? this.errors.password = 'Votre mot de passe doit être composé de 6 caractères minimum'
+              : null
+          return
+        }
         this.$axios
           .$post('/login', this.form)
           .then(response => {
             this.$store.dispatch('auth', response.token)
+            this.$noty.success(`Welcome Back ${this.form.username}`)
             this.$router.push('/')
           }).catch(error => {
           if (error.response) {
@@ -83,8 +98,7 @@
              * status code that falls out of the range of 2xx
              */
             if (error.response.status === 401) {
-              this.requestError = error.response.data.message + ' 😨'
-              console.log(error.response.data.message)
+              this.$noty.error(`${error.response.data.message} 😨`)
             }
           } else if (error.request) {
             /*
@@ -93,11 +107,11 @@
              * of http.ClientRequest in Node.js
              */
             console.log(error.request);
-            this.requestError = 'Something went wrong 😨'
+            this.$noty.error('Something went wrong 😨')
           } else {
             // Something happened in setting up the request and triggered an Error
             console.log('Error', error.message);
-            this.requestError = 'Something went wrong 😨'
+            this.$noty.error('Something went wrong 😨')
           }
         }).finally(() => {
           this.isLoading = false;

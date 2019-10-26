@@ -24,8 +24,7 @@ export default {
         this.$axios.$get('/recipes.json')
           .then(response => this.recipes = response)
           .catch(e => console.log(e))
-          // .finally(this.$nuxt.$loading.finish())
-        setTimeout(() => this.$nuxt.$loading.finish(), 6000)
+          .finally(this.$nuxt.$loading.finish())
       })
   },
   method: {
