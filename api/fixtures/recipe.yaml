@@ -1,0 +1,3 @@
+App\Entity\Recipe:
+    recipe{1..10}:
+        title: <title()>

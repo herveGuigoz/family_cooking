@@ -24,7 +24,8 @@ export default {
   /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#00D1B2' },
+  // loading: { color: '#00D1B2', height: '5px', continuous: true },
+  loading: '~/components/Loading.vue',
   /*
   ** Global CSS
   */
@@ -53,7 +54,7 @@ export default {
     'nuxt-purgecss'
   ],
   axios: {
-    baseURL: 'http://0.0.0.0:8000'
+    baseURL: 'http://0.0.0.0:8000' // // See https://github.com/nuxt-community/axios-module#options
   },
   moment: {
   },
@@ -75,5 +76,8 @@ export default {
   transition: {
     name: 'fade',
     mode: 'out-in'
+  },
+  env : {
+    baseURL: 'http://0.0.0.0:80'
   }
 }
