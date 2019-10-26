@@ -5,11 +5,18 @@ namespace App\Tests;
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
-
+use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 class UserActionsTest extends ApiTestCase
 {
+    // Erase and recreate database schema before each tests.
+    // Useful if we want to skip initialize env test database every time we make start
+    //use RecreateDatabaseTrait;
+    // Refresh the database content to put it in a known state between every tests
     use RefreshDatabaseTrait;
+    // Resetting the database Between tests /!\ id's & iri changed
+    //use ReloadDatabaseTrait;
 
     public function testRegisterUser(): void
     {

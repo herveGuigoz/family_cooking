@@ -5,7 +5,7 @@
         <h1 class="title text-brown font-semibold text-center uppercase">Login</h1>
       </div>
       <form @submit.prevent="handleSubmit">
-        <div v-if="requestError" class="text-red-400 px-6 mt-1 -mb-6">{{ error }}</div>
+        <div v-if="requestError" class="text-red-400 px-6 mt-1 -mb-6">{{ requestError }}</div>
         <div class="mt-12">
           <input-component
             v-model="form.username"
@@ -72,9 +72,9 @@
         this.isLoading = true;
         this.requestError = '';
         this.$axios
-          .$post('/login', this.user)
+          .$post('/login', this.form)
           .then(response => {
-            this.$store.dispatch('auth', { token: response.token, username: this.user.username })
+            this.$store.dispatch('auth', response.token)
             this.$router.push('/')
           }).catch(error => {
           if (error.response) {

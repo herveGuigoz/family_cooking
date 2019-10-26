@@ -13,6 +13,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.7.0",
     "cookie-universal-nuxt": "^2.0.18",
+    "jwt-js-decode": "^1.4.0",
     "nuxt": "^2.10.2",
     "nuxt-purgecss": "^0.2.1",
     "vuelidate": "^0.7.4"

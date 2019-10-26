@@ -50,7 +50,11 @@ jobs:
             - run:
                   name: Install database
                   working_directory: api
-                  command: bin/console doctrine:schema:update --force --no-interaction --env=test
+                  command: bin/console doctrine:schema:update --force --no-interaction --env=test 
+            - run:
+                  name: Load Fixtures
+                  working_directory: api
+                  command: bin/console hautelook:fixtures:load -n --purge-with-truncate --env=test
             - save_cache:
                   paths:
                       - api/vendor
