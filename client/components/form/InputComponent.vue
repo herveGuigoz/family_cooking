@@ -7,15 +7,13 @@
     <input
       :type="type"
       :id="id"
-      :class="{ 'border border-teal-400' : v.$dirty && !v.$invalid }"
+      :class="{ 'border border-teal-400' : v.$dirty && !v.$invalid, 'border border-red-200' : error }"
       class="border border-grey-400 appearance-none block w-full bg-white text-brown rounded py-2 px-4 mb-3 leading-tight focus:outline-none"
       :disabled="disabled"
       v-model="handleInput"
     />
-    <div class="px-3 mb-1">
-      <!--
-      <p class="text-red-500 text-xs" v-if="!$v.input.minLength">❗Minimum 4 caractères!</p>
-      -->
+    <div class="mb-3">
+      <p class="text-red-400 text-xs" v-if="error">❗{{ error }}</p>
     </div>
   </div>
 </template>
@@ -25,6 +23,10 @@
     name: "inputComponent",
     props: {
       value: {
+        type: String,
+        default: ""
+      },
+      error: {
         type: String,
         default: ""
       },
