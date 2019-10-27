@@ -35,7 +35,7 @@ module.exports = {
         600: '#718096',
         700: '#4a5568',
         800: '#DBDBDB',
-        900: '#555555',
+        900: 'rgb(85, 85, 85)',
       },
       red: {
         100: '#fff5f5',
@@ -325,6 +325,7 @@ module.exports = {
       screen: '100vh',
     },
     maxWidth: {
+      xxs: '12rem',
       xs: '20rem',
       sm: '24rem',
       md: '28rem',

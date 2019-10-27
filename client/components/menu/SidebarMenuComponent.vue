@@ -1,45 +1,37 @@
 <template>
-  <div id="sidebar" class="p-6 flex flex-no-wrap flex-col h-screen bg-brown">
-    <div class="flex flex-col items-center">
-      <nuxt-link to="/">
-        <h1 class="brand font-semibold text-center uppercase">Family cooking</h1>
-      </nuxt-link>
-      <p class="text-grey text-xs pt-3">
-        Ajoutez vos propres recettes, sauvegardez vos préférées et commentez vos coups de
-        coeur...
-      </p>
-    </div>
-    <div class="flex flex-col my-10">
-      <p class="label text-xs tracking-widest uppercase text-grey">Les Recettes</p>
-      <ul class>
-        <li class="my-2">
+  <div>
+    <div class="p-6 flex flex-no-wrap flex-col h-screen bg-brown">
+      <div class="flex flex-col items-center">
+        <nuxt-link to="/">
+          <h1 class="brand font-semibold text-center uppercase">Family <span class="text-gray-800"> cooking</span></h1>
+        </nuxt-link>
+        <p class="block pt-3 text-grey text-xs">
+          Ajoutez vos propres recettes, sauvegardez vos préférées et commentez vos coups de
+          coeur...
+        </p>
+      </div>
+      <div class="flex flex-col my-10">
+        <p class="label block text-xs tracking-widest uppercase text-grey">Les Recettes</p>
+        <div>
           <ui-button-component text="Rechercher" link="/">
             <icon-search-component/>
           </ui-button-component>
-        </li>
-        <li class="my-2">
           <ui-button-component text="Favoris" link="/">
             <icon-in-love-component/>
           </ui-button-component>
-        </li>
-      </ul>
-      <p class="label text-xs tracking-widest uppercase text-grey pt-3">Mes Recettes</p>
-      <ul class>
-        <li class="my-2">
+        </div>
+        <p class="label block text-xs tracking-widest uppercase text-grey pt-3">Mes Recettes</p>
+        <div>
           <ui-button-component text="Poster" link="/new">
             <icon-toast-component/>
           </ui-button-component>
-        </li>
-        <li class="my-2">
           <ui-button-component text="Modifier" link="/">
             <icon-edit-file-component/>
           </ui-button-component>
-        </li>
-      </ul>
-    </div>
-    <div class="flex flex-col items-center justify-end h-full">
-      <div v-if="!authenticated">
-        <ui-button-component text="Login" link="/login">
+        </div>
+      </div>
+      <div class="flex-1 flex items-end">
+        <ui-button-component v-if="!isAuthenticated" text="Login" link="/login" class="w-full">
           <icon-login-as-user-component/>
         </ui-button-component>
       </div>
@@ -54,7 +46,7 @@
   import IconToastComponent from "../icons/IconToastComponent";
   import IconEditFileComponent from "../icons/IconEditFileComponent";
   import IconLoginAsUserComponent from "../icons/IconLoginAsUserComponent";
-  //import { mapGetters } from "vuex";
+  import { mapGetters } from "vuex";
   export default {
     components: {
       UiButtonComponent,
@@ -64,14 +56,11 @@
       IconEditFileComponent,
       IconLoginAsUserComponent
     },
-    data: () => ({
-      authenticated: false // TODO : a supprimer
-    })
-  //  computed: {
-  //    ...mapGetters({
-  //      authenticated: "getAuthenticated"
-  //    })
-  //  }
+    computed: {
+      ...mapGetters({
+        isAuthenticated: "isAuth"
+      })
+    }
   }
 </script>
 

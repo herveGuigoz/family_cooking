@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="link">
     <div
-      class="flex flex-no-wrap items-center rounded h-10 px-3"
+      class="block flex flex-no-wrap items-center rounded h-10 my-2 px-3"
       :class="bgColor"
     >
       <slot></slot>
