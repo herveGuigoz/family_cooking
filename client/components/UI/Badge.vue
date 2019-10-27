@@ -1,81 +1,72 @@
 <template>
   <div class="flex items-center text-beige hover:text-gray-200">
     <span class="rounded-full h-10 w-10 flex items-center justify-center bg-beige">
-      <icon-login-as-user-component v-if="login" height="h-7" width="w-7"/>
+      <icon-user-component v-if="user" height="h-7" width="w-7"/>
       <icon-anonymous-component v-if="anonymous" height="h-7" width="w-7"/>
       <icon-baby-component v-if="baby" height="h-7" width="w-7"/>
-      <icon-darth-vader-component v-if="darthVader"/>
-      <icon-fursona-component v-if="fursona"/>
-      <icon-futurama-amy-component v-if="futuramaAmy"/>
-      <icon-futurama-bender-component v-if="futuramaBender"/>
-      <icon-futurama-fry-component v-if="futuramaFry"/>
-      <icon-futurama-hermes-component v-if="futuramaHermes"/>
-      <icon-futurama-leela-component v-if="futuramaLeela"/>
-      <icon-futurama-mom-component v-if="futuramaMom"/>
-      <icon-futurama-nibbler-component v-if="futuramaNibbler"/>
-      <icon-futurama-professor-component v-if="futuramaProfessor"/>
-      <icon-futurama-zoidberg-component v-if="futuramaZoidberg"/>
-      <icon-homer-simpson-component v-if="homerSimpson"/>
-      <icon-human-head-component v-if="humanHead"/>
-      <icon-iron-man-component v-if="ironMan"/>
-      <icon-jake-component v-if="jake"/>
-      <icon-mermaid-component v-if="mermaid"/>
-      <icon-naruto-component v-if="naruto"/>
-      <icon-pennywise-component v-if="pennywise"/>
-      <icon-r2d2-component v-if="r2d2"/>
-      <icon-scream-component v-if="scream"/>
-      <icon-songoku-component v-if="songoku"/>
-      <icon-stich-component v-if="stich"/>
-      <icon-stormtrooper-component v-if="stormtrooper"/>
-      <icon-super-mario-component v-if="superMario"/>
-      <icon-unicorn-component v-if="unicorn"/>
-      <icon-walterwhite-component v-if="walterwhite"/>
+      <icon-darth-vader-component v-if="darthVader" height="h-7" width="w-7"/>
+      <icon-futurama-amy-component v-if="futuramaAmy" height="h-7" width="w-7"/>
+      <icon-futurama-bender-component v-if="futuramaBender" height="h-7" width="w-7"/>
+      <icon-futurama-fry-component v-if="futuramaFry" height="h-7" width="w-7"/>
+      <icon-futurama-hermes-component v-if="futuramaHermes" height="h-7" width="w-7"/>
+      <icon-futurama-leela-component v-if="futuramaLeela" height="h-7" width="w-7"/>
+      <icon-futurama-mom-component v-if="futuramaMom" height="h-7" width="w-7"/>
+      <icon-futurama-nibbler-component v-if="futuramaNibbler" height="h-7" width="w-7"/>
+      <icon-futurama-professor-component v-if="futuramaProfessor" height="h-7" width="w-7"/>
+      <icon-futurama-zoidberg-component v-if="futuramaZoidberg" height="h-7" width="w-7"/>
+      <icon-homer-simpson-component v-if="homerSimpson" height="h-7" width="w-7"/>
+      <icon-iron-man-component v-if="ironMan" height="h-7" width="w-7"/>
+      <icon-mermaid-component v-if="mermaid" height="h-7" width="w-7"/>
+      <icon-naruto-component v-if="naruto" height="h-7" width="w-7"/>
+      <icon-pennywise-component v-if="pennywise" height="h-7" width="w-7"/>
+      <icon-r2d2-component v-if="r2d2" height="h-7" width="w-7"/>
+      <icon-songoku-component v-if="songoku" height="h-7" width="w-7"/>
+      <icon-stich-component v-if="stich" height="h-7" width="w-7"/>
+      <icon-stormtrooper-component v-if="stormtrooper" height="h-7" width="w-7"/>
+      <icon-super-mario-component v-if="superMario" height="h-7" width="w-7"/>
+      <icon-unicorn-component v-if="unicorn" height="h-7" width="w-7"/>
+      <icon-walterwhite-component v-if="walterwhite" height="h-7" width="w-7"/>
     </span>
     <p class="ml-2">{{ text }}</p>
   </div>
 </template>
 
 <script>
-  import IconLoginAsUserComponent from "../icons/IconLoginAsUserComponent";
-  import IconAnonymousComponent from "../icons/avatars/IconAnonymousComponent";
-  import IconBabyComponent from "../icons/avatars/IconBabyComponent";
-  import IconDarthVaderComponent from "../icons/avatars/IconDarthVaderComponent";
-  import IconFursonaComponent from "../icons/avatars/IconFursonaComponent";
-  import IconFuturamaAmyComponent from "../icons/avatars/IconFuturamaAmyComponent";
-  import IconFuturamaBenderComponent from "../icons/avatars/IconFuturamaBenderComponent";
-  import IconFuturamaFryComponent from "../icons/avatars/IconFuturamaFryComponent";
-  import IconFuturamaHermesComponent from "../icons/avatars/IconFuturamaHermesComponent";
-  import IconFuturamaLeelaComponent from "../icons/avatars/IconFuturamaLeelaComponent";
-  import IconFuturamaMomComponent from "../icons/avatars/IconFuturamaMomComponent";
-  import IconFuturamaNibblerComponent from "../icons/avatars/IconFuturamaNibblerComponent";
-  import IconFuturamaProfessorComponent from "../icons/avatars/IconFuturamaProfessorComponent";
-  import IconFuturamaZoidbergComponent from "../icons/avatars/IconFuturamaZoidbergComponent";
-  import IconHomerSimpsonComponent from "../icons/avatars/IconHomerSimpsonComponent";
-  import IconHumanHeadComponent from "../icons/avatars/IconHumanHeadComponent";
-  import IconIronManComponent from "../icons/avatars/IconIronManComponent";
-  import IconJakeComponent from "../icons/avatars/IconJakeComponent";
-  import IconMermaidComponent from "../icons/avatars/IconMermaidComponent";
-  import IconNarutoComponent from "../icons/avatars/IconNarutoComponent";
-  import IconPennywiseComponent from "../icons/avatars/IconPennywiseComponent";
-  import IconR2d2Component from "../icons/avatars/IconR2d2Component";
-  import IconScreamComponent from "../icons/avatars/IconScreamComponent";
-  import IconSongokuComponent from "../icons/avatars/IconSongokuComponent";
-  import IconStichComponent from "../icons/avatars/IconStichComponent";
-  import IconStormtrooperComponent from "../icons/avatars/IconStormtrooperComponent";
-  import IconSuperMarioComponent from "../icons/avatars/IconSuperMarioComponent";
-  import IconUnicornComponent from "../icons/avatars/IconUnicornComponent";
-  import IconWalterwhiteComponent from "../icons/avatars/IconWalterwhiteComponent";
+  import IconUserComponent from "~/components/icons/avatars/IconUserComponent";
+  import IconAnonymousComponent from "~/components/icons/avatars/IconAnonymousComponent";
+  import IconBabyComponent from "~/components/icons/avatars/IconBabyComponent";
+  import IconDarthVaderComponent from "~/components/icons/avatars/IconDarthVaderComponent";
+  import IconFuturamaAmyComponent from "~/components/icons/avatars/IconFuturamaAmyComponent";
+  import IconFuturamaBenderComponent from "~/components/icons/avatars/IconFuturamaBenderComponent";
+  import IconFuturamaFryComponent from "~/components/icons/avatars/IconFuturamaFryComponent";
+  import IconFuturamaHermesComponent from "~/components/icons/avatars/IconFuturamaHermesComponent";
+  import IconFuturamaLeelaComponent from "~/components/icons/avatars/IconFuturamaLeelaComponent";
+  import IconFuturamaMomComponent from "~/components/icons/avatars/IconFuturamaMomComponent";
+  import IconFuturamaNibblerComponent from "~/components/icons/avatars/IconFuturamaNibblerComponent";
+  import IconFuturamaProfessorComponent from "~/components/icons/avatars/IconFuturamaProfessorComponent";
+  import IconFuturamaZoidbergComponent from "~/components/icons/avatars/IconFuturamaZoidbergComponent";
+  import IconHomerSimpsonComponent from "~/components/icons/avatars/IconHomerSimpsonComponent";
+  import IconIronManComponent from "~/components/icons/avatars/IconIronManComponent";
+  import IconMermaidComponent from "~/components/icons/avatars/IconMermaidComponent";
+  import IconNarutoComponent from "~/components/icons/avatars/IconNarutoComponent";
+  import IconPennywiseComponent from "~/components/icons/avatars/IconPennywiseComponent";
+  import IconR2d2Component from "~/components/icons/avatars/IconR2d2Component";
+  import IconSongokuComponent from "~/components/icons/avatars/IconSongokuComponent";
+  import IconStichComponent from "~/components/icons/avatars/IconStichComponent";
+  import IconStormtrooperComponent from "~/components/icons/avatars/IconStormtrooperComponent";
+  import IconSuperMarioComponent from "~/components/icons/avatars/IconSuperMarioComponent";
+  import IconUnicornComponent from "~/components/icons/avatars/IconUnicornComponent";
+  import IconWalterwhiteComponent from "~/components/icons/avatars/IconWalterwhiteComponent";
   export default {
     name: "Badge",
     components: {
       IconAnonymousComponent,
       IconBabyComponent,
       IconDarthVaderComponent,
-      IconFursonaComponent,
       IconFuturamaAmyComponent,
       IconFuturamaBenderComponent,
       IconFuturamaFryComponent,
-      IconLoginAsUserComponent,
+      IconUserComponent,
       IconFuturamaHermesComponent,
       IconFuturamaLeelaComponent,
       IconFuturamaMomComponent,
@@ -83,14 +74,11 @@
       IconFuturamaProfessorComponent,
       IconFuturamaZoidbergComponent,
       IconHomerSimpsonComponent,
-      IconHumanHeadComponent,
       IconIronManComponent,
-      IconJakeComponent,
       IconMermaidComponent,
       IconNarutoComponent,
       IconPennywiseComponent,
       IconR2d2Component,
-      IconScreamComponent,
       IconSongokuComponent,
       IconStichComponent,
       IconStormtrooperComponent,
@@ -103,7 +91,7 @@
         type: String,
         required: true
       },
-      login: {
+      user: {
         type: Boolean,
         default: false
       },
@@ -116,10 +104,6 @@
         default: false
       },
       darthVader: {
-        type: Boolean,
-        default: false
-      },
-      fursona: {
         type: Boolean,
         default: false
       },
@@ -163,15 +147,7 @@
         type: Boolean,
         default: false
       },
-      humanHead: {
-        type: Boolean,
-        default: false
-      },
       ironMan: {
-        type: Boolean,
-        default: false
-      },
-      jake: {
         type: Boolean,
         default: false
       },
@@ -188,10 +164,6 @@
         default: false
       },
       r2d2: {
-        type: Boolean,
-        default: false
-      },
-      scream: {
         type: Boolean,
         default: false
       },

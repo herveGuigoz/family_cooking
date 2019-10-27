@@ -30,7 +30,6 @@
         v-if="!isAuthenticated"
         class="block flex flex-nowrap items-center px-2 py-1 text-white font-semibold rounded hover:bg-gray-800"
       >
-        <icon-login-as-user-component/>
         <a href="#" class="px-2">Login</a>
       </div>
     </nav>
@@ -42,11 +41,10 @@
   import IconInLoveComponent from "../icons/IconInLoveComponent";
   import IconToastComponent from "../icons/IconToastComponent";
   import IconEditFileComponent from "../icons/IconEditFileComponent";
-  import IconLoginAsUserComponent from "../icons/IconLoginAsUserComponent";
   import { mapGetters } from "vuex";
   export default {
     name: "Navbar",
-    components: { IconSearchComponent, IconInLoveComponent, IconToastComponent, IconEditFileComponent, IconLoginAsUserComponent },
+    components: { IconSearchComponent, IconInLoveComponent, IconToastComponent, IconEditFileComponent },
     data() {
       return {
         isOpen: false,

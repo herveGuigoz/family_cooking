@@ -6,7 +6,7 @@
     <div class="hidden md:block flex-none w-full max-w-xxs bg-brown">
       <sidebar-menu-component/>
     </div>
-    <div class="flex-1">
+    <div class="flex-1 bg-grey">
       <nuxt />
     </div>
   </div>

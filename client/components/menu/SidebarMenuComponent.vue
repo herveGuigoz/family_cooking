@@ -35,7 +35,7 @@
       -->
       <div class="flex-1 flex items-end justify-center">
         <nuxt-link to="/login">
-          <badge text="Login" walterwhite/>
+          <badge text="Login" :anonymous="!isAuthenticated" walterwhite/>
         </nuxt-link>
       </div>
     </div>
