@@ -1,7 +1,9 @@
 <template>
   <div class="">
+    <!--
     <div v-if="user">{{ user }}</div>
     <div v-if="recipes">{{ recipes }}</div>
+    -->
   </div>
 </template>
 
@@ -12,11 +14,8 @@ export default {
   computed: mapState([
     'user'
   ]),
-  components: {
-
-  },
   data: () => ({
-    recipes: null
+    recipes: null,
   }),
   mounted () {
     this.$nextTick(() => {

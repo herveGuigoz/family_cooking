@@ -8,7 +8,7 @@
       :type="type"
       :id="id"
       :class="{ 'border border-teal-400' : v.$dirty && !v.$invalid, 'border border-red-200' : error }"
-      class="border border-grey-400 appearance-none block w-full bg-white text-brown rounded py-2 px-4 mb-3 leading-tight focus:outline-none"
+      class="border border-gray-300 appearance-none block w-full bg-white text-gray-900 rounded py-2 px-4 mb-3 leading-tight focus:outline-none"
       :disabled="disabled"
       v-model="handleInput"
     />
