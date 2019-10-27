@@ -26,14 +26,17 @@
             <icon-toast-component/>
           </ui-button-component>
           <ui-button-component text="Modifier" link="/">
-            <icon-edit-file-component/>
+            <icon-edit-file-component width="w-6" height="h-6"/>
           </ui-button-component>
         </div>
       </div>
-      <div class="flex-1 flex items-end">
-        <ui-button-component v-if="!isAuthenticated" text="Login" link="/login" class="w-full">
-          <icon-login-as-user-component/>
-        </ui-button-component>
+      <!--
+      <div v-if="!isAuthenticated" class="flex-1 flex items-end">
+      -->
+      <div class="flex-1 flex items-end justify-center">
+        <nuxt-link to="/login">
+          <badge text="Login" walterwhite/>
+        </nuxt-link>
       </div>
     </div>
   </div>
@@ -45,7 +48,7 @@
   import IconInLoveComponent from "../icons/IconInLoveComponent";
   import IconToastComponent from "../icons/IconToastComponent";
   import IconEditFileComponent from "../icons/IconEditFileComponent";
-  import IconLoginAsUserComponent from "../icons/IconLoginAsUserComponent";
+  import Badge from "../UI/Badge";
   import { mapGetters } from "vuex";
   export default {
     components: {
@@ -54,7 +57,7 @@
       IconInLoveComponent,
       IconToastComponent,
       IconEditFileComponent,
-      IconLoginAsUserComponent
+      Badge
     },
     computed: {
       ...mapGetters({

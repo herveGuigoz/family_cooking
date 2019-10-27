@@ -1,14 +1,11 @@
 <template>
   <button
-    class="block border-2 hover:border-teal-500 py-2 px-4 rounded opacity-50 bg-teal-500 focus:outline-none focus:border-grey"
-    :class="bgColor"
+    class="bg-transparent hover:bg-gray-900 text-gray-900 hover:text-gray-800 py-2 px-4 border border-gray-900 hover:border-gray-800 rounded"
     type="submit"
   >
     <!-- Named slot | verifier mr-3 -->
     <slot v-if="icon" name="icon" class="mr-3"></slot>
-    <span
-      :class="textColor"
-    >{{ text }}</span>
+    {{ text }}
   </button>
 </template>
 
@@ -20,16 +17,6 @@
         type: String,
         required: false,
         default: ''
-      },
-      bgColor: {
-        type: String,
-        required: false,
-        default: 'bg-beige'
-      },
-      textColor: {
-        type: String,
-        required: false,
-        default: 'text-brown'
       },
       icon: {
         type: String,
