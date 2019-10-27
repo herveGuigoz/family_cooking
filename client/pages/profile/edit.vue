@@ -141,7 +141,8 @@
               :v="$v.form.newPassword"
               type="password"
               id="newPassword"
-              label="New Password"
+              label="New Password (optional)"
+              :error="errors.newPassword"
             />
           </div>
         </div>
@@ -218,6 +219,8 @@
     ]),
     mounted () {
       this.form.avatar = this.user.avatar
+      this.form.username = this.user.username
+      this.form.email = this.user.email
     },
     data: () => ({
       form: {
@@ -231,6 +234,7 @@
         email: null,
         username: null,
         password: null,
+        newPassword: null
       }
     }),
     validations: {
@@ -239,13 +243,53 @@
         username: { required, minLength: minLength(4) },
         email: { required, email },
         password: { required, minLength: minLength(6) },
-        newPassword: {}
+        newPassword: { minLength: minLength(6) }
       }
     },
     methods: {
       handleSubmit () {
-        console.log('hello')
+        this.$v.form.$touch();
+        !this.$v.form.email.required || !this.$v.form.email.email ? this.errors.email = 'Cet email n\'est pas valide'
+          : null
+        !this.$v.form.username.required ? this.errors.username = 'Il manque votre nom d\'utitlisateur'
+          : !this.$v.form.username.minLength ? this.errors.username = 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
+          : null
+        !this.$v.form.password.required ? this.errors.password = 'Il manque votre mot de passe'
+          : !this.$v.form.password.minLength ? this.errors.password = 'Votre mot de passe doit être composé de 6 caractères minimum'
+          : null
+        !this.$v.form.newPassword.minLength ? this.errors.newPassword = 'Votre nouveau mot de passe doit être composé de 6 caractères minimum'
+          : null
+
+        if (this.$v.form.$error) {
+          return
+        }
+
+        console.log('pas d\'erreur')
       }
     }
   }
 </script>
+<style scoped>
+  input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid #999;
+    transition: 0.2s all linear;
+    margin-right: 5px;
+
+    position: relative;
+    top: 4px;
+  }
+  input:focus {
+    outline: none;
+  }
+  input:checked {
+    border: 6px solid hsl(0,0%,60%);
+  }
+</style>
