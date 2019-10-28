@@ -7,7 +7,7 @@
         </h1>
       </div>
       <form @submit.prevent="handleSubmit">
-        <div class="flex flex-col xl:flex-row xl:flex-nowrap justify-center">
+        <div class="flex flex-col xl:flex-row xl:flex-nowrap justify-between">
           <div class="px-3 mt-12 xl:mt-16 max-w-lg">
             <p class="block uppercase tracking-wide text-xs font-bold text-gray-900">
               Avatar
@@ -146,7 +146,7 @@
             />
           </div>
         </div>
-        <div class="w-24 ml-3 mt-6 xl:px-2">
+        <div class="w-24 ml-3 mt-6">
           <submit-button-component text="Submit"/>
         </div>
       </form>
@@ -248,23 +248,24 @@
     },
     methods: {
       handleSubmit () {
+        this.$nuxt.$loading.start()
         this.$v.form.$touch();
-        !this.$v.form.email.required || !this.$v.form.email.email ? this.errors.email = 'Cet email n\'est pas valide'
-          : null
-        !this.$v.form.username.required ? this.errors.username = 'Il manque votre nom d\'utitlisateur'
-          : !this.$v.form.username.minLength ? this.errors.username = 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
-          : null
-        !this.$v.form.password.required ? this.errors.password = 'Il manque votre mot de passe'
-          : !this.$v.form.password.minLength ? this.errors.password = 'Votre mot de passe doit être composé de 6 caractères minimum'
-          : null
-        !this.$v.form.newPassword.minLength ? this.errors.newPassword = 'Votre nouveau mot de passe doit être composé de 6 caractères minimum'
-          : null
-
         if (this.$v.form.$error) {
+          !this.$v.form.email.required || !this.$v.form.email.email ? this.errors.email = 'Cet email n\'est pas valide'
+            : null
+          !this.$v.form.username.required ? this.errors.username = 'Il manque votre nom d\'utitlisateur'
+            : !this.$v.form.username.minLength ? this.errors.username = 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
+            : null
+          !this.$v.form.password.required ? this.errors.password = 'Il manque votre mot de passe'
+            : !this.$v.form.password.minLength ? this.errors.password = 'Votre mot de passe doit être composé de 6 caractères minimum'
+            : null
+          !this.$v.form.newPassword.minLength ? this.errors.newPassword = 'Votre nouveau mot de passe doit être composé de 6 caractères minimum'
+            : null
           return
         }
 
         console.log('pas d\'erreur')
+        this.$nuxt.$loading.finish()
       }
     }
   }

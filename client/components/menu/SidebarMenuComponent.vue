@@ -35,7 +35,7 @@
       -->
       <div class="flex-1 flex items-end justify-center">
         <nuxt-link to="/login">
-          <badge text="Login" :anonymous="!isAuthenticated" walterwhite/>
+          <badge :text="isAuthenticated ? user.username : 'Login'" :avatar/>
         </nuxt-link>
       </div>
     </div>
@@ -61,8 +61,12 @@
     },
     computed: {
       ...mapGetters({
-        isAuthenticated: "isAuth"
-      })
+        isAuthenticated: "isAuth",
+        user: 'getUser'
+      }),
+      avatar () {
+        return this.user ? this.user.avatar : 'anonymous'
+      }
     }
   }
 </script>

@@ -54,6 +54,38 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $avatar = self::AVATAR_NAMES[0];
+
+    public const AVATAR_NAMES = [
+        'user',
+        'baby',
+        'darthVader',
+        'futuramaAmy',
+        'futuramaBender',
+        'futuramaFry',
+        'futuramaHermes',
+        'futuramaLeela',
+        'futuramaMom',
+        'futuramaNibbler',
+        'futuramaProfessor',
+        'futuramaZoidberg',
+        'homerSimpson',
+        'ironMan',
+        'mermaid',
+        'naruto',
+        'pennywise',
+        'r2d2',
+        'songoku',
+        'stich',
+        'stormtrooper',
+        'superMario',
+        'unicorn',
+        'walterwhite'
+    ];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -152,5 +184,21 @@ class User implements UserInterface
         $this->createdAt = new \DateTime();
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    /**
+     * @param mixed $avatar
+     */
+    public function setAvatar($avatar): void
+    {
+        $this->avatar = $avatar;
     }
 }

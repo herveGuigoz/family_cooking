@@ -22,8 +22,10 @@ export const mutations = {
     try {
       const jwt = jwtJsDecode.jwtDecode(token);
       const username = jwt.payload.username;
+      const email = jwt.payload.email;
+      const avatar = jwt.payload.avatar;
       const expire = jwt.payload.exp;
-      nowInSeconds < expire ? state.user = { token, username , expire } : state.user = null
+      nowInSeconds < expire ? state.user = { token, username , email, avatar, expire } : state.user = null
     } catch (e) {
       state.user =  null;
     }

@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center text-beige hover:text-gray-200">
-    <span class="rounded-full h-10 w-10 flex items-center justify-center bg-beige">
+    <span class="rounded-full h-10 w-10 flex items-center justify-center bg-grey">
       <icon-user-component v-if="user" height="h-7" width="w-7"/>
       <icon-anonymous-component v-if="anonymous" height="h-7" width="w-7"/>
       <icon-baby-component v-if="baby" height="h-7" width="w-7"/>
