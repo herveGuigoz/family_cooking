@@ -4,32 +4,31 @@
     type="submit"
   >
     <!-- Named slot | verifier mr-3 -->
-    <slot v-if="icon" name="icon" class="mr-3"></slot>
+    <slot v-if="icon" name="icon" class="mr-3" />
     {{ text }}
   </button>
 </template>
 
 <script>
-  export default {
-    name: "UiSubmitButton",
-    props: {
-      text: {
-        type: String,
-        required: false,
-        default: ''
-      },
-      icon: {
-        type: String,
-        required: false,
-        default: null
-      }
+export default {
+  name: 'UiSubmitButton',
+  props: {
+    text: {
+      type: String,
+      required: false,
+      default: ''
     },
-    data: () => ({}),
-    methods: {
-      handleAction() {
-        return null // TODO
-      }
+    icon: {
+      type: String,
+      required: false,
+      default: null
+    }
+  },
+  data: () => ({}),
+  methods: {
+    handleAction () {
+      return null // TODO
     }
   }
+}
 </script>
-

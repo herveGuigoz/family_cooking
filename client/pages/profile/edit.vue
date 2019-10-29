@@ -14,141 +14,141 @@
             </p>
             <div class="flex flex-row flex-wrap">
               <div class="flex flex-col justify-center items-center p-2">
-                <moustache width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="moustache" value="moustache" v-model="form.avatar">
+                <moustache width="w-10" height="h-10" />
+                <input id="moustache" v-model="form.avatar" class="mt-2" type="radio" value="moustache">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <baby width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="baby" value="baby" v-model="form.avatar">
+                <baby width="w-10" height="h-10" />
+                <input id="baby" v-model="form.avatar" class="mt-2" type="radio" value="baby">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <darthvader width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="darthVader" value="darthVader" v-model="form.avatar">
+                <darthvader width="w-10" height="h-10" />
+                <input id="darthVader" v-model="form.avatar" class="mt-2" type="radio" value="darthVader">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramaamy width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaAmy" value="futuramaAmy" v-model="form.avatar">
+                <futuramaamy width="w-10" height="h-10" />
+                <input id="futuramaAmy" v-model="form.avatar" class="mt-2" type="radio" value="futuramaAmy">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramabender width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaBender" value="futuramaBender" v-model="form.avatar">
+                <futuramabender width="w-10" height="h-10" />
+                <input id="futuramaBender" v-model="form.avatar" class="mt-2" type="radio" value="futuramaBender">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramafry width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaFry" value="futuramaFry" v-model="form.avatar">
+                <futuramafry width="w-10" height="h-10" />
+                <input id="futuramaFry" v-model="form.avatar" class="mt-2" type="radio" value="futuramaFry">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramahermes width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaHermes" value="futuramaHermes" v-model="form.avatar">
+                <futuramahermes width="w-10" height="h-10" />
+                <input id="futuramaHermes" v-model="form.avatar" class="mt-2" type="radio" value="futuramaHermes">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramaleela width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaLeela" value="futuramaLeela" v-model="form.avatar">
+                <futuramaleela width="w-10" height="h-10" />
+                <input id="futuramaLeela" v-model="form.avatar" class="mt-2" type="radio" value="futuramaLeela">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramamom width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaMom" value="futuramaMom" v-model="form.avatar">
+                <futuramamom width="w-10" height="h-10" />
+                <input id="futuramaMom" v-model="form.avatar" class="mt-2" type="radio" value="futuramaMom">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramanibbler width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaNibbler" value="futuramaNibbler" v-model="form.avatar">
+                <futuramanibbler width="w-10" height="h-10" />
+                <input id="futuramaNibbler" v-model="form.avatar" class="mt-2" type="radio" value="futuramaNibbler">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramaprofessor width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaProfessor" value="futuramaProfessor" v-model="form.avatar">
+                <futuramaprofessor width="w-10" height="h-10" />
+                <input id="futuramaProfessor" v-model="form.avatar" class="mt-2" type="radio" value="futuramaProfessor">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <futuramazoidberg width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="futuramaZoidberg" value="futuramaZoidberg" v-model="form.avatar">
+                <futuramazoidberg width="w-10" height="h-10" />
+                <input id="futuramaZoidberg" v-model="form.avatar" class="mt-2" type="radio" value="futuramaZoidberg">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <homersimpson width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="homerSimpson" value="homerSimpson" v-model="form.avatar">
+                <homersimpson width="w-10" height="h-10" />
+                <input id="homerSimpson" v-model="form.avatar" class="mt-2" type="radio" value="homerSimpson">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <ironman width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="ironMan" value="ironMan" v-model="form.avatar">
+                <ironman width="w-10" height="h-10" />
+                <input id="ironMan" v-model="form.avatar" class="mt-2" type="radio" value="ironMan">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <mermaid width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="mermaid" value="mermaid" v-model="form.avatar">
+                <mermaid width="w-10" height="h-10" />
+                <input id="mermaid" v-model="form.avatar" class="mt-2" type="radio" value="mermaid">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <naruto width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="naruto" value="naruto" v-model="form.avatar">
+                <naruto width="w-10" height="h-10" />
+                <input id="naruto" v-model="form.avatar" class="mt-2" type="radio" value="naruto">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <pennywise width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="pennywise" value="pennywise" v-model="form.avatar">
+                <pennywise width="w-10" height="h-10" />
+                <input id="pennywise" v-model="form.avatar" class="mt-2" type="radio" value="pennywise">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <r2d2 width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="r2d2" value="r2d2" v-model="form.avatar">
+                <r2d2 width="w-10" height="h-10" />
+                <input id="r2d2" v-model="form.avatar" class="mt-2" type="radio" value="r2d2">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <songoku width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="songoku" value="songoku" v-model="form.avatar">
+                <songoku width="w-10" height="h-10" />
+                <input id="songoku" v-model="form.avatar" class="mt-2" type="radio" value="songoku">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <stich width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="stich" value="stich" v-model="form.avatar">
+                <stich width="w-10" height="h-10" />
+                <input id="stich" v-model="form.avatar" class="mt-2" type="radio" value="stich">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <stormtrooper width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="stormtrooper" value="stormtrooper" v-model="form.avatar">
+                <stormtrooper width="w-10" height="h-10" />
+                <input id="stormtrooper" v-model="form.avatar" class="mt-2" type="radio" value="stormtrooper">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <supermario width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="superMario" value="superMario" v-model="form.avatar">
+                <supermario width="w-10" height="h-10" />
+                <input id="superMario" v-model="form.avatar" class="mt-2" type="radio" value="superMario">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <unicorn width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="unicorn" value="unicorn" v-model="form.avatar">
+                <unicorn width="w-10" height="h-10" />
+                <input id="unicorn" v-model="form.avatar" class="mt-2" type="radio" value="unicorn">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <walterwhite width="w-10" height="h-10"/>
-                <input class="mt-2" type="radio" id="walterwhite" value="walterwhite" v-model="form.avatar">
+                <walterwhite width="w-10" height="h-10" />
+                <input id="walterwhite" v-model="form.avatar" class="mt-2" type="radio" value="walterwhite">
               </div>
             </div>
           </div>
           <div class="mt-6 xl:mt-16 xl:flex-1 max-w-lg">
             <input-component
+              id="username"
               v-model="form.username"
               :v="$v.form.username"
               type="text"
-              id="username"
               label="username"
               :error="errors.username"
               disabled
             />
             <input-component
+              id="email"
               v-model="form.email"
               :v="$v.form.email"
               type="email"
-              id="email"
               label="email"
               :error="errors.email"
             />
             <input-component
+              id="password"
               v-model="form.password"
               :v="$v.form.password"
               type="password"
-              id="password"
               label="password"
               :error="errors.password"
             />
             <input-component
+              id="newPassword"
               v-model="form.newPassword"
               :v="$v.form.newPassword"
               type="password"
-              id="newPassword"
               label="New Password (optional)"
               :error="errors.newPassword"
             />
           </div>
         </div>
         <div class="w-24 ml-3 mt-6 xl:mt-0">
-          <submit-button-component text="Submit"/>
+          <submit-button-component text="Submit" />
         </div>
       </form>
     </div>
@@ -156,148 +156,142 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  import 'vuejs-noty/dist/vuejs-noty.css'
-  import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
-  import InputComponent from "../../components/form/InputComponent";
-  import SubmitButtonComponent from "../../components/form/SubmitButtonComponent";
-  import moustache from "~/components/icons/avatars/moustache";
-  import anonymous from "~/components/icons/avatars/anonymous";
-  import baby from "~/components/icons/avatars/baby";
-  import darthvader from "~/components/icons/avatars/darthvader";
-  import futuramaamy from "~/components/icons/avatars/futuramaamy";
-  import futuramabender from "~/components/icons/avatars/futuramabender";
-  import futuramafry from "~/components/icons/avatars/futuramafry";
-  import futuramahermes from "~/components/icons/avatars/futuramahermes";
-  import futuramaleela from "~/components/icons/avatars/futuramaleela";
-  import futuramamom from "~/components/icons/avatars/futuramamom";
-  import futuramanibbler from "~/components/icons/avatars/futuramanibbler";
-  import futuramaprofessor from "~/components/icons/avatars/futuramaprofessor";
-  import futuramazoidberg from "~/components/icons/avatars/futuramazoidberg";
-  import homersimpson from "~/components/icons/avatars/homersimpson";
-  import ironman from "~/components/icons/avatars/ironman";
-  import mermaid from "~/components/icons/avatars/mermaid";
-  import naruto from "~/components/icons/avatars/naruto";
-  import pennywise from "~/components/icons/avatars/pennywise";
-  import r2d2 from "~/components/icons/avatars/r2d2";
-  import songoku from "~/components/icons/avatars/songoku";
-  import stich from "~/components/icons/avatars/stich";
-  import stormtrooper from "~/components/icons/avatars/stormtrooper";
-  import supermario from "~/components/icons/avatars/supermario";
-  import unicorn from "~/components/icons/avatars/unicorn";
-  import walterwhite from "~/components/icons/avatars/walterwhite";
-  export default {
-    middleware: ['restricted'],
-    components: {
-      InputComponent,
-      SubmitButtonComponent,
-      moustache,
-      anonymous,
-      baby,
-      darthvader,
-      futuramaamy,
-      futuramabender,
-      futuramafry,
-      futuramahermes,
-      futuramaleela,
-      futuramamom,
-      futuramanibbler,
-      futuramaprofessor,
-      futuramazoidberg,
-      homersimpson,
-      ironman,
-      mermaid,
-      naruto,
-      pennywise,
-      r2d2,
-      songoku,
-      stich,
-      stormtrooper,
-      supermario,
-      unicorn,
-      walterwhite
+import { mapState } from 'vuex'
+import 'vuejs-noty/dist/vuejs-noty.css'
+import { required, email, minLength } from 'vuelidate/lib/validators'
+import InputComponent from '../../components/form/InputComponent'
+import SubmitButtonComponent from '../../components/form/SubmitButtonComponent'
+import moustache from '~/components/icons/avatars/moustache'
+import baby from '~/components/icons/avatars/baby'
+import darthvader from '~/components/icons/avatars/darthvader'
+import futuramaamy from '~/components/icons/avatars/futuramaamy'
+import futuramabender from '~/components/icons/avatars/futuramabender'
+import futuramafry from '~/components/icons/avatars/futuramafry'
+import futuramahermes from '~/components/icons/avatars/futuramahermes'
+import futuramaleela from '~/components/icons/avatars/futuramaleela'
+import futuramamom from '~/components/icons/avatars/futuramamom'
+import futuramanibbler from '~/components/icons/avatars/futuramanibbler'
+import futuramaprofessor from '~/components/icons/avatars/futuramaprofessor'
+import futuramazoidberg from '~/components/icons/avatars/futuramazoidberg'
+import homersimpson from '~/components/icons/avatars/homersimpson'
+import ironman from '~/components/icons/avatars/ironman'
+import mermaid from '~/components/icons/avatars/mermaid'
+import naruto from '~/components/icons/avatars/naruto'
+import pennywise from '~/components/icons/avatars/pennywise'
+import r2d2 from '~/components/icons/avatars/r2d2'
+import songoku from '~/components/icons/avatars/songoku'
+import stich from '~/components/icons/avatars/stich'
+import stormtrooper from '~/components/icons/avatars/stormtrooper'
+import supermario from '~/components/icons/avatars/supermario'
+import unicorn from '~/components/icons/avatars/unicorn'
+import walterwhite from '~/components/icons/avatars/walterwhite'
+export default {
+  middleware: ['restricted'],
+  components: {
+    InputComponent,
+    SubmitButtonComponent,
+    moustache,
+    baby,
+    darthvader,
+    futuramaamy,
+    futuramabender,
+    futuramafry,
+    futuramahermes,
+    futuramaleela,
+    futuramamom,
+    futuramanibbler,
+    futuramaprofessor,
+    futuramazoidberg,
+    homersimpson,
+    ironman,
+    mermaid,
+    naruto,
+    pennywise,
+    r2d2,
+    songoku,
+    stich,
+    stormtrooper,
+    supermario,
+    unicorn,
+    walterwhite
+  },
+  data: () => ({
+    form: {
+      avatar: '',
+      username: '',
+      email: '',
+      password: '',
+      newPassword: ''
     },
-    computed: mapState([
-      'user'
-    ]),
-    mounted () {
-      this.form.avatar = this.user.avatar
-      this.form.username = this.user.username
-      this.form.email = this.user.email
-    },
-    data: () => ({
-      form: {
-        avatar: '',
-        username: '',
-        email: '',
-        password: '',
-        newPassword: ''
-      },
-      errors: {
-        email: null,
-        username: null,
-        password: null,
-        newPassword: null
+    errors: {
+      email: null,
+      username: null,
+      password: null,
+      newPassword: null
+    }
+  }),
+  computed: mapState([
+    'user'
+  ]),
+  mounted () {
+    this.form.avatar = this.user.avatar
+    this.form.username = this.user.username
+    this.form.email = this.user.email
+  },
+  validations: {
+    form: {
+      avatar: { required },
+      username: { required, minLength: minLength(4) },
+      email: { required, email },
+      password: { required, minLength: minLength(6) },
+      newPassword: { minLength: minLength(6) }
+    }
+  },
+  methods: {
+    handleSubmit () {
+      this.$nuxt.$loading.start()
+      this.$v.form.$touch()
+      if (this.$v.form.$error) {
+        this.errors.email = !this.$v.form.email.required || !this.$v.form.email.email ? 'Cet email n\'est pas valide' : null
+        this.errors.username = !this.$v.form.username.required ? 'Il manque votre nom d\'utitlisateur'
+          : !this.$v.form.username.minLength ? 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
+            : null
+        this.errors.password = !this.$v.form.password.required ? 'Il manque votre mot de passe'
+          : !this.$v.form.password.minLength ? 'Votre mot de passe doit être composé de 6 caractères minimum'
+            : null
+        this.errors.newPassword = !this.$v.form.newPassword.minLength ? 'Votre nouveau mot de passe doit être composé de 6 caractères minimum' : null
+        return
       }
-    }),
-    validations: {
-      form: {
-        avatar: { required },
-        username: { required, minLength: minLength(4) },
-        email: { required, email },
-        password: { required, minLength: minLength(6) },
-        newPassword: { minLength: minLength(6) }
+      const user = {
+        username: this.form.username,
+        email: this.form.email,
+        avatar: this.form.avatar,
+        password: this.form.password
       }
-    },
-    methods: {
-      handleSubmit () {
-        this.$nuxt.$loading.start()
-        this.$v.form.$touch();
-        if (this.$v.form.$error) {
-          !this.$v.form.email.required || !this.$v.form.email.email ? this.errors.email = 'Cet email n\'est pas valide'
-            : null
-          !this.$v.form.username.required ? this.errors.username = 'Il manque votre nom d\'utitlisateur'
-            : !this.$v.form.username.minLength ? this.errors.username = 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
-            : null
-          !this.$v.form.password.required ? this.errors.password = 'Il manque votre mot de passe'
-            : !this.$v.form.password.minLength ? this.errors.password = 'Votre mot de passe doit être composé de 6 caractères minimum'
-            : null
-          !this.$v.form.newPassword.minLength ? this.errors.newPassword = 'Votre nouveau mot de passe doit être composé de 6 caractères minimum'
-            : null
-          return
-        }
-        const user = {
-          username : this.form.username,
-          email: this.form.email,
-          avatar: this.form.avatar,
-          password: this.form.password
-        }
-        this.form.newPassword.length > 0 ? user.newPassword = this.form.newPassword : null
+      user.newPassword = this.form.newPassword.length > 0 ? this.form.newPassword : null
 
-        this.$axios
-          .$post('/edit', user)
-          .then(response => {
-            this.$store.dispatch('auth', { token: response.token })
-            this.$noty.success(`${this.form.username} your profile has been updated`)
-            this.$router.push('/')
-          }).catch(error => {
+      this.$axios
+        .$post('/edit', user)
+        .then((response) => {
+          this.$store.dispatch('auth', { token: response.token })
+          this.$noty.success(`${this.form.username} your profile has been updated`)
+          this.$router.push('/')
+        }).catch((error) => {
           if (error.response) {
             if (error.response.status === 403) {
               this.$noty.error(`${error.response.data.error} 😨`)
             }
           } else if (error.request) {
-            console.log(error.request);
             this.$noty.error('Something went wrong 😨')
           } else {
-            console.log('Error', error.message);
             this.$noty.error('Something went wrong 😨')
           }
         }).finally(() => {
           this.$nuxt.$loading.finish()
         })
-      }
     }
   }
+}
 </script>
 <style scoped>
   input {

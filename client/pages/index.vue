@@ -8,23 +8,24 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+import { mapState } from 'vuex'
 export default {
-  //middleware: ['restricted'],
+  // middleware: ['restricted'],
+  data: () => ({
+    recipes: null,
+    errors: null
+  }),
   computed: mapState([
     'user'
   ]),
-  data: () => ({
-    recipes: null,
-  }),
   mounted () {
-    this.$nextTick(() => {
-        this.$nuxt.$loading.start()
-        this.$axios.$get('/recipes.json')
-          .then(response => this.recipes = response)
-          .catch(e => console.log(e))
-          .finally(this.$nuxt.$loading.finish())
-      })
+    this.$nextTick(function () {
+      this.$nuxt.$loading.start()
+      this.$axios.$get('/recipes.json')
+        .then((response) => { this.recipes = response })
+        .catch((e) => { this.errors = e })
+        .finally(this.$nuxt.$loading.finish())
+    })
   },
   method: {
 

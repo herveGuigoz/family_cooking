@@ -91,7 +91,7 @@ export default {
     name: 'fade',
     mode: 'out-in'
   },
-  env : {
+  env: {
     baseURL: 'http://0.0.0.0:80'
   }
 }
