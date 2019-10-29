@@ -27,6 +27,7 @@ export const getters = {
 // Mutations
 export const mutations = {
   RESET (state) {
+    state.isAuth = false
     state.user = { username: null, email: null, avatar: null, token: null, expire: null };
   },
   SET_USER (state, token) {
@@ -39,13 +40,12 @@ export const mutations = {
         state.user.token = user.token
         state.user.expire = user.expire
         state.isAuth = true
-        console.log(state.user)
         return
       }
-      console.log(user)
+      state.isAuth = false
       state.user = { username: null, email: null, avatar: null, token: null, expire: null }
     } catch (e) {
-      console.log('ERROR ' + e)
+      state.isAuth = false
       state.user = { username: null, email: null, avatar: null, token: null, expire: null };
     }
   }

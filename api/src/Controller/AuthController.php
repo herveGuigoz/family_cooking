@@ -81,7 +81,7 @@ class AuthController extends AbstractController
             ], 403);
         }
 
-        if (array_key_exists('newPassword',$data)) {
+        if (array_key_exists('newPassword', $data)) {
             $newPassword = $data['newPassword'];
             try {
                 $user = $this->userManager->refreshPassword($user, $password, $newPassword);
