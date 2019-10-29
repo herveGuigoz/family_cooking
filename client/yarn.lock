@@ -4127,10 +4127,10 @@ jsonfile@^4.0.0:
   optionalDependencies:
     graceful-fs "^4.1.6"
 
-jwt-js-decode@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/jwt-js-decode/-/jwt-js-decode-1.4.0.tgz#9f8f0d1557951cc2d2777a55af6e8ec513bd8a0d"
-  integrity sha512-HkIRVe6F6j+MXT5nzqC8Q8rx7gBWIpdlKB5TB0twCGrYZOqsD7y6lEarit/Yt5f/3B92PrvTGKEVAVvmAVDJtw==
+jwt-js-decode@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/jwt-js-decode/-/jwt-js-decode-1.4.1.tgz#eba402e6686fa666bfa5d8fe996b6c38173fca93"
+  integrity sha512-OQQpCih7pI13lan+kUAyKhoeCYq36SjeiQSLd5f4e7Pg7mGonH62pAoDYBQWOXFhHY9d1h76HjqfQ4pywvOhMw==
   dependencies:
     pako "1.0.10"
 
