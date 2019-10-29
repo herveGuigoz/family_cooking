@@ -79,11 +79,15 @@ export default {
       this.errors.password = null
       this.$v.form.$touch()
       if (this.$v.form.$error) {
-        this.errors.username = !this.$v.form.username.required ? 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
-          : !this.$v.form.username.minLength ? 'Il manque votre username'
+        this.errors.username = !this.$v.form.username.required
+          ? 'Votre nom d\'utitlisateur doit être composé de 4 caractères minimum'
+          : !this.$v.form.username.minLength
+            ? 'Il manque votre username'
             : null
-        this.errors.password = !this.$v.form.password.required ? 'Il manque votre mot de passe'
-          : !this.$v.form.password.minLength ? 'Votre mot de passe doit être composé de 6 caractères minimum'
+        this.errors.password = !this.$v.form.password.required
+          ? 'Il manque votre mot de passe'
+          : !this.$v.form.password.minLength
+            ? 'Votre mot de passe doit être composé de 6 caractères minimum'
             : null
         return
       }

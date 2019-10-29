@@ -25,6 +25,9 @@ module.exports = {
   ],
   rules: {
     "no-console": 1, // Allows console.log
-    'vue/max-attributes-per-line': 'off'
+    'vue/max-attributes-per-line': 'off',
+    "eqeqeq": "warn",
+    'no-unneeded-ternary': 'warn',
+    'no-whitespace-before-property': 'warn',
   }
 }
