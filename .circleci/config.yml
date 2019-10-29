@@ -15,7 +15,7 @@ executors:
     docker-executor:
         docker:
             - image: docker/compose:1.23.2
-              
+
 jobs:
     # API
     init-api:
@@ -26,10 +26,11 @@ jobs:
                   keys:
                       - vendor-{{ checksum "api/composer.lock" }}
                       - vendor-
+
             - run:
                   name: Install Sqlite
                   command: sudo apt install -y sqlite3 || true
-                  
+
             - run:
                   name: Install PHP extensions
                   command: docker-php-ext-install sockets
@@ -40,8 +41,19 @@ jobs:
             - run:
                   name: Install dependencies
                   working_directory: api
-                  command: composer install --prefer-dist --no-suggest
-                  #command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+                  command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+                  #command: composer install --prefer-dist --no-suggest
+            -   run:
+                    name: Install Symfony Flex
+                    command: |
+                        composer global require --prefer-dist --no-progress --no-suggest --ansi \
+                          symfony/flex
+            -   run:
+                    name: Install http client
+                    command: |
+                        composer global require --prefer-dist --no-progress --no-suggest --ansi \
+                          symfony/http-client symfony/browser-kit
+                    
             # Database
             - run:
                   name: Create databse
@@ -50,7 +62,7 @@ jobs:
             - run:
                   name: Install database
                   working_directory: api
-                  command: bin/console doctrine:schema:update --force --no-interaction --env=test 
+                  command: bin/console doctrine:schema:update --force --no-interaction --env=test
             - run:
                   name: Load Fixtures
                   working_directory: api
@@ -104,11 +116,27 @@ jobs:
                   name: PHPStan
                   working_directory: api
                   command: vendor/bin/phpstan analyse -c phpstan.neon -l6 --ansi src
+            
     phpunit:
         executor: php-executor
         steps:
             - attach_workspace:
                   at: ./
+            -   run:
+                    name: Install dependencies
+                    working_directory: api
+                    command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
+                        #command: composer install --prefer-dist --no-suggest
+            -   run:
+                    name: Install Symfony Flex
+                    command: |
+                        composer global require --prefer-dist --no-progress --no-suggest --ansi \
+                          symfony/flex
+            -   run:
+                    name: Install http client
+                    command: |
+                        composer global require --prefer-dist --no-progress --no-suggest --ansi \
+                          symfony/http-client symfony/browser-kit
             - run:
                   name: PHPUnit
                   working_directory: api
@@ -131,4 +159,5 @@ workflows:
                       - init-api
             - phpunit:
                   requires:
+                      - doctrine_schema_validator
                       - init-api
