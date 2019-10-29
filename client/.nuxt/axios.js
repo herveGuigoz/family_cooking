@@ -91,7 +91,7 @@ const setupProgress = (axios, ctx) => {
 
     currentRequests--
 
-    if (axios.isCancel(error)) {
+    if (Axios.isCancel(error)) {
       return
     }
 
@@ -154,6 +154,8 @@ export default (ctx, inject) => {
 
   // Create new axios instance
   const axios = Axios.create(axiosOptions)
+  axios.CancelToken = Axios.CancelToken
+  axios.isCancel = Axios.isCancel
 
   // Extend axios proto
   extendAxiosInstance(axios)
