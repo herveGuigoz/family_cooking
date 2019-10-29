@@ -56,11 +56,12 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string")
+     * @Assert\Choice(choices=User::AVATAR_NAMES, message="Choose a valid avatar.")
      */
-    private $avatar = self::AVATAR_NAMES[0];
+    private $avatar;
 
     public const AVATAR_NAMES = [
-        'user',
+        'moustache',
         'baby',
         'darthVader',
         'futuramaAmy',
@@ -83,7 +84,7 @@ class User implements UserInterface
         'stormtrooper',
         'superMario',
         'unicorn',
-        'walterwhite'
+        'walterwhite',
     ];
 
     public function getId(): ?int
@@ -186,19 +187,15 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
     public function getAvatar()
     {
         return $this->avatar;
     }
 
-    /**
-     * @param mixed $avatar
-     */
-    public function setAvatar($avatar): void
+    public function setAvatar(string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
     }
 }

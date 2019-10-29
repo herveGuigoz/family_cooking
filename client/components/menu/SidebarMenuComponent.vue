@@ -34,8 +34,8 @@
       <div v-if="!isAuthenticated" class="flex-1 flex items-end">
       -->
       <div class="flex-1 flex items-end justify-center">
-        <nuxt-link to="/login">
-          <badge :text="isAuthenticated ? user.username : 'Login'" :avatar/>
+        <nuxt-link :to="isAuthenticated ? '/profile/edit' : '/login'">
+          <badge :user="user"/>
         </nuxt-link>
       </div>
     </div>
@@ -43,13 +43,13 @@
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
   import UiButtonComponent from "../UI/UiButtonComponent";
   import IconSearchComponent from "../icons/IconSearchComponent";
   import IconInLoveComponent from "../icons/IconInLoveComponent";
   import IconToastComponent from "../icons/IconToastComponent";
   import IconEditFileComponent from "../icons/IconEditFileComponent";
   import Badge from "../UI/Badge";
-  import { mapGetters } from "vuex";
   export default {
     components: {
       UiButtonComponent,
@@ -63,10 +63,7 @@
       ...mapGetters({
         isAuthenticated: "isAuth",
         user: 'getUser'
-      }),
-      avatar () {
-        return this.user ? this.user.avatar : 'anonymous'
-      }
+      })
     }
   }
 </script>

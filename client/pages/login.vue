@@ -60,8 +60,7 @@
         username: null,
         password: null
       },
-      requestError: null,
-      isLoading: false
+      requestError: null
     }),
     validations: {
       form: {
@@ -71,7 +70,7 @@
     },
     methods: {
       handleSubmit () {
-        this.isLoading = true;
+        this.$nuxt.$loading.start()
         this.errors.username = null
         this.errors.password = null
         this.$v.form.$touch();
@@ -114,7 +113,7 @@
             this.$noty.error('Something went wrong 😨')
           }
         }).finally(() => {
-          this.isLoading = false;
+          this.$nuxt.$loading.finish()
         })
       }
     }

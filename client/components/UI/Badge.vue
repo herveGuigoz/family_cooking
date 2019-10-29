@@ -1,195 +1,99 @@
 <template>
   <div class="flex items-center text-beige hover:text-gray-200">
-    <span class="rounded-full h-10 w-10 flex items-center justify-center bg-grey">
-      <icon-user-component v-if="user" height="h-7" width="w-7"/>
-      <icon-anonymous-component v-if="anonymous" height="h-7" width="w-7"/>
-      <icon-baby-component v-if="baby" height="h-7" width="w-7"/>
-      <icon-darth-vader-component v-if="darthVader" height="h-7" width="w-7"/>
-      <icon-futurama-amy-component v-if="futuramaAmy" height="h-7" width="w-7"/>
-      <icon-futurama-bender-component v-if="futuramaBender" height="h-7" width="w-7"/>
-      <icon-futurama-fry-component v-if="futuramaFry" height="h-7" width="w-7"/>
-      <icon-futurama-hermes-component v-if="futuramaHermes" height="h-7" width="w-7"/>
-      <icon-futurama-leela-component v-if="futuramaLeela" height="h-7" width="w-7"/>
-      <icon-futurama-mom-component v-if="futuramaMom" height="h-7" width="w-7"/>
-      <icon-futurama-nibbler-component v-if="futuramaNibbler" height="h-7" width="w-7"/>
-      <icon-futurama-professor-component v-if="futuramaProfessor" height="h-7" width="w-7"/>
-      <icon-futurama-zoidberg-component v-if="futuramaZoidberg" height="h-7" width="w-7"/>
-      <icon-homer-simpson-component v-if="homerSimpson" height="h-7" width="w-7"/>
-      <icon-iron-man-component v-if="ironMan" height="h-7" width="w-7"/>
-      <icon-mermaid-component v-if="mermaid" height="h-7" width="w-7"/>
-      <icon-naruto-component v-if="naruto" height="h-7" width="w-7"/>
-      <icon-pennywise-component v-if="pennywise" height="h-7" width="w-7"/>
-      <icon-r2d2-component v-if="r2d2" height="h-7" width="w-7"/>
-      <icon-songoku-component v-if="songoku" height="h-7" width="w-7"/>
-      <icon-stich-component v-if="stich" height="h-7" width="w-7"/>
-      <icon-stormtrooper-component v-if="stormtrooper" height="h-7" width="w-7"/>
-      <icon-super-mario-component v-if="superMario" height="h-7" width="w-7"/>
-      <icon-unicorn-component v-if="unicorn" height="h-7" width="w-7"/>
-      <icon-walterwhite-component v-if="walterwhite" height="h-7" width="w-7"/>
+    <span
+      class="rounded-full flex items-center justify-center"
+      :class="[backgroundColor, backgroundHeight, backgroundWidth]"
+    >
+      <component :is="currentAvatar" :height="iconHeight" :width="iconWidth"/>
     </span>
-    <p class="ml-2">{{ text }}</p>
+    <p class="ml-2">{{ user.username ? user.username : 'Login' }}</p>
   </div>
 </template>
 
 <script>
-  import IconUserComponent from "~/components/icons/avatars/IconUserComponent";
-  import IconAnonymousComponent from "~/components/icons/avatars/IconAnonymousComponent";
-  import IconBabyComponent from "~/components/icons/avatars/IconBabyComponent";
-  import IconDarthVaderComponent from "~/components/icons/avatars/IconDarthVaderComponent";
-  import IconFuturamaAmyComponent from "~/components/icons/avatars/IconFuturamaAmyComponent";
-  import IconFuturamaBenderComponent from "~/components/icons/avatars/IconFuturamaBenderComponent";
-  import IconFuturamaFryComponent from "~/components/icons/avatars/IconFuturamaFryComponent";
-  import IconFuturamaHermesComponent from "~/components/icons/avatars/IconFuturamaHermesComponent";
-  import IconFuturamaLeelaComponent from "~/components/icons/avatars/IconFuturamaLeelaComponent";
-  import IconFuturamaMomComponent from "~/components/icons/avatars/IconFuturamaMomComponent";
-  import IconFuturamaNibblerComponent from "~/components/icons/avatars/IconFuturamaNibblerComponent";
-  import IconFuturamaProfessorComponent from "~/components/icons/avatars/IconFuturamaProfessorComponent";
-  import IconFuturamaZoidbergComponent from "~/components/icons/avatars/IconFuturamaZoidbergComponent";
-  import IconHomerSimpsonComponent from "~/components/icons/avatars/IconHomerSimpsonComponent";
-  import IconIronManComponent from "~/components/icons/avatars/IconIronManComponent";
-  import IconMermaidComponent from "~/components/icons/avatars/IconMermaidComponent";
-  import IconNarutoComponent from "~/components/icons/avatars/IconNarutoComponent";
-  import IconPennywiseComponent from "~/components/icons/avatars/IconPennywiseComponent";
-  import IconR2d2Component from "~/components/icons/avatars/IconR2d2Component";
-  import IconSongokuComponent from "~/components/icons/avatars/IconSongokuComponent";
-  import IconStichComponent from "~/components/icons/avatars/IconStichComponent";
-  import IconStormtrooperComponent from "~/components/icons/avatars/IconStormtrooperComponent";
-  import IconSuperMarioComponent from "~/components/icons/avatars/IconSuperMarioComponent";
-  import IconUnicornComponent from "~/components/icons/avatars/IconUnicornComponent";
-  import IconWalterwhiteComponent from "~/components/icons/avatars/IconWalterwhiteComponent";
+  import moustache from "~/components/icons/avatars/moustache";
+  import anonymous from "~/components/icons/avatars/anonymous";
+  import baby from "~/components/icons/avatars/baby";
+  import darthvader from "~/components/icons/avatars/darthvader";
+  import futuramaamy from "~/components/icons/avatars/futuramaamy";
+  import futuramabender from "~/components/icons/avatars/futuramabender";
+  import futuramafry from "~/components/icons/avatars/futuramafry";
+  import futuramahermes from "~/components/icons/avatars/futuramahermes";
+  import futuramaleela from "~/components/icons/avatars/futuramaleela";
+  import futuramamom from "~/components/icons/avatars/futuramamom";
+  import futuramanibbler from "~/components/icons/avatars/futuramanibbler";
+  import futuramaprofessor from "~/components/icons/avatars/futuramaprofessor";
+  import futuramazoidberg from "~/components/icons/avatars/futuramazoidberg";
+  import homersimpson from "~/components/icons/avatars/homersimpson";
+  import ironman from "~/components/icons/avatars/ironman";
+  import mermaid from "~/components/icons/avatars/mermaid";
+  import naruto from "~/components/icons/avatars/naruto";
+  import pennywise from "~/components/icons/avatars/pennywise";
+  import r2d2 from "~/components/icons/avatars/r2d2";
+  import songoku from "~/components/icons/avatars/songoku";
+  import stich from "~/components/icons/avatars/stich";
+  import stormtrooper from "~/components/icons/avatars/stormtrooper";
+  import supermario from "~/components/icons/avatars/supermario";
+  import unicorn from "~/components/icons/avatars/unicorn";
+  import walterwhite from "~/components/icons/avatars/walterwhite";
   export default {
     name: "Badge",
     components: {
-      IconAnonymousComponent,
-      IconBabyComponent,
-      IconDarthVaderComponent,
-      IconFuturamaAmyComponent,
-      IconFuturamaBenderComponent,
-      IconFuturamaFryComponent,
-      IconUserComponent,
-      IconFuturamaHermesComponent,
-      IconFuturamaLeelaComponent,
-      IconFuturamaMomComponent,
-      IconFuturamaNibblerComponent,
-      IconFuturamaProfessorComponent,
-      IconFuturamaZoidbergComponent,
-      IconHomerSimpsonComponent,
-      IconIronManComponent,
-      IconMermaidComponent,
-      IconNarutoComponent,
-      IconPennywiseComponent,
-      IconR2d2Component,
-      IconSongokuComponent,
-      IconStichComponent,
-      IconStormtrooperComponent,
-      IconSuperMarioComponent,
-      IconUnicornComponent,
-      IconWalterwhiteComponent
+      moustache,
+      anonymous,
+      baby,
+      darthvader,
+      futuramaamy,
+      futuramabender,
+      futuramafry,
+      futuramahermes,
+      futuramaleela,
+      futuramamom,
+      futuramanibbler,
+      futuramaprofessor,
+      futuramazoidberg,
+      homersimpson,
+      ironman,
+      mermaid,
+      naruto,
+      pennywise,
+      r2d2,
+      songoku,
+      stich,
+      stormtrooper,
+      supermario,
+      unicorn,
+      walterwhite
+    },
+    computed: {
+      currentAvatar: function () {
+        return this.user.avatar ? this.user.avatar : 'anonymous'
+      }
     },
     props: {
-      text: {
-        type: String,
-        required: true
-      },
       user: {
-        type: Boolean,
-        default: false
+        type: Object,
+        default: null
       },
-      anonymous: {
-        type: Boolean,
-        default: false
+      backgroundColor: {
+        type: String,
+        default: 'bg-grey'
       },
-      baby: {
-        type: Boolean,
-        default: false
+      backgroundHeight: {
+        type: String,
+        default: 'h-10'
       },
-      darthVader: {
-        type: Boolean,
-        default: false
+      backgroundWidth: {
+        type: String,
+        default: 'w-10'
       },
-      futuramaAmy: {
-        type: Boolean,
-        default: false
+      iconHeight: {
+        type: String,
+        default: 'h-7'
       },
-      futuramaBender: {
-        type: Boolean,
-        default: false
-      },
-      futuramaFry: {
-        type: Boolean,
-        default: false
-      },
-      futuramaHermes: {
-        type: Boolean,
-        default: false
-      },
-      futuramaLeela: {
-        type: Boolean,
-        default: false
-      },
-      futuramaMom: {
-        type: Boolean,
-        default: false
-      },
-      futuramaNibbler: {
-        type: Boolean,
-        default: false
-      },
-      futuramaProfessor: {
-        type: Boolean,
-        default: false
-      },
-      futuramaZoidberg: {
-        type: Boolean,
-        default: false
-      },
-      homerSimpson: {
-        type: Boolean,
-        default: false
-      },
-      ironMan: {
-        type: Boolean,
-        default: false
-      },
-      mermaid: {
-        type: Boolean,
-        default: false
-      },
-      naruto: {
-        type: Boolean,
-        default: false
-      },
-      pennywise: {
-        type: Boolean,
-        default: false
-      },
-      r2d2: {
-        type: Boolean,
-        default: false
-      },
-      songoku: {
-        type: Boolean,
-        default: false
-      },
-      stich: {
-        type: Boolean,
-        default: false
-      },
-      stormtrooper: {
-        type: Boolean,
-        default: false
-      },
-      superMario: {
-        type: Boolean,
-        default: false
-      },
-      unicorn: {
-        type: Boolean,
-        default: false
-      },
-      walterwhite: {
-        type: Boolean,
-        default: false
+      iconWidth: {
+        type: String,
+        default: 'w-7'
       }
     }
   }

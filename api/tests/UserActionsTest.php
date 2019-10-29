@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
+
 class UserActionsTest extends ApiTestCase
 {
     // Erase and recreate database schema before each tests.
@@ -74,6 +75,7 @@ class UserActionsTest extends ApiTestCase
         $user = new User();
         $user->setEmail('louis@mail.com');
         $user->setUsername('louis');
+        $user->setAvatar('moustache');
 
         $passwordManager = self::$container->get('security.password_encoder');
         $encoded = $passwordManager->encodePassword($user, '123456');
@@ -84,7 +86,9 @@ class UserActionsTest extends ApiTestCase
 
         $client->request('POST', '/edit', [
             'json' => [
-                'username' => $user->getUsername(),
+                'username' => 'louis',
+                'email' => 'louis@mail.com',
+                'avatar' => 'walterwhite',
                 'password' => '123456',
                 'newPassword' => '654321',
             ],

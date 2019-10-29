@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "IconFuturamaZoidbergComponent",
+    name: "futuramazoidberg",
     props: {
       height: {
         type: String,

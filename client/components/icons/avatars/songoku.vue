@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "IconSongokuComponent",
+    name: "songoku",
     props: {
       height: {
         type: String,

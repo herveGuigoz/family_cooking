@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Events;
 
 use App\Entity\User;
@@ -18,8 +17,6 @@ class JWTCreatedListener
 
     /**
      * @param JWTCreatedEvent $event
-     *
-     * @return void
      */
     public function onJWTCreated(JWTCreatedEvent $event): void
     {

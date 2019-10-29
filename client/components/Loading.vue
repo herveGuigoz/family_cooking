@@ -32,7 +32,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: hsl(0, 0%, 86%);
+    background: rgba(255, 255, 255, 0.8);
     text-align: center;
     font-size: 30px;
     font-family: sans-serif;
