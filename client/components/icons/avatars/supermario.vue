@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "IconSuperMarioComponent",
+    name: "supermario",
     props: {
       height: {
         type: String,

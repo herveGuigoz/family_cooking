@@ -2,10 +2,12 @@ App\Entity\User:
     user1:
         username: herveGuigoz
         email: herve@mail.com
-        password: psw
+        avatar: moustache
+        password: password
     user{2..9}:
         username (unique): <firstName()> <lastName()>
         email (unique): <email()>
+        avatar: moustache
         password: password
     
     

@@ -1,14 +1,25 @@
 const jwtJsDecode = require('jwt-js-decode');
 const nowInSeconds = Date.now() / 1000;
+const decodeJWT = function (token) {
+  const jwt = jwtJsDecode.jwtDecode(token);
+  return {
+    username : jwt.payload.username,
+    email: jwt.payload.email,
+    avatar: jwt.payload.avatar,
+    expire: jwt.payload.exp
+  };
+}
+
 // State object
 export const state = () => ({
-  user: null
+  isAuth: false,
+  user: { username: null, email: null, avatar: null, token: null, expire: null }
 });
 
 // Getter functions
 export const getters = {
   isAuth (state) {
-    return !(!state.user || nowInSeconds > state.user.expire);
+    return !(!state.isAuth || nowInSeconds > state.user.expire);
   },
   getUser: state => state.user,
 };
@@ -16,16 +27,26 @@ export const getters = {
 // Mutations
 export const mutations = {
   RESET (state) {
-    state.user =  null;
+    state.isAuth = false
+    state.user = { username: null, email: null, avatar: null, token: null, expire: null };
   },
   SET_USER (state, token) {
     try {
-      const jwt = jwtJsDecode.jwtDecode(token);
-      const username = jwt.payload.username;
-      const expire = jwt.payload.exp;
-      nowInSeconds < expire ? state.user = { token, username , expire } : state.user = null
+      const user = decodeJWT(token)
+      if (user && nowInSeconds < user.expire) {
+        state.user.username = user.username
+        state.user.email = user.email
+        state.user.avatar = user.avatar
+        state.user.token = user.token
+        state.user.expire = user.expire
+        state.isAuth = true
+        return
+      }
+      state.isAuth = false
+      state.user = { username: null, email: null, avatar: null, token: null, expire: null }
     } catch (e) {
-      state.user =  null;
+      state.isAuth = false
+      state.user = { username: null, email: null, avatar: null, token: null, expire: null };
     }
   }
 };

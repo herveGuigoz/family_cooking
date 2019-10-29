@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "IconBabyComponent",
+    name: "baby",
     props: {
       width: {
         type: String,

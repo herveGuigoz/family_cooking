@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "IconStichComponent",
+    name: "stich",
     props: {
       height: {
         type: String,

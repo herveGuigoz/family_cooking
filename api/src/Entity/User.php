@@ -54,6 +54,39 @@ class User implements UserInterface
      */
     private $createdAt;
 
+    /**
+     * @ORM\Column(type="string")
+     * @Assert\Choice(choices=User::AVATAR_NAMES, message="Choose a valid avatar.")
+     */
+    private $avatar;
+
+    public const AVATAR_NAMES = [
+        'moustache',
+        'baby',
+        'darthVader',
+        'futuramaAmy',
+        'futuramaBender',
+        'futuramaFry',
+        'futuramaHermes',
+        'futuramaLeela',
+        'futuramaMom',
+        'futuramaNibbler',
+        'futuramaProfessor',
+        'futuramaZoidberg',
+        'homerSimpson',
+        'ironMan',
+        'mermaid',
+        'naruto',
+        'pennywise',
+        'r2d2',
+        'songoku',
+        'stich',
+        'stormtrooper',
+        'superMario',
+        'unicorn',
+        'walterwhite',
+    ];
+
     public function getId(): ?int
     {
         return $this->id;
@@ -150,6 +183,18 @@ class User implements UserInterface
     public function setCreatedAt(): self
     {
         $this->createdAt = new \DateTime();
+
+        return $this;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(string $avatar): self
+    {
+        $this->avatar = $avatar;
 
         return $this;
     }

@@ -65,7 +65,8 @@ class AuthController extends AbstractController
         try {
             $username = $data['username'];
             $password = $data['password'];
-            $newPassword = $data['newPassword'];
+            $email = $data['email'];
+            $avatar = $data['avatar'];
         } catch (\Exception $e) {
             return new JsonResponse([
                 'error' => 'Bad credentials',
@@ -73,11 +74,24 @@ class AuthController extends AbstractController
         }
 
         try {
-            $user = $this->userManager->refreshPassword($username, $password, $newPassword);
+            $user = $this->userManager->updateUser($username, $password, $email, $avatar);
         } catch (\Exception $e) {
             return new JsonResponse([
                 'error' => sprintf('%s', $e->getMessage()),
             ], 403);
+        }
+
+        if (array_key_exists('newPassword', $data)) {
+            $newPassword = $data['newPassword'];
+            try {
+                $user = $this->userManager->refreshPassword($user, $password, $newPassword);
+            } catch (\Exception $e) {
+                return new JsonResponse([
+                    'error' => sprintf('%s', $e->getMessage()),
+                ], 403);
+            }
+
+            return $this->userManager->authUser($user);
         }
 
         return $this->userManager->authUser($user);

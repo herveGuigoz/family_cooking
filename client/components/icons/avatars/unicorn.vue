@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "IconUnicornComponent",
+    name: "unicorn",
     props: {
       height: {
         type: String,

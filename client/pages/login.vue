@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-grey h-screen flex-col md:flex-row">
+  <div class="flex h-screen flex-col md:flex-row">
     <div class="min-w-450 flex-1 text-brown px-6 flex flex-col">
       <div class="flex text-3xl justify-center pt-16">
         <h1 class="title text-brown font-semibold text-center uppercase">Login</h1>
@@ -60,8 +60,7 @@
         username: null,
         password: null
       },
-      requestError: null,
-      isLoading: false
+      requestError: null
     }),
     validations: {
       form: {
@@ -71,7 +70,7 @@
     },
     methods: {
       handleSubmit () {
-        this.isLoading = true;
+        this.$nuxt.$loading.start()
         this.errors.username = null
         this.errors.password = null
         this.$v.form.$touch();
@@ -114,7 +113,7 @@
             this.$noty.error('Something went wrong 😨')
           }
         }).finally(() => {
-          this.isLoading = false;
+          this.$nuxt.$loading.finish()
         })
       }
     }

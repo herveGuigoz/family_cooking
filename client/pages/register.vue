@@ -79,8 +79,7 @@
         username: null,
         password: null,
         confirmPassword: null
-      },
-      isLoading: false
+      }
     }),
     validations: {
       form: {
@@ -92,7 +91,7 @@
     },
     methods: {
       handleSubmit () {
-        this.isLoading = true;
+        this.$nuxt.$loading.start()
         this.errors.email = null
         this.errors.username = null
         this.errors.password = null
@@ -113,7 +112,7 @@
         this.$axios
           .$post('/register', this.user)
           .then(response => {
-            this.$store.dispatch('auth', { token: response.token, username: this.user.username })
+            this.$store.dispatch('auth', { token: response.token })
             this.$noty.success(`Nice to meet you ${this.form.username}`)
             this.$router.push('/')
           }).catch(error => {
@@ -129,7 +128,7 @@
               this.$noty.error('Something went wrong 😨')
             }
           }).finally(() => {
-            this.isLoading = false;
+            this.$nuxt.$loading.finish()
           })
       }
     }

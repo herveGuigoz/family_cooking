@@ -26,36 +26,42 @@
         <icon-edit-file-component/>
         <a href="#" class="px-2">Modifier</a>
       </div>
-      <div
-        v-if="!isAuthenticated"
-        class="block flex flex-nowrap items-center px-2 py-1 text-white font-semibold rounded hover:bg-gray-800"
-      >
-        <icon-login-as-user-component/>
-        <a href="#" class="px-2">Login</a>
+      <div class="block flex flex-nowrap items-center px-2 py-1 text-white font-semibold rounded hover:bg-gray-800">
+        <nuxt-link :to="isAuthenticated ? '/profile/edit' : '/login'">
+          <badge
+            :user="user"
+            background-color="bg-transparent"
+            background-height="h-6"
+            background-width="w-6"
+            icon-width="w-6"
+            icon-height="h-6"
+          />
+        </nuxt-link>
       </div>
     </nav>
   </header>
 </template>
 
 <script>
+  import { mapGetters } from "vuex";
   import IconSearchComponent from "../icons/IconSearchComponent";
   import IconInLoveComponent from "../icons/IconInLoveComponent";
   import IconToastComponent from "../icons/IconToastComponent";
   import IconEditFileComponent from "../icons/IconEditFileComponent";
-  import IconLoginAsUserComponent from "../icons/IconLoginAsUserComponent";
-  import { mapGetters } from "vuex";
+  import Badge from "../UI/Badge";
   export default {
     name: "Navbar",
-    components: { IconSearchComponent, IconInLoveComponent, IconToastComponent, IconEditFileComponent, IconLoginAsUserComponent },
+    components: { IconSearchComponent, IconInLoveComponent, IconToastComponent, IconEditFileComponent, Badge },
+    computed: {
+      ...mapGetters({
+        isAuthenticated: "isAuth",
+        user: 'getUser'
+      }),
+    },
     data() {
       return {
         isOpen: false,
       }
-    },
-    computed: {
-      ...mapGetters({
-        isAuthenticated: "isAuth"
-      })
     }
   }
 </script>

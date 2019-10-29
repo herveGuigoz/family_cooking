@@ -25,6 +25,10 @@ html {
   box-sizing: border-box;
 }
 
+button:focus {
+  outline: none;
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }

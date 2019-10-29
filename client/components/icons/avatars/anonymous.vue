@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: "IconAnonymousComponent",
+    name: "anonymous",
     props: {
       width: {
         type: String,
