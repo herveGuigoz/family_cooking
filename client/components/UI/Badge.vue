@@ -26,10 +26,10 @@ import futuramamom from '~/components/icons/avatars/futuramamom'
 import futuramanibbler from '~/components/icons/avatars/futuramanibbler'
 import futuramaprofessor from '~/components/icons/avatars/futuramaprofessor'
 import futuramazoidberg from '~/components/icons/avatars/futuramazoidberg'
+import futuramazapp from "../icons/avatars/futuramazapp";
 import homersimpson from '~/components/icons/avatars/homersimpson'
 import ironman from '~/components/icons/avatars/ironman'
 import mermaid from '~/components/icons/avatars/mermaid'
-import naruto from '~/components/icons/avatars/naruto'
 import pennywise from '~/components/icons/avatars/pennywise'
 import r2d2 from '~/components/icons/avatars/r2d2'
 import songoku from '~/components/icons/avatars/songoku'
@@ -54,10 +54,10 @@ export default {
     futuramanibbler,
     futuramaprofessor,
     futuramazoidberg,
+    futuramazapp,
     homersimpson,
     ironman,
     mermaid,
-    naruto,
     pennywise,
     r2d2,
     songoku,

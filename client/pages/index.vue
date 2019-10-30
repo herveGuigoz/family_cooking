@@ -4,13 +4,18 @@
     <div v-if="user">{{ user }}</div>
     <div v-if="recipes">{{ recipes }}</div>
     -->
+    <claps-component />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import ClapsComponent from "../components/Recipes/ClapsComponent";
 export default {
   // middleware: ['restricted'],
+  components: {
+    ClapsComponent
+  },
   data: () => ({
     recipes: null,
     errors: null

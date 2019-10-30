@@ -74,8 +74,8 @@
                 <input id="mermaid" v-model="form.avatar" class="mt-2" type="radio" value="mermaid">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
-                <naruto width="w-10" height="h-10" />
-                <input id="naruto" v-model="form.avatar" class="mt-2" type="radio" value="naruto">
+                <futuramazapp width="w-10" height="h-10" />
+                <input id="futuramazapp" v-model="form.avatar" class="mt-2" type="radio" value="futuramazapp">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <pennywise width="w-10" height="h-10" />
@@ -176,7 +176,7 @@ import futuramazoidberg from '~/components/icons/avatars/futuramazoidberg'
 import homersimpson from '~/components/icons/avatars/homersimpson'
 import ironman from '~/components/icons/avatars/ironman'
 import mermaid from '~/components/icons/avatars/mermaid'
-import naruto from '~/components/icons/avatars/naruto'
+import futuramazapp from "~/components/icons/avatars/futuramazapp"
 import pennywise from '~/components/icons/avatars/pennywise'
 import r2d2 from '~/components/icons/avatars/r2d2'
 import songoku from '~/components/icons/avatars/songoku'
@@ -205,7 +205,7 @@ export default {
     homersimpson,
     ironman,
     mermaid,
-    naruto,
+    futuramazapp,
     pennywise,
     r2d2,
     songoku,
