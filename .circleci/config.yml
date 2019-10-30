@@ -53,7 +53,6 @@ jobs:
                     command: |
                         composer global require --prefer-dist --no-progress --no-suggest --ansi \
                           symfony/http-client symfony/browser-kit
-                    
             # Database
             - run:
                   name: Create databse
@@ -82,10 +81,6 @@ jobs:
                   root: ./
                   paths:
                       - ./api
-            - run:
-                  name: Populate database
-                  working_directory: api
-                  command: bin/console hautelook:fixtures:load -n --purge-with-truncate
 
     doctrine_schema_validator:
         executor: php-executor
@@ -96,6 +91,14 @@ jobs:
                   name: Doctrine schema validator
                   working_directory: api
                   command: bin/console doctrine:schema:validate --skip-sync
+            -   run:
+                    name: Populate database
+                    working_directory: api
+                    command: bin/console hautelook:fixtures:load -n --purge-with-truncate
+            -   persist_to_workspace:
+                    root: ./
+                    paths:
+                        - ./api
 
     php_cs_fixer:
         executor: php-executor
@@ -122,16 +125,6 @@ jobs:
         steps:
             - attach_workspace:
                   at: ./
-            -   run:
-                    name: Install dependencies
-                    working_directory: api
-                    command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
-                        #command: composer install --prefer-dist --no-suggest
-            -   run:
-                    name: Install Symfony Flex
-                    command: |
-                        composer global require --prefer-dist --no-progress --no-suggest --ansi \
-                          symfony/flex
             -   run:
                     name: Install http client
                     command: |
