@@ -127,16 +127,6 @@ jobs:
                     working_directory: api
                     command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
                         #command: composer install --prefer-dist --no-suggest
-            -   run:
-                    name: Install Symfony Flex
-                    command: |
-                        composer global require --prefer-dist --no-progress --no-suggest --ansi \
-                          symfony/flex
-            -   run:
-                    name: Install http client
-                    command: |
-                        composer global require --prefer-dist --no-progress --no-suggest --ansi \
-                          symfony/http-client symfony/browser-kit
             - run:
                   name: PHPUnit
                   working_directory: api
@@ -148,15 +138,15 @@ workflows:
         jobs:
             # API
             - init-api
-            - doctrine_schema_validator:
-                  requires:
-                      - init-api
+            #- doctrine_schema_validator:
+            #      requires:
+            #          - init-api
             - php_cs_fixer:
                   requires:
                       - init-api
-            - phpstan:
-                  requires:
-                      - init-api
+            #- phpstan:
+            #      requires:
+            #          - init-api
             - phpunit:
                   requires:
                       - doctrine_schema_validator
