@@ -144,10 +144,10 @@ workflows:
             - php_cs_fixer:
                   requires:
                       - init-api
-            #- phpstan:
-            #      requires:
-            #          - init-api
-            - phpunit:
+            - phpstan:
                   requires:
-                      - doctrine_schema_validator
                       - init-api
+            #- phpunit:
+            #      requires:
+            #          - doctrine_schema_validator
+            #          - init-api
