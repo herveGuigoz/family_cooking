@@ -5,16 +5,19 @@
     <div v-if="recipes">{{ recipes }}</div>
     -->
     <claps-component />
+    <floating-menu />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 import ClapsComponent from '../components/Recipes/ClapsComponent'
+import FloatingMenu from "../components/menu/FloatingMenu";
 export default {
   // middleware: ['restricted'],
   components: {
-    ClapsComponent
+    ClapsComponent,
+    FloatingMenu
   },
   data: () => ({
     recipes: null,
