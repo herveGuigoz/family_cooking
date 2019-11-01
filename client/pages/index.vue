@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="flex">
     <!--
     <div v-if="user">{{ user }}</div>
     <div v-if="recipes">{{ recipes }}</div>
@@ -10,7 +10,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import ClapsComponent from "../components/Recipes/ClapsComponent";
+import ClapsComponent from '../components/Recipes/ClapsComponent'
 export default {
   // middleware: ['restricted'],
   components: {

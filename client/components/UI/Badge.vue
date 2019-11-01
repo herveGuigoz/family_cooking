@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import futuramazapp from '../icons/avatars/futuramazapp'
 import moustache from '~/components/icons/avatars/moustache'
 import anonymous from '~/components/icons/avatars/anonymous'
 import baby from '~/components/icons/avatars/baby'
@@ -26,7 +27,6 @@ import futuramamom from '~/components/icons/avatars/futuramamom'
 import futuramanibbler from '~/components/icons/avatars/futuramanibbler'
 import futuramaprofessor from '~/components/icons/avatars/futuramaprofessor'
 import futuramazoidberg from '~/components/icons/avatars/futuramazoidberg'
-import futuramazapp from "../icons/avatars/futuramazapp";
 import homersimpson from '~/components/icons/avatars/homersimpson'
 import ironman from '~/components/icons/avatars/ironman'
 import mermaid from '~/components/icons/avatars/mermaid'

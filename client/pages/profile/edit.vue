@@ -176,7 +176,7 @@ import futuramazoidberg from '~/components/icons/avatars/futuramazoidberg'
 import homersimpson from '~/components/icons/avatars/homersimpson'
 import ironman from '~/components/icons/avatars/ironman'
 import mermaid from '~/components/icons/avatars/mermaid'
-import futuramazapp from "~/components/icons/avatars/futuramazapp"
+import futuramazapp from '~/components/icons/avatars/futuramazapp'
 import pennywise from '~/components/icons/avatars/pennywise'
 import r2d2 from '~/components/icons/avatars/r2d2'
 import songoku from '~/components/icons/avatars/songoku'
