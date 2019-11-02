@@ -62,6 +62,28 @@ class User implements UserInterface
      */
     private $avatar;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="author")
+     */
+    private $interactionCounters;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="author")
+     */
+    private $recipes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmark")
+     */
+    private $bookmarked;
+
+    public function __construct()
+    {
+        $this->interactionCounters = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
+        $this->bookmarked = new ArrayCollection();
+    }
+
     public const AVATAR_NAMES = [
         'moustache',
         'baby',
@@ -88,21 +110,6 @@ class User implements UserInterface
         'unicorn',
         'walterwhite',
     ];
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="author", orphanRemoval=true)
-     */
-    private $recipes;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarked")
-     */
-    private $bookmarks;
-
-    public function __construct()
-    {
-        $this->bookmarks = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -217,6 +224,37 @@ class User implements UserInterface
     }
 
     /**
+     * @return Collection|InteractionCounter[]
+     */
+    public function getInteractionCounters(): Collection
+    {
+        return $this->interactionCounters;
+    }
+
+    public function addInteractionCounter(InteractionCounter $interactionCounter): self
+    {
+        if (!$this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters[] = $interactionCounter;
+            $interactionCounter->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInteractionCounter(InteractionCounter $interactionCounter): self
+    {
+        if ($this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters->removeElement($interactionCounter);
+            // set the owning side to null (unless already changed)
+            if ($interactionCounter->getAuthor() === $this) {
+                $interactionCounter->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * @return Collection|Recipe[]
      */
     public function getRecipes(): Collection
@@ -250,26 +288,26 @@ class User implements UserInterface
     /**
      * @return Collection|Recipe[]
      */
-    public function getBookmarks(): Collection
+    public function getBookmarked(): Collection
     {
-        return $this->bookmarks;
+        return $this->bookmarked;
     }
 
-    public function addBookmark(Recipe $bookmark): self
+    public function addBookmarked(Recipe $bookmarked): self
     {
-        if (!$this->bookmarks->contains($bookmark)) {
-            $this->bookmarks[] = $bookmark;
-            $bookmark->addBookmarked($this);
+        if (!$this->bookmarked->contains($bookmarked)) {
+            $this->bookmarked[] = $bookmarked;
+            $bookmarked->addBookmark($this);
         }
 
         return $this;
     }
 
-    public function removeBookmark(Recipe $bookmark): self
+    public function removeBookmarked(Recipe $bookmarked): self
     {
-        if ($this->bookmarks->contains($bookmark)) {
-            $this->bookmarks->removeElement($bookmark);
-            $bookmark->removeBookmarked($this);
+        if ($this->bookmarked->contains($bookmarked)) {
+            $this->bookmarked->removeElement($bookmarked);
+            $bookmarked->removeBookmark($this);
         }
 
         return $this;

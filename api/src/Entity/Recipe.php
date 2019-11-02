@@ -1,99 +1,116 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
- * @ORM\HasLifecycleCallbacks()
- * @ApiResource()
+ * @see http://schema.org/Recipe Documentation on Schema.org
+ *
+ * @ORM\Entity
+ * @ApiResource(iri="http://schema.org/Recipe")
  */
 class Recipe
 {
     /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @var int|null
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $prepTime;
-
-    /**
-     * @ORM\Column(type="integer")
+     * @var int|null The time it takes to actually cook the dish, in \[ISO 8601 duration format\](http://en.wikipedia.org/wiki/ISO\_8601).
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     * @ApiProperty(iri="http://schema.org/cookTime")
      */
     private $cookTime;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @var string|null the category of the recipe—for example, appetizer, entree, etc
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @ApiProperty(iri="http://schema.org/recipeCategory")
      */
-    private $createdAt;
+    private $recipeCategory;
 
     /**
-     * @ORM\Column(type="json_array")
+     * @var int|null The length of time it takes to prepare the items to be used in instructions or a direction, in \[ISO 8601 duration format\](http://en.wikipedia.org/wiki/ISO\_8601).
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     * @ApiProperty(iri="http://schema.org/prepTime")
      */
-    private $ingredients = [];
+    private $prepTime;
 
     /**
-     * @ORM\Column(type="json")
+     * @var int|null The total time required to perform instructions or a direction (including time to prepare the supplies), in \[ISO 8601 duration format\](http://en.wikipedia.org/wiki/ISO\_8601).
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     * @ApiProperty(iri="http://schema.org/totalTime")
      */
-    private $steps = [];
+    private $totalTime;
+
+    /**
+     * @var \DateTimeInterface|null date of first broadcast/publication
+     *
+     * @ORM\Column(type="date", nullable=true)
+     * @ApiProperty(iri="http://schema.org/datePublished")
+     * @Assert\Date
+     */
+    private $datePublished;
+
+    /**
+     * @var string|null A single ingredient used in the recipe, e.g. sugar, flour or garlic.
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @ApiProperty(iri="http://schema.org/recipeIngredient")
+     */
+    private $recipeIngredient;
+
+    /**
+     * @var string|null A step in making the recipe, in the form of a single item (document, video, etc.) or an ordered list with HowToStep and/or HowToSection items.
+     *
+     * @ORM\Column(type="text", nullable=true)
+     * @ApiProperty(iri="http://schema.org/recipeInstructions")
+     */
+    private $recipeInstruction;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="recipe")
+     */
+    private $interactionCounters;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recipes")
-     * @ORM\JoinColumn(nullable=false)
      */
     private $author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="bookmarks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="bookmarked")
+     * @JoinTable(name="users_bookmarks")
      */
-    private $bookmarked;
+    private $bookmark;
 
     public function __construct()
     {
-        $this->bookmarked = new ArrayCollection();
+        $this->interactionCounters = new ArrayCollection();
+        $this->bookmark = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function setCookTime(?int $cookTime): void
     {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getPrepTime(): ?int
-    {
-        return $this->prepTime;
-    }
-
-    public function setPrepTime(int $prepTime): self
-    {
-        $this->prepTime = $prepTime;
-
-        return $this;
+        $this->cookTime = $cookTime;
     }
 
     public function getCookTime(): ?int
@@ -101,48 +118,94 @@ class Recipe
         return $this->cookTime;
     }
 
-    public function setCookTime(int $cookTime): self
+    public function setRecipeCategory(?string $recipeCategory): void
     {
-        $this->cookTime = $cookTime;
-
-        return $this;
+        $this->recipeCategory = $recipeCategory;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getRecipeCategory(): ?string
     {
-        return $this->createdAt;
+        return $this->recipeCategory;
+    }
+
+    public function setPrepTime(?int $prepTime): void
+    {
+        $this->prepTime = $prepTime;
+    }
+
+    public function getPrepTime(): ?int
+    {
+        return $this->prepTime;
+    }
+
+    public function setTotalTime(?int $totalTime): void
+    {
+        $this->totalTime = $totalTime;
+    }
+
+    public function getTotalTime(): ?int
+    {
+        return $this->totalTime;
+    }
+
+
+    public function setDatePublished(?\DateTimeInterface $datePublished): void
+    {
+        $this->datePublished = $datePublished;
+    }
+
+    public function getDatePublished(): ?\DateTimeInterface
+    {
+        return $this->datePublished;
+    }
+
+    public function setRecipeIngredient(?string $recipeIngredient): void
+    {
+        $this->recipeIngredient = $recipeIngredient;
+    }
+
+    public function getRecipeIngredient(): ?string
+    {
+        return $this->recipeIngredient;
+    }
+
+    public function setRecipeInstruction(?string $recipeInstruction): void
+    {
+        $this->recipeInstruction = $recipeInstruction;
+    }
+
+    public function getRecipeInstruction(): ?string
+    {
+        return $this->recipeInstruction;
     }
 
     /**
-     * @ORM\PrePersist
+     * @return Collection|InteractionCounter[]
      */
-    public function setCreatedAt(): self
+    public function getInteractionCounters(): Collection
     {
-        $this->createdAt = new \DateTime();
+        return $this->interactionCounters;
+    }
+
+    public function addInteractionCounter(InteractionCounter $interactionCounter): self
+    {
+        if (!$this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters[] = $interactionCounter;
+            $interactionCounter->setRecipe($this);
+        }
 
         return $this;
     }
 
-    public function getIngredients(): ?array
+    public function removeInteractionCounter(InteractionCounter $interactionCounter): self
     {
-        return $this->ingredients;
-    }
-
-    public function setIngredients(array $ingredients): self
-    {
-        $this->ingredients = $ingredients;
-
-        return $this;
-    }
-
-    public function getSteps(): ?array
-    {
-        return $this->steps;
-    }
-
-    public function setSteps(array $steps): self
-    {
-        $this->steps = $steps;
+        if ($this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters->removeElement($interactionCounter);
+            // set the owning side to null (unless already changed)
+            if ($interactionCounter->getRecipe() === $this) {
+                $interactionCounter->setRecipe(null);
+            }
+        }
 
         return $this;
     }
@@ -162,24 +225,24 @@ class Recipe
     /**
      * @return Collection|User[]
      */
-    public function getBookmarked(): Collection
+    public function getBookmark(): Collection
     {
-        return $this->bookmarked;
+        return $this->bookmark;
     }
 
-    public function addBookmarked(User $bookmarked): self
+    public function addBookmark(User $bookmark): self
     {
-        if (!$this->bookmarked->contains($bookmarked)) {
-            $this->bookmarked[] = $bookmarked;
+        if (!$this->bookmark->contains($bookmark)) {
+            $this->bookmark[] = $bookmark;
         }
 
         return $this;
     }
 
-    public function removeBookmarked(User $bookmarked): self
+    public function removeBookmark(User $bookmark): self
     {
-        if ($this->bookmarked->contains($bookmarked)) {
-            $this->bookmarked->removeElement($bookmarked);
+        if ($this->bookmark->contains($bookmark)) {
+            $this->bookmark->removeElement($bookmark);
         }
 
         return $this;
