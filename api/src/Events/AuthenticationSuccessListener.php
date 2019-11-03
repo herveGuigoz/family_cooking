@@ -2,21 +2,21 @@
 
 namespace App\Events;
 
-use App\Entity\User;
+use App\Entity\Person;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 
 class AuthenticationSuccessListener
 {
-    public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event)
+    public function onAuthenticationSuccessResponse(AuthenticationSuccessEvent $event): void
     {
         $data = $event->getData();
-        $user = $event->getUser();
-        if (!$user instanceof User) {
+        $person = $event->getUser();
+        if (!$person instanceof Person) {
             return;
         }
 
-        $data['id'] = $user->getId();
-        $data['email'] = $user->getEmail();
+        $data['id'] = $person->getId();
+        $data['email'] = $person->getEmail();
 
         $event->setData($data);
     }

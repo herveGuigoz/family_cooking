@@ -1,0 +1,9 @@
+include:
+    - ./person.yaml
+
+App\Entity\Recipe:
+    recipe1:
+        title: pates aux echalottes
+        author: '@person1'
+        recipeIngredient: [{pates: 500g}, {echalottes: 2}]
+        

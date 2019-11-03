@@ -1,0 +1,11 @@
+App\Entity\Person:
+    person1:
+        username: herveGuigoz
+        email: herve@mail.com
+        avatar: moustache
+        password: password
+    person{2..9}:
+        username (unique): <firstName()> <lastName()>
+        email (unique): <email()>
+        avatar: moustache
+        password: password

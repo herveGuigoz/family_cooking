@@ -1,28 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  * @ORM\HasLifecycleCallbacks()
- * @UniqueEntity(
- *      fields={"email"},
- *      message= "Un utilisateur uilise daja l'adresse mail '{{ value }}'"
- *  )
  */
-class User implements UserInterface
+class Person implements UserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=true)
      */
     private $id;
 
@@ -37,6 +37,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Unique(message= "Un utilisateur uilise daja le surnom '{{ value }}'")
+     * @Groups({"recipe:read"})
      */
     private $username;
 
@@ -58,30 +59,18 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\Choice(choices=User::AVATAR_NAMES, message="Choose a valid avatar.")
+     * @Assert\Choice(choices=Person::AVATAR_NAMES, message="Choose a valid avatar.")
      */
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="author")
-     */
-    private $interactionCounters;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="Author")
      */
     private $recipes;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmark")
-     */
-    private $bookmarked;
-
     public function __construct()
     {
-        $this->interactionCounters = new ArrayCollection();
         $this->recipes = new ArrayCollection();
-        $this->bookmarked = new ArrayCollection();
     }
 
     public const AVATAR_NAMES = [
@@ -224,37 +213,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|InteractionCounter[]
-     */
-    public function getInteractionCounters(): Collection
-    {
-        return $this->interactionCounters;
-    }
-
-    public function addInteractionCounter(InteractionCounter $interactionCounter): self
-    {
-        if (!$this->interactionCounters->contains($interactionCounter)) {
-            $this->interactionCounters[] = $interactionCounter;
-            $interactionCounter->setAuthor($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInteractionCounter(InteractionCounter $interactionCounter): self
-    {
-        if ($this->interactionCounters->contains($interactionCounter)) {
-            $this->interactionCounters->removeElement($interactionCounter);
-            // set the owning side to null (unless already changed)
-            if ($interactionCounter->getAuthor() === $this) {
-                $interactionCounter->setAuthor(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Recipe[]
      */
     public function getRecipes(): Collection
@@ -280,34 +238,6 @@ class User implements UserInterface
             if ($recipe->getAuthor() === $this) {
                 $recipe->setAuthor(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Recipe[]
-     */
-    public function getBookmarked(): Collection
-    {
-        return $this->bookmarked;
-    }
-
-    public function addBookmarked(Recipe $bookmarked): self
-    {
-        if (!$this->bookmarked->contains($bookmarked)) {
-            $this->bookmarked[] = $bookmarked;
-            $bookmarked->addBookmark($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBookmarked(Recipe $bookmarked): self
-    {
-        if ($this->bookmarked->contains($bookmarked)) {
-            $this->bookmarked->removeElement($bookmarked);
-            $bookmarked->removeBookmark($this);
         }
 
         return $this;
