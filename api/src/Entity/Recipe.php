@@ -11,10 +11,32 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
+ *     itemOperations={
+ *          "get",
+ *          "put"={
+ *              "security"="is_granted('EDIT', object)",
+ *              "security_message"="Seul l'autheur peut modifier cette recette"
+ *          },
+ *          "delete"={
+ *              "security"="is_granted('EDIT', object)",
+ *              "security_message"="Seul l'autheur peut supprimer cette recette"
+ *          }
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *              "security"="is_granted('ROLE_USER')",
+ *              "security_message"="Il faut etre connecté pour creer une recette"
+ *          }
+ *     },
+ *     attributes={
+ *          "pagination_items_per_page"=50
+ *     },
  *     normalizationContext={"groups"={"recipe:read"}},
  *     denormalizationContext={"groups"={"recipe:write"}}
  * )
  * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
+ * @ORM\EntityListeners({"App\Doctrine\RecipeSetAuthorListener"})
  */
 class Recipe
 {
@@ -28,6 +50,12 @@ class Recipe
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"recipe:read", "recipe:write"})
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     maxMessage="Describe your recipe in 50 chars or less"
+     * )
      */
     private $title;
 
@@ -67,7 +95,7 @@ class Recipe
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"recipe:read", "recipe:write"})
+     * @Groups({"recipe:read"})
      */
     private $Author;
 
@@ -150,6 +178,8 @@ class Recipe
     }
 
     /**
+     * How long ago in text that this recipe was added.
+     *
      * @Groups({"recipe:read"})
      */
     public function getCreatedAtAgo(): string
@@ -171,5 +201,4 @@ class Recipe
 
         return $this;
     }
-
 }
