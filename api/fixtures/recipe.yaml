@@ -6,4 +6,7 @@ App\Entity\Recipe:
         title: pates aux echalottes
         author: '@person1'
         recipeIngredient: [{pates: 500g}, {echalottes: 2}]
+        recipeInstruction: [couper les echalottes, cuire les pates, faire revenir les echalottes avec une noix de beurre, en fin de cuisson ajouter une brique de soja, melanger le tout]
+        prepTime: 15
+        cookTime: 10
         

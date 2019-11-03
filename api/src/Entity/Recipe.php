@@ -32,13 +32,6 @@ class Recipe
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="recipes")
-     * @ORM\JoinColumn(nullable=false)
-     * @Groups({"recipe:read", "recipe:write"})
-     */
-    private $Author;
-
-    /**
      * @var \DateTimeInterface date of first publication
      *
      * @ORM\Column(type="date", nullable=false)
@@ -51,6 +44,32 @@ class Recipe
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $recipeIngredient;
+
+    /**
+     * @ORM\Column(type="json_document", options={"jsonb": true}, nullable=false)
+     * @Assert\NotNull()
+     * @Groups({"recipe:read", "recipe:write"})
+     */
+    private $recipeInstruction;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"recipe:read", "recipe:write"})
+     */
+    private $prepTime;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"recipe:read", "recipe:write"})
+     */
+    private $cookTime;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="recipes")
+     * @ORM\JoinColumn(nullable=false)
+     * @Groups({"recipe:read", "recipe:write"})
+     */
+    private $Author;
 
     public function __construct()
     {
@@ -74,16 +93,60 @@ class Recipe
         return $this;
     }
 
-    public function getAuthor(): ?Person
+    public function getRecipeIngredient()
     {
-        return $this->Author;
+        return $this->recipeIngredient;
     }
 
-    public function setAuthor(?Person $Author): self
+    public function setRecipeIngredient($recipeIngredient): self
     {
-        $this->Author = $Author;
+        $this->recipeIngredient = $recipeIngredient;
 
         return $this;
+    }
+
+    public function getRecipeInstruction()
+    {
+        return $this->recipeInstruction;
+    }
+
+    public function setRecipeInstruction($recipeInstruction): self
+    {
+        $this->recipeInstruction = $recipeInstruction;
+
+        return $this;
+    }
+
+    public function getPrepTime(): ?int
+    {
+        return $this->prepTime;
+    }
+
+    public function setPrepTime(int $prepTime): self
+    {
+        $this->prepTime = $prepTime;
+
+        return $this;
+    }
+
+    public function getCookTime(): ?int
+    {
+        return $this->cookTime;
+    }
+
+    public function setCookTime(int $cookTime): self
+    {
+        $this->cookTime = $cookTime;
+
+        return $this;
+    }
+
+    /**
+     * @Groups({"recipe:read"})
+     */
+    public function getTotalTime(): int
+    {
+        return $this->cookTime + $this->prepTime;
     }
 
     /**
@@ -97,15 +160,16 @@ class Recipe
         return $date->diffForHumans();
     }
 
-    public function getRecipeIngredient()
+    public function getAuthor(): ?Person
     {
-        return $this->recipeIngredient;
+        return $this->Author;
     }
 
-    public function setRecipeIngredient($recipeIngredient): self
+    public function setAuthor(?Person $Author): self
     {
-        $this->recipeIngredient = $recipeIngredient;
+        $this->Author = $Author;
 
         return $this;
     }
+
 }
