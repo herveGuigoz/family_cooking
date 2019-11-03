@@ -3,8 +3,11 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -36,10 +39,23 @@ class Recipe
     private $Author;
 
     /**
+     * @var \DateTimeInterface date of first publication
+     *
+     * @ORM\Column(type="date", nullable=false)
+     * @Assert\Date
+     */
+    private $datePublished;
+
+    /**
      * @ORM\Column(type="json_document", options={"jsonb": true}, nullable=false)
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $recipeIngredient;
+
+    public function __construct()
+    {
+        $this->datePublished = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
@@ -68,6 +84,17 @@ class Recipe
         $this->Author = $Author;
 
         return $this;
+    }
+
+    /**
+     * @Groups({"recipe:read"})
+     */
+    public function getCreatedAtAgo(): string
+    {
+        /** @var CarbonInterface $date */
+        $date = Carbon::instance($this->datePublished)->locale('fr');
+
+        return $date->diffForHumans();
     }
 
     public function getRecipeIngredient()
