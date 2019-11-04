@@ -68,9 +68,15 @@ class Person implements UserInterface
      */
     private $recipes;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarks")
+     */
+    private $bookmarks;
+
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public const AVATAR_NAMES = [
@@ -238,6 +244,34 @@ class Person implements UserInterface
             if ($recipe->getAuthor() === $this) {
                 $recipe->setAuthor(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Recipe[]
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Recipe $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+            $bookmark->addBookmark($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Recipe $bookmark): self
+    {
+        if ($this->bookmarks->contains($bookmark)) {
+            $this->bookmarks->removeElement($bookmark);
+            $bookmark->removeBookmark($this);
         }
 
         return $this;

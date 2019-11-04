@@ -32,7 +32,7 @@ class RecipeVoter extends Voter
             return false;
         }
 
-        /** @var Recipe subject */
+        /* @var Recipe subject */
 
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {

@@ -3,8 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Validator\IsValidAuthor;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -69,25 +73,30 @@ class Recipe
 
     /**
      * @ORM\Column(type="json_document", options={"jsonb": true}, nullable=false)
+     * @Assert\NotBlank(message = "Ingredients are missing")
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $recipeIngredient;
 
     /**
      * @ORM\Column(type="json_document", options={"jsonb": true}, nullable=false)
-     * @Assert\NotNull()
+     * @Assert\NotBlank(message = "Instructions are missing")
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $recipeInstruction;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message = "Preparation time is missing, your must set it to 0 or more")
+     * @Assert\PositiveOrZero
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $prepTime;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message = "Cook time is missing, your must set it to 0 or more")
+     * @Assert\PositiveOrZero
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $cookTime;
@@ -95,13 +104,21 @@ class Recipe
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
+     * @IsValidAuthor()
      * @Groups({"recipe:read"})
      */
     private $Author;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="bookmarks")
+     * @JoinTable(name="bookmarks")
+     */
+    private $bookmarks;
+
     public function __construct()
     {
         $this->datePublished = new \DateTimeImmutable();
+        $this->bookmarks = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -198,6 +215,32 @@ class Recipe
     public function setAuthor(?Person $Author): self
     {
         $this->Author = $Author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Person[]
+     */
+    public function getBookmarks(): Collection
+    {
+        return $this->bookmarks;
+    }
+
+    public function addBookmark(Person $bookmark): self
+    {
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
+        }
+
+        return $this;
+    }
+
+    public function removeBookmark(Person $bookmark): self
+    {
+        if ($this->bookmarks->contains($bookmark)) {
+            $this->bookmarks->removeElement($bookmark);
+        }
 
         return $this;
     }

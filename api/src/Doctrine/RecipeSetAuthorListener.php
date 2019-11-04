@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Doctrine;
 
 use App\Entity\Person;

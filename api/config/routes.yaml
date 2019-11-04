@@ -11,3 +11,8 @@ edit:
     path: /edit
     controller: App\Controller\AuthController::edit
     methods: ['POST']
+    
+handle_bookmark:
+    path: /bookmark
+    controller: App\Controller\HandleBookmarkController::bookmark
+    methods: ['POST']
