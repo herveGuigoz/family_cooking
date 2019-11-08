@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
-class HandleBookmarkController extends AbstractController
+class BookmarkController extends AbstractController
 {
     private $security;
 
@@ -23,48 +23,40 @@ class HandleBookmarkController extends AbstractController
         $this->recipeRepository = $recipeRepository;
     }
 
-    public function bookmark(Request $request): JsonResponse
+    public function index(Request $request): JsonResponse
     {
         /** @var Person|null $authenticatedUser */
         $authenticatedUser = $this->security->getUser();
 
-        if (!$authenticatedUser) {
-            $response = new JsonResponse([
+        if (!$authenticatedUser instanceof Person) {
+            return new JsonResponse([
                 'message' => 'Vous devez être connecté pour sauvegarder une recette',
             ], 403);
-
-            return $response;
         }
 
         $encoder = new JsonEncoder();
         $data = $encoder->decode((string) $request->getContent(), 'json');
 
         if (!isset($data['recipe']) || !is_int($data['recipe'])) {
-            $response = new JsonResponse(['message' => 'Bad Request'], 400);
-
-            return $response;
+            return new JsonResponse(['message' => 'Bad Request'], 400);
         }
 
         $recipe = $this->recipeRepository->find($data['recipe']);
 
         if (!$recipe instanceof Recipe) {
-            $response = new JsonResponse(['message' => 'Bad Request'], 400);
-
-            return $response;
+            return new JsonResponse(['message' => 'Bad Request'], 400);
         }
 
         if (!$authenticatedUser->getBookmarks()->contains($recipe)) {
             $authenticatedUser->addBookmark($recipe);
             $this->recipeRepository->save($recipe);
-            $response = new JsonResponse(['message' => 'Recette ajoutée'], 200);
 
-            return $response;
+            return new JsonResponse(['message' => 'Recette ajoutée'], 200);
         }
 
         $authenticatedUser->removeBookmark($recipe);
         $this->recipeRepository->save($recipe);
-        $response = new JsonResponse(['message' => 'Recette supprimée'], 200);
 
-        return $response;
+        return new JsonResponse(['message' => 'Recette supprimée'], 200);
     }
 }

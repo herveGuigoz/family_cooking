@@ -14,5 +14,10 @@ edit:
     
 handle_bookmark:
     path: /bookmark
-    controller: App\Controller\HandleBookmarkController::bookmark
+    controller: App\Controller\BookmarkController::index
+    methods: ['POST']
+
+handle_interation:
+    path: /sendlove
+    controller: App\Controller\InteractionController::index
     methods: ['POST']

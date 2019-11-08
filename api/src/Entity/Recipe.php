@@ -115,10 +115,16 @@ class Recipe
      */
     private $bookmarks;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="recipe")
+     */
+    private $interactionCounters;
+
     public function __construct()
     {
         $this->datePublished = new \DateTimeImmutable();
         $this->bookmarks = new ArrayCollection();
+        $this->interactionCounters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -243,5 +249,52 @@ class Recipe
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|InteractionCounter[]
+     */
+    public function getInteractionCounters(): Collection
+    {
+        return $this->interactionCounters;
+    }
+
+    public function addInteractionCounter(InteractionCounter $interactionCounter): self
+    {
+        if (!$this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters[] = $interactionCounter;
+            $interactionCounter->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInteractionCounter(InteractionCounter $interactionCounter): self
+    {
+        if ($this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters->removeElement($interactionCounter);
+            // set the owning side to null (unless already changed)
+            if ($interactionCounter->getRecipe() === $this) {
+                $interactionCounter->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     *  Total of interactions for this recipe
+     *
+     * @Groups({"recipe:read"})
+     */
+    public function getInteractionsCount(): int
+    {
+        $count = 0;
+        $this->interactionCounters->map(static function ($interaction) use (&$count) {
+            /* @var $interaction InteractionCounter */
+            $count += $interaction->getInteractionCount();
+        });
+
+        return $count;
     }
 }

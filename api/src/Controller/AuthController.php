@@ -51,7 +51,7 @@ class AuthController extends AbstractController
     }
 
     /**
-     * Update password.
+     * Update Person.
      *
      * @param Request $request
      *

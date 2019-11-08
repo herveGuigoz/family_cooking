@@ -19,7 +19,6 @@ class IsValidAuthorValidator extends ConstraintValidator
     public function validate($value, Constraint $constraint)
     {
         /* @var $constraint IsValidAuthor */
-
         if (null === $value || '' === $value) {
             return;
         }
@@ -34,7 +33,6 @@ class IsValidAuthorValidator extends ConstraintValidator
 
         // allow admin users to change owners
         if ($this->security->isGranted('ROLE_ADMIN')) {
-
             return;
         }
 
