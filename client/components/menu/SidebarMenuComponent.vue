@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="p-6 flex flex-no-wrap flex-col h-screen bg-brown">
+  <div class="flex flex-col justify-between h-screen bg-brown">
+    <div class="p-6 flex flex-no-wrap flex-col">
       <div class="flex flex-col items-center">
         <nuxt-link to="/">
           <h1 class="brand font-semibold text-center uppercase">
@@ -36,14 +36,11 @@
           </ui-button-component>
         </div>
       </div>
-      <!--
-      <div v-if="!isAuthenticated" class="flex-1 flex items-end">
-      -->
-      <div class="flex-1 flex items-end justify-center">
-        <nuxt-link :to="isAuthenticated ? '/profile/edit' : '/login'">
-          <badge :user="user" />
-        </nuxt-link>
-      </div>
+    </div>
+    <div class="flex-shrink-0 px-4 py-3 bg-brown">
+      <nuxt-link :to="isAuthenticated ? '/profile/edit' : '/login'">
+        <badge :user="user" />
+      </nuxt-link>
     </div>
   </div>
 </template>

@@ -27,7 +27,7 @@ export default {
     bgColor: {
       type: String,
       required: false,
-      default: 'bg-beige'
+      default: 'bg-beige-500'
     },
     textColor: {
       type: String,
