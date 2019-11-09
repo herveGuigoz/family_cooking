@@ -2,7 +2,7 @@
 
 namespace App\Fixture;
 
-use App\Entity\User;
+use App\Entity\Person;
 use Fidry\AliceDataFixtures\ProcessorInterface;
 
 class UserProcessor implements ProcessorInterface
@@ -22,7 +22,7 @@ class UserProcessor implements ProcessorInterface
      */
     public function preProcess(string $id, $object): void
     {
-        if (!$object instanceof User) {
+        if (!$object instanceof Person) {
             return;
         }
         $password = $this->encoder->encodePassword($object, $object->getPassword());

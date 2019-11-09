@@ -3,14 +3,44 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Validator\IsValidAuthor;
+use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinTable;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     itemOperations={
+ *          "get",
+ *          "put"={
+ *              "security"="is_granted('EDIT', object)",
+ *              "security_message"="Seul l'autheur peut modifier cette recette"
+ *          },
+ *          "delete"={
+ *              "security"="is_granted('EDIT', object)",
+ *              "security_message"="Seul l'autheur peut supprimer cette recette"
+ *          }
+ *     },
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *              "security"="is_granted('ROLE_USER')",
+ *              "security_message"="Il faut etre connecté pour creer une recette"
+ *          }
+ *     },
+ *     attributes={
+ *          "pagination_items_per_page"=50
+ *     },
+ *     normalizationContext={"groups"={"recipe:read"}},
+ *     denormalizationContext={"groups"={"recipe:write"}}
+ * )
  * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
- * @ORM\HasLifecycleCallbacks()
- * @ApiResource()
+ * @ORM\EntityListeners({"App\Doctrine\RecipeSetAuthorListener"})
  */
 class Recipe
 {
@@ -23,48 +53,78 @@ class Recipe
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"recipe:read", "recipe:write"})
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min=2,
+     *     max=50,
+     *     maxMessage="Describe your recipe in 50 chars or less"
+     * )
      */
     private $title;
 
     /**
+     * @var \DateTimeInterface date of first publication
+     *
+     * @ORM\Column(type="date", nullable=false)
+     * @Assert\Date
+     */
+    private $datePublished;
+
+    /**
+     * @ORM\Column(type="json_document", options={"jsonb": true}, nullable=false)
+     * @Assert\NotBlank(message = "Ingredients are missing")
+     * @Groups({"recipe:read", "recipe:write"})
+     */
+    private $recipeIngredient;
+
+    /**
+     * @ORM\Column(type="json_document", options={"jsonb": true}, nullable=false)
+     * @Assert\NotBlank(message = "Instructions are missing")
+     * @Groups({"recipe:read", "recipe:write"})
+     */
+    private $recipeInstruction;
+
+    /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message = "Preparation time is missing, your must set it to 0 or more")
+     * @Assert\PositiveOrZero
+     * @Groups({"recipe:read", "recipe:write"})
      */
     private $prepTime;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message = "Cook time is missing, your must set it to 0 or more")
+     * @Assert\PositiveOrZero
+     * @Groups({"recipe:read", "recipe:write"})
      */
     private $cookTime;
 
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="json_array")
-     */
-    private $ingredients = [];
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $steps = [];
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recipes")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="recipes")
      * @ORM\JoinColumn(nullable=false)
+     * @IsValidAuthor()
+     * @Groups({"recipe:read"})
      */
-    private $author;
+    private $Author;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="bookmarks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="bookmarks")
+     * @JoinTable(name="bookmarks")
      */
-    private $bookmarked;
+    private $bookmarks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="recipe")
+     */
+    private $interactionCounters;
 
     public function __construct()
     {
-        $this->bookmarked = new ArrayCollection();
+        $this->datePublished = new \DateTimeImmutable();
+        $this->bookmarks = new ArrayCollection();
+        $this->interactionCounters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,6 +140,30 @@ class Recipe
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getRecipeIngredient()
+    {
+        return $this->recipeIngredient;
+    }
+
+    public function setRecipeIngredient($recipeIngredient): self
+    {
+        $this->recipeIngredient = $recipeIngredient;
+
+        return $this;
+    }
+
+    public function getRecipeInstruction()
+    {
+        return $this->recipeInstruction;
+    }
+
+    public function setRecipeInstruction($recipeInstruction): self
+    {
+        $this->recipeInstruction = $recipeInstruction;
 
         return $this;
     }
@@ -108,80 +192,109 @@ class Recipe
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @Groups({"recipe:read"})
+     */
+    public function getTotalTime(): int
     {
-        return $this->createdAt;
+        return $this->cookTime + $this->prepTime;
     }
 
     /**
-     * @ORM\PrePersist
+     * How long ago in text that this recipe was added.
+     *
+     * @Groups({"recipe:read"})
      */
-    public function setCreatedAt(): self
+    public function getCreatedAtAgo(): string
     {
-        $this->createdAt = new \DateTime();
+        /** @var CarbonInterface $date */
+        $date = Carbon::instance($this->datePublished)->locale('fr');
 
-        return $this;
+        return $date->diffForHumans();
     }
 
-    public function getIngredients(): ?array
+    public function getAuthor(): ?Person
     {
-        return $this->ingredients;
+        return $this->Author;
     }
 
-    public function setIngredients(array $ingredients): self
+    public function setAuthor(?Person $Author): self
     {
-        $this->ingredients = $ingredients;
-
-        return $this;
-    }
-
-    public function getSteps(): ?array
-    {
-        return $this->steps;
-    }
-
-    public function setSteps(array $steps): self
-    {
-        $this->steps = $steps;
-
-        return $this;
-    }
-
-    public function getAuthor(): ?User
-    {
-        return $this->author;
-    }
-
-    public function setAuthor(?User $author): self
-    {
-        $this->author = $author;
+        $this->Author = $Author;
 
         return $this;
     }
 
     /**
-     * @return Collection|User[]
+     * @return Collection|Person[]
      */
-    public function getBookmarked(): Collection
+    public function getBookmarks(): Collection
     {
-        return $this->bookmarked;
+        return $this->bookmarks;
     }
 
-    public function addBookmarked(User $bookmarked): self
+    public function addBookmark(Person $bookmark): self
     {
-        if (!$this->bookmarked->contains($bookmarked)) {
-            $this->bookmarked[] = $bookmarked;
+        if (!$this->bookmarks->contains($bookmark)) {
+            $this->bookmarks[] = $bookmark;
         }
 
         return $this;
     }
 
-    public function removeBookmarked(User $bookmarked): self
+    public function removeBookmark(Person $bookmark): self
     {
-        if ($this->bookmarked->contains($bookmarked)) {
-            $this->bookmarked->removeElement($bookmarked);
+        if ($this->bookmarks->contains($bookmark)) {
+            $this->bookmarks->removeElement($bookmark);
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|InteractionCounter[]
+     */
+    public function getInteractionCounters(): Collection
+    {
+        return $this->interactionCounters;
+    }
+
+    public function addInteractionCounter(InteractionCounter $interactionCounter): self
+    {
+        if (!$this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters[] = $interactionCounter;
+            $interactionCounter->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInteractionCounter(InteractionCounter $interactionCounter): self
+    {
+        if ($this->interactionCounters->contains($interactionCounter)) {
+            $this->interactionCounters->removeElement($interactionCounter);
+            // set the owning side to null (unless already changed)
+            if ($interactionCounter->getRecipe() === $this) {
+                $interactionCounter->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     *  Total of interactions for this recipe.
+     *
+     * @Groups({"recipe:read"})
+     */
+    public function getInteractionsCount(): int
+    {
+        $count = 0;
+        $this->interactionCounters->map(static function ($interaction) use (&$count) {
+            /* @var $interaction InteractionCounter */
+            $count += $interaction->getInteractionCount();
+        });
+
+        return $count;
     }
 }

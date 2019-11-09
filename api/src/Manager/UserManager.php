@@ -2,8 +2,8 @@
 
 namespace App\Manager;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Entity\Person;
+use App\Repository\PersonRepository;
 use Doctrine\ORM\ORMException;
 use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationSuccessResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserManager
 {
-    private $userRepository;
+    private $personRepository;
 
     private $encoder;
 
@@ -24,40 +24,40 @@ class UserManager
     private $authenticationSuccessHandler;
 
     public function __construct(
-        UserRepository $userRepository,
+        PersonRepository $personRepository,
         UserPasswordEncoderInterface $encoder,
         JWTTokenManagerInterface $JWTTokenManager,
         AuthenticationSuccessHandler $authenticationSuccessHandler
     ) {
-        $this->userRepository = $userRepository;
+        $this->personRepository = $personRepository;
         $this->encoder = $encoder;
         $this->JWTTokenManager = $JWTTokenManager;
         $this->authenticationSuccessHandler = $authenticationSuccessHandler;
     }
 
-    public function createNewUser(string $username = null, string $email = null, string $password = null): User
+    public function createNewUser(string $username = null, string $email = null, string $password = null): Person
     {
         if (null === $username || null === $email || null === $password) {
             throw new BadCredentialsException('invalid credentials');
         }
 
-        $isExistingUsername = $this->userRepository->findOneBy(['username' => $username]);
-        $isExistingEmail = $this->userRepository->findOneBy(['email' => $email]);
+        $isExistingUsername = $this->personRepository->findOneBy(['username' => $username]);
+        $isExistingEmail = $this->personRepository->findOneBy(['email' => $email]);
 
-        if ($isExistingUsername instanceof User) {
+        if ($isExistingUsername instanceof Person) {
             throw new \Exception(sprintf('Un utilisateur uilise deja %s', $username));
         }
-        if ($isExistingEmail instanceof User) {
+        if ($isExistingEmail instanceof Person) {
             throw new \Exception(sprintf('Un utilisateur uilise deja %s', $email));
         }
 
-        $user = new User();
+        $user = new Person();
         $user->setUsername($username)
              ->setEmail($email)
              ->setAvatar('moustache')
              ->setPassword($this->encoder->encodePassword($user, $password));
         try {
-            $this->userRepository->save($user);
+            $this->personRepository->save($user);
         } catch (ORMException $e) {
             throw new \Exception('Une erreur s\'est produite durant l\'enregistrement');
         }
@@ -66,11 +66,11 @@ class UserManager
     }
 
     public function refreshPassword(
-        User $user = null,
+        Person $user = null,
         string $password = null,
         string $newPassword = null
-    ): User {
-        if (!$user instanceof User || null === $password || null === $newPassword) {
+    ): Person {
+        if (!$user instanceof Person || null === $password || null === $newPassword) {
             throw new BadCredentialsException('invalid credentials');
         }
 
@@ -79,7 +79,7 @@ class UserManager
         $user->setPassword($this->encoder->encodePassword($user, $newPassword));
 
         try {
-            $this->userRepository->save($user);
+            $this->personRepository->save($user);
         } catch (ORMException $e) {
             throw new \Exception('Une erreur s\'est produite durant l\'enregistrement');
         }
@@ -87,15 +87,16 @@ class UserManager
         return $user;
     }
 
-    public function updateUser(string $username, string $password, string $email, string $avatar): User
+    public function updateUser(string $username, string $password, string $email, string $avatar): Person
     {
+        /** @var Person $user */
         $user = $this->loadUserByUsername($username);
         $this->checkCreditentials($user, $password);
         $user->setEmail($email);
         $user->setAvatar($avatar);
 
         try {
-            $this->userRepository->save($user);
+            $this->personRepository->save($user);
         } catch (ORMException $e) {
             throw new \Exception('Une erreur s\'est produite durant l\'enregistrement');
         }
@@ -103,18 +104,18 @@ class UserManager
         return $user;
     }
 
-    public function loadUserByUsername(string $username): User
+    public function loadUserByUsername(string $username): Person
     {
-        /** @var User $user */
-        $user = $this->userRepository->findOneBy(['username' => $username]);
-        if (!$user instanceof User) {
+        /** @var Person $user */
+        $user = $this->personRepository->findOneBy(['username' => $username]);
+        if (!$user instanceof Person) {
             throw new UsernameNotFoundException(sprintf('Email "%s" does not exist.', $username));
         }
 
         return $user;
     }
 
-    public function checkCreditentials(User $user, string $password)
+    public function checkCreditentials(Person $user, string $password)
     {
         if (!$this->encoder->isPasswordValid($user, $password)) {
             throw new BadCredentialsException('Invalid password');

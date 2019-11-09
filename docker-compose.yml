@@ -32,33 +32,33 @@ services:
       - '8000:80'
 
   # Using PostgresSQL
-  #db:
-  #  image: postgres:10-alpine
-  #  environment:
-  #    - POSTGRES_DB=family_cooking
-  #    - POSTGRES_PASSWORD=pswd
-  #    - POSTGRES_USER=herveGuigoz
-  #  volumes:
-      # - db-data:/var/lib/postgresql/data:rw
+  db:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=family_cooking
+      - POSTGRES_PASSWORD=pswd
+      - POSTGRES_USER=herveGuigoz
+    volumes:
+      #- db-data:/var/lib/postgresql/data:rw
       # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-  #    - ./api/docker/db/data:/var/lib/postgresql/data:rw
-  #  ports:
-  #    - target: 5432
-  #      published: 5432
-  #      protocol: tcp
+      - ./api/docker/db/data:/var/lib/postgresql/data:rw
+    ports:
+      - target: 5432
+        published: 5432
+        protocol: tcp
 
   # Using mySQL
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: family_cooking
-      MYSQL_USER: herveGuigoz
-      MYSQL_PASSWORD: pswd
-    volumes:
-      - ./.docker/db/data:/var/lib/mysql:rw
-    ports:
-      - '3307:3306'
+  #db:
+  #  image: mysql:5.7
+  #  environment:
+  #    MYSQL_ROOT_PASSWORD: root
+  #    MYSQL_DATABASE: family_cooking
+  #    MYSQL_USER: herveGuigoz
+  #    MYSQL_PASSWORD: pswd
+  #  volumes:
+  #    - ./.docker/db/data:/var/lib/mysql:rw
+  #  ports:
+  #    - '3307:3306'
 
   adminer:
     image: adminer

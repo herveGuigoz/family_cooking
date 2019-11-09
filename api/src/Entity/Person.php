@@ -1,28 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  * @ORM\HasLifecycleCallbacks()
  * @UniqueEntity(
  *      fields={"email"},
  *      message= "Un utilisateur uilise daja l'adresse mail '{{ value }}'"
  *  )
  */
-class User implements UserInterface
+class Person implements UserInterface
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @ApiProperty(identifier=true)
      */
     private $id;
 
@@ -37,6 +42,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Unique(message= "Un utilisateur uilise daja le surnom '{{ value }}'")
+     * @Groups({"recipe:read"})
      */
     private $username;
 
@@ -58,9 +64,25 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string")
-     * @Assert\Choice(choices=User::AVATAR_NAMES, message="Choose a valid avatar.")
+     * @Assert\Choice(choices=Person::AVATAR_NAMES, message="Choose a valid avatar.")
      */
     private $avatar;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="Author")
+     */
+    private $recipes;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarks")
+     */
+    private $bookmarks;
+
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+        $this->bookmarks = new ArrayCollection();
+    }
 
     public const AVATAR_NAMES = [
         'moustache',
@@ -88,21 +110,6 @@ class User implements UserInterface
         'unicorn',
         'walterwhite',
     ];
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="author", orphanRemoval=true)
-     */
-    private $recipes;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarked")
-     */
-    private $bookmarks;
-
-    public function __construct()
-    {
-        $this->bookmarks = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -259,7 +266,7 @@ class User implements UserInterface
     {
         if (!$this->bookmarks->contains($bookmark)) {
             $this->bookmarks[] = $bookmark;
-            $bookmark->addBookmarked($this);
+            $bookmark->addBookmark($this);
         }
 
         return $this;
@@ -269,7 +276,7 @@ class User implements UserInterface
     {
         if ($this->bookmarks->contains($bookmark)) {
             $this->bookmarks->removeElement($bookmark);
-            $bookmark->removeBookmarked($this);
+            $bookmark->removeBookmark($this);
         }
 
         return $this;

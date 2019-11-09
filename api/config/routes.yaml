@@ -11,3 +11,13 @@ edit:
     path: /edit
     controller: App\Controller\AuthController::edit
     methods: ['POST']
+    
+handle_bookmark:
+    path: /bookmark
+    controller: App\Controller\BookmarkController::index
+    methods: ['POST']
+
+handle_interaction:
+    path: /sendlove
+    controller: App\Controller\InteractionController::index
+    methods: ['POST']

@@ -2,35 +2,35 @@
 
 namespace App\Events;
 
-use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Entity\Person;
+use App\Repository\PersonRepository;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 class JWTCreatedListener
 {
-    private $userRepository;
+    /**
+     * @var PersonRepository
+     */
+    private $personRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(PersonRepository $personRepository)
     {
-        $this->userRepository = $userRepository;
+        $this->personRepository = $personRepository;
     }
 
-    /**
-     * @param JWTCreatedEvent $event
-     */
     public function onJWTCreated(JWTCreatedEvent $event): void
     {
-        $user = $event->getUser();
-        $userName = $user->getUsername();
-        $userEntity = $this->userRepository->findOneBy(['username' => $userName]);
+        $person = $event->getUser();
+        $userName = $person->getUsername();
+        $personEntity = $this->personRepository->findOneBy(['username' => $userName]);
 
-        if (!$userEntity instanceof User) {
+        if (!$personEntity instanceof Person) {
             return;
         }
 
         $payload = $event->getData();
-        $payload['email'] = $userEntity->getEmail();
-        $payload['avatar'] = $userEntity->getAvatar();
+        $payload['email'] = $personEntity->getEmail();
+        $payload['avatar'] = $personEntity->getAvatar();
 
         $event->setData($payload);
     }
