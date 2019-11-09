@@ -4,17 +4,28 @@
     <div v-if="user">{{ user }}</div>
     <div v-if="recipes">{{ recipes }}</div>
     -->
-    <claps-component />
+    <recipes-list-component :recipes="recipes"/>
+    <div class="bg-beige" v-if="recipes">
+      {{ recipes[0] }}
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import RecipesListComponent from "../components/Recipes/RecipesListComponent";
 import ClapsComponent from '../components/Recipes/ClapsComponent'
 export default {
   // middleware: ['restricted'],
   components: {
-    ClapsComponent
+    ClapsComponent,
+    RecipesListComponent
+  },
+  async asyncData ({ app }) {
+    console.log(app)
+    const { data } = await app.$axios.get('http://0.0.0.0:8000/recipes.json')
+    console.log(data)
+    // return { recipes: data }
   },
   data: () => ({
     recipes: null,
@@ -23,15 +34,14 @@ export default {
   computed: mapState([
     'user'
   ]),
-  mounted () {
-    this.$nextTick(function () {
-      this.$nuxt.$loading.start()
-      this.$axios.$get('/recipes.json')
-        .then((response) => { this.recipes = response })
-        .catch((e) => { this.errors = e })
-        .finally(this.$nuxt.$loading.finish())
-    })
+  /*
+  created () {
+    this.$axios.$get('/recipes.json')
+      .then((response) => { this.recipes = response })
+      .catch((e) => { this.errors = e })
+      .finally()
   },
+  */
   method: {
 
   }
