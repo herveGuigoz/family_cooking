@@ -17,13 +17,13 @@ module.exports = {
     },
     colors: {
       transparent: 'transparent',
-
       black: '#000',
       brown: 'rgb(85, 85, 85)',
       grey: 'rgb(245, 245, 245)',
-      beige: 'rgb(219, 219, 219)',
       white: 'rgb(255, 255, 255)',
-
+      beige: {
+        500 : 'rgb(219, 219, 219)'
+      },
       gray: {
         100: '#f7fafc',
         200: '#edf2f7',

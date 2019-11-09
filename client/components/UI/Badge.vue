@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center text-beige hover:text-gray-200">
+  <div class="flex items-center text-beige-500 hover:text-gray-200">
     <span
       class="rounded-full flex items-center justify-center"
       :class="[backgroundColor, backgroundHeight, backgroundWidth]"
@@ -86,11 +86,11 @@ export default {
     },
     iconHeight: {
       type: String,
-      default: 'h-7'
+      default: 'h-8'
     },
     iconWidth: {
       type: String,
-      default: 'w-7'
+      default: 'w-8'
     }
   },
   computed: {
