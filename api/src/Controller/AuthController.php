@@ -19,10 +19,6 @@ class AuthController extends AbstractController
 
     /**
      * Create new User.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function register(Request $request): JsonResponse
     {
@@ -52,10 +48,6 @@ class AuthController extends AbstractController
 
     /**
      * Update Person.
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function edit(Request $request): JsonResponse
     {

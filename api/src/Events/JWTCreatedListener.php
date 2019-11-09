@@ -18,9 +18,6 @@ class JWTCreatedListener
         $this->personRepository = $personRepository;
     }
 
-    /**
-     * @param JWTCreatedEvent $event
-     */
     public function onJWTCreated(JWTCreatedEvent $event): void
     {
         $person = $event->getUser();

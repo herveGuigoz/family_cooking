@@ -8,9 +8,9 @@ use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -283,7 +283,7 @@ class Recipe
     }
 
     /**
-     *  Total of interactions for this recipe
+     *  Total of interactions for this recipe.
      *
      * @Groups({"recipe:read"})
      */

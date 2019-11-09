@@ -8,13 +8,18 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  * @ORM\HasLifecycleCallbacks()
+ * @UniqueEntity(
+ *      fields={"email"},
+ *      message= "Un utilisateur uilise daja l'adresse mail '{{ value }}'"
+ *  )
  */
 class Person implements UserInterface
 {
