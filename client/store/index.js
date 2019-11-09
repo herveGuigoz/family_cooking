@@ -37,7 +37,7 @@ export const mutations = {
         state.user.username = user.username
         state.user.email = user.email
         state.user.avatar = user.avatar
-        state.user.token = user.token
+        state.user.token = token
         state.user.expire = user.expire
         state.isAuth = true
         return
