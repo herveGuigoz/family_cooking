@@ -35,6 +35,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/filters.js',
     '~/plugins/vuelidate.js',
     { src: '~/plugins/vueNoty.js', ssr: false }
   ],
@@ -55,7 +56,7 @@ export default {
     'nuxt-purgecss'
   ],
   axios: {
-    baseURL: 'http://0.0.0.0:8000' // // See https://github.com/nuxt-community/axios-module#options
+    baseURL: 'http://0.0.0.0:8000' // See https://github.com/nuxt-community/axios-module#options
   },
   moment: {
   },
