@@ -4,9 +4,9 @@
     <div v-if="user">{{ user }}</div>
     <div v-if="recipes">{{ recipes }}</div>
     -->
-    <recipes-list-component :recipes="recipes"/>
+    <recipes-list-component :recipes="recipes" @selection="setSelected"/>
     <div class="bg-beige" v-if="recipes">
-      {{ recipes[0] }}
+      {{ selected }}
     </div>
   </div>
 </template>
@@ -21,29 +21,28 @@ export default {
     ClapsComponent,
     RecipesListComponent
   },
-  async asyncData ({ app }) {
-    console.log(app)
-    const { data } = await app.$axios.get('http://0.0.0.0:8000/recipes.json')
-    console.log(data)
-    // return { recipes: data }
-  },
   data: () => ({
     recipes: null,
-    errors: null
+    errors: null,
+    selected: null
   }),
   computed: mapState([
     'user'
   ]),
-  /*
   created () {
-    this.$axios.$get('/recipes.json')
+    if (this.user.token) {
+      this.$axios.setToken(this.user.token, 'Bearer')
+    }
+    this.$axios
+      .$get('/recipes.json')
       .then((response) => { this.recipes = response })
       .catch((e) => { this.errors = e })
       .finally()
   },
-  */
-  method: {
-
+  methods: {
+    setSelected (index) {
+      this.selected = this.recipes[index]
+    }
   }
 }
 </script>
