@@ -56,18 +56,7 @@ export default {
     'nuxt-purgecss'
   ],
   axios: {
-    debug: true,
-    proxy: true,
-    proxyHeaders: false,
-    // baseURL: 'http://0.0.0.0:8000', // See https://github.com/nuxt-community/axios-module#options
-    // prefix: 'http://0.0.0.0:8000'
-  },
-  proxy: {
-    "/api": {
-      target: "http://0.0.0.0:8000",
-      pathRewrite: { '^/api': '' },
-      changeOrigin: true,
-      prependPath: false }
+    baseURL: 'http://0.0.0.0:8000', // See https://github.com/nuxt-community/axios-module#options
   },
   moment: {
   },

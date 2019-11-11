@@ -1,5 +1,5 @@
 export default {
-  SET (state, { data }) {
-    state.recipes = data
+  SET_RECIPES (state, { data }) {
+    state.list = data
   }
 }

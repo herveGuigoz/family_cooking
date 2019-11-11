@@ -1,5 +1,5 @@
 export default {
-  get (state) {
-    return state.recipes
+  getList (state) {
+    return state.list
   }
 }

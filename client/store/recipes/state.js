@@ -1,3 +1,3 @@
 export default () => ({
-  recipes: null
+  list: null
 })
