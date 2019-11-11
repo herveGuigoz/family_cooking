@@ -1,6 +1,6 @@
 
 export default {
-  mode: 'universal',
+  mode: 'spa',
   /*
   ** Headers of the page
   */
@@ -35,6 +35,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    '~/plugins/axios.js',
     '~/plugins/filters.js',
     '~/plugins/vuelidate.js',
     { src: '~/plugins/vueNoty.js', ssr: false }
@@ -91,6 +92,11 @@ export default {
   transition: {
     name: 'fade',
     mode: 'out-in'
+  },
+  server: {
+    port: 3000, // default: 3000
+    host: '0.0.0.0', // default: localhost,
+    //timing: false
   },
   env: {
     baseURL: 'http://0.0.0.0:80',

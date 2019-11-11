@@ -1,10 +1,14 @@
-export default function ({ store, $axios }) {
+export default async function ({ store, $axios }) {
   if (!store.state.recipes.list) {
-    console.log('recipes middelware')
-    if (store.getters.isAuth) {
-      $axios.setToken(store.getters.getUser.token, 'Bearer')
+    /*
+    if (process.server) {
+      console.log('recipes middelware from server')
     }
-    $axios
+    if (!process.server) {
+      console.log('recipes middelware from client')
+    }
+    */
+    await $axios
       .get('http://0.0.0.0:8000/recipes.json')
       .then((response) => {
         store.commit('recipes/SET_RECIPES', response)
