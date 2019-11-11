@@ -12,9 +12,9 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_cookieuniversalnuxt_4303414c from 'nuxt_plugin_cookieuniversalnuxt_4303414c' // Source: ./cookie-universal-nuxt.js (mode: 'all')
-import nuxt_plugin_axios_31ad2cb8 from 'nuxt_plugin_axios_31ad2cb8' // Source: ./axios.js (mode: 'all')
-import nuxt_plugin_moment_0caf5c74 from 'nuxt_plugin_moment_0caf5c74' // Source: ./moment.js (mode: 'all')
+import nuxt_plugin_cookieuniversalnuxt_00aa6d5c from 'nuxt_plugin_cookieuniversalnuxt_00aa6d5c' // Source: ./cookie-universal-nuxt.js (mode: 'all')
+import nuxt_plugin_axios_2afdbdaa from 'nuxt_plugin_axios_2afdbdaa' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_moment_4365892e from 'nuxt_plugin_moment_4365892e' // Source: ./moment.js (mode: 'all')
 import nuxt_plugin_filters_2dd71012 from 'nuxt_plugin_filters_2dd71012' // Source: ../plugins/filters.js (mode: 'all')
 import nuxt_plugin_vuelidate_4be431c8 from 'nuxt_plugin_vuelidate_4be431c8' // Source: ../plugins/vuelidate.js (mode: 'all')
 import nuxt_plugin_vueNoty_7504a07e from 'nuxt_plugin_vueNoty_7504a07e' // Source: ../plugins/vueNoty.js (mode: 'client')
@@ -174,16 +174,16 @@ async function createApp (ssrContext) {
 
   // Plugin execution
 
-  if (typeof nuxt_plugin_cookieuniversalnuxt_4303414c === 'function') {
-    await nuxt_plugin_cookieuniversalnuxt_4303414c(app.context, inject)
+  if (typeof nuxt_plugin_cookieuniversalnuxt_00aa6d5c === 'function') {
+    await nuxt_plugin_cookieuniversalnuxt_00aa6d5c(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_axios_31ad2cb8 === 'function') {
-    await nuxt_plugin_axios_31ad2cb8(app.context, inject)
+  if (typeof nuxt_plugin_axios_2afdbdaa === 'function') {
+    await nuxt_plugin_axios_2afdbdaa(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_moment_0caf5c74 === 'function') {
-    await nuxt_plugin_moment_0caf5c74(app.context, inject)
+  if (typeof nuxt_plugin_moment_4365892e === 'function') {
+    await nuxt_plugin_moment_4365892e(app.context, inject)
   }
 
   if (typeof nuxt_plugin_filters_2dd71012 === 'function') {

@@ -47,6 +47,35 @@ const extendAxiosInstance = axios => {
   }
 }
 
+const log = (level, ...messages) => console[level]('[Axios]', ...messages)
+
+const setupDebugInterceptor = axios => {
+  // request
+  axios.onRequestError(error => {
+    log('error', 'Request error:', error)
+  })
+
+  // response
+  axios.onResponseError(error => {
+    log('error', 'Response error:', error)
+  })
+  axios.onResponse(res => {
+      log(
+        'info',
+        '[' + (res.status + ' ' + res.statusText) + ']',
+        '[' + res.config.method.toUpperCase() + ']',
+        res.config.url)
+
+      if (process.browser) {
+        console.log(res)
+      } else {
+        console.log(JSON.stringify(res.data, undefined, 2))
+      }
+
+      return res
+  })
+}
+
 const setupProgress = (axios, ctx) => {
   if (process.server) {
     return
@@ -114,8 +143,8 @@ const setupProgress = (axios, ctx) => {
 export default (ctx, inject) => {
   // baseURL
   const baseURL = process.browser
-      ? 'http://0.0.0.0:8000'
-      : (process.env._AXIOS_BASE_URL_ || 'http://0.0.0.0:8000')
+      ? '/'
+      : (process.env._AXIOS_BASE_URL_ || 'http://localhost:3000/')
 
   // Create fresh objects for all default header scopes
   // Axios creates only one which is shared across SSR requests!
@@ -137,16 +166,6 @@ export default (ctx, inject) => {
     headers
   }
 
-  // Proxy SSR request headers headers
-  axiosOptions.headers.common = (ctx.req && ctx.req.headers) ? Object.assign({}, ctx.req.headers) : {}
-  delete axiosOptions.headers.common['accept']
-  delete axiosOptions.headers.common['host']
-  delete axiosOptions.headers.common['cf-ray']
-  delete axiosOptions.headers.common['cf-connecting-ip']
-  delete axiosOptions.headers.common['content-length']
-  delete axiosOptions.headers.common['content-md5']
-  delete axiosOptions.headers.common['content-type']
-
   if (process.server) {
     // Don't accept brotli encoding because Node can't parse it
     axiosOptions.headers.common['accept-encoding'] = 'gzip, deflate'
@@ -161,6 +180,7 @@ export default (ctx, inject) => {
   extendAxiosInstance(axios)
 
   // Setup interceptors
+  setupDebugInterceptor(axios)
 
   setupProgress(axios, ctx)
 
