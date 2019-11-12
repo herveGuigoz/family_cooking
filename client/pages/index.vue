@@ -3,7 +3,7 @@
     <!--
     <div v-if="user">{{ user }}</div>
     -->
-    <recipes-list-component :recipes="recipes" @selection="setSelected" />
+    <recipes-list-component :recipes="recipes" />
     <div>
       <NuxtChild :key="$route.params.slug" />
     </div>
@@ -22,28 +22,12 @@ export default {
   },
   data: () => ({
     errors: null,
-    selected: null
   }),
   computed: {
     ...mapState({
       user: state => state.user,
       recipes: state => state.recipes.list
     })
-  },
-  /*
-  computed: {
-    getUser () {
-      return this.$store.state.user
-    },
-    getRecipes () {
-      return this.$store.state.recipes.list
-    }
-  },
-   */
-  methods: {
-    setSelected (index) {
-      this.selected = this.recipes[index]
-    }
   }
 }
 </script>

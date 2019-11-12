@@ -70,7 +70,6 @@ export default {
   methods: {
     handleSelection (index) {
       this.selected = index
-      this.$emit('selection', index)
     }
   }
 }

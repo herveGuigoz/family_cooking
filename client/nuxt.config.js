@@ -93,11 +93,6 @@ export default {
     name: 'fade',
     mode: 'out-in'
   },
-  server: {
-    port: 3000, // default: 3000
-    host: '0.0.0.0' // default: localhost,
-    // timing: false
-  },
   env: {
     baseURL: 'http://0.0.0.0:80'
   }

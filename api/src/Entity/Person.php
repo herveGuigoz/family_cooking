@@ -98,7 +98,7 @@ class Person implements UserInterface
         'futuramaprofessor',
         'futuramazoidberg',
         'homersimpson',
-        'ironMan',
+        'ironman',
         'mermaid',
         'naruto',
         'pennywise',
