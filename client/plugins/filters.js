@@ -6,4 +6,3 @@ Vue.filter('truncate', function (value, limit) {
   }
   return value
 })
-

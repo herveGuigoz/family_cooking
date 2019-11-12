@@ -19,6 +19,9 @@
     "api-platform/schema-generator": {
         "version": "v2.1.0"
     },
+    "behat/transliterator": {
+        "version": "v1.2.0"
+    },
     "composer/semver": {
         "version": "1.5.0"
     },
@@ -136,6 +139,9 @@
     },
     "fzaninotto/faker": {
         "version": "v1.8.0"
+    },
+    "gedmo/doctrine-extensions": {
+        "version": "v2.4.37"
     },
     "hautelook/alice-bundle": {
         "version": "2.1",
@@ -289,6 +295,18 @@
     },
     "sebastian/recursion-context": {
         "version": "3.0.0"
+    },
+    "stof/doctrine-extensions-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "6c1ceb662f8997085f739cd089bfbef67f245983"
+        },
+        "files": [
+            "config/packages/stof_doctrine_extensions.yaml"
+        ]
     },
     "symfony/asset": {
         "version": "v4.3.5"

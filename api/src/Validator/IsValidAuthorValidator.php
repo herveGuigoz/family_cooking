@@ -6,6 +6,7 @@ use App\Entity\Person;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class IsValidAuthorValidator extends ConstraintValidator
 {
@@ -18,7 +19,12 @@ class IsValidAuthorValidator extends ConstraintValidator
 
     public function validate($value, Constraint $constraint)
     {
-        /* @var $constraint IsValidAuthor */
+        if (!$constraint instanceof IsValidAuthor) {
+            throw new UnexpectedTypeException($constraint, IsValidAuthor::class);
+        }
+
+        // custom constraints should ignore null and empty values to allow
+        // other constraints (NotBlank, NotNull, etc.) take care of that
         if (null === $value || '' === $value) {
             return;
         }

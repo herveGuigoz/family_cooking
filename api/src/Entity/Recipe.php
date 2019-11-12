@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\JoinTable;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -100,6 +101,13 @@ class Recipe
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $cookTime;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Gedmo\Slug(fields={"title"})
+     * @Groups({"recipe:read"})
+     */
+    private $slug;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="recipes")
@@ -213,6 +221,18 @@ class Recipe
         return $date->diffForHumans();
     }
 
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
     public function getAuthor(): ?Person
     {
         return $this->Author;
@@ -292,7 +312,7 @@ class Recipe
         $count = 0;
         $this->interactionCounters->map(static function ($interaction) use (&$count) {
             /* @var $interaction InteractionCounter */
-            $count += $interaction->getInteractionCount();
+            $count += (int) $interaction->getInteractionCount();
         });
 
         return $count;

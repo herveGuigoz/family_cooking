@@ -22,7 +22,7 @@ module.exports = {
       grey: 'rgb(245, 245, 245)',
       white: 'rgb(255, 255, 255)',
       beige: {
-        500 : 'rgb(219, 219, 219)'
+        500: 'rgb(219, 219, 219)'
       },
       gray: {
         100: '#f7fafc',
