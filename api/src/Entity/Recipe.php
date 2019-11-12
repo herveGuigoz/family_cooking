@@ -312,7 +312,7 @@ class Recipe
         $count = 0;
         $this->interactionCounters->map(static function ($interaction) use (&$count) {
             /* @var $interaction InteractionCounter */
-            $count += $interaction->getInteractionCount();
+            $count += (int) $interaction->getInteractionCount();
         });
 
         return $count;
