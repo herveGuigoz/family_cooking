@@ -57,7 +57,7 @@ export default {
     'nuxt-purgecss'
   ],
   axios: {
-    baseURL: 'http://0.0.0.0:8000', // See https://github.com/nuxt-community/axios-module#options
+    baseURL: 'http://0.0.0.0:8000' // See https://github.com/nuxt-community/axios-module#options
   },
   moment: {
   },
@@ -95,10 +95,10 @@ export default {
   },
   server: {
     port: 3000, // default: 3000
-    host: '0.0.0.0', // default: localhost,
-    //timing: false
+    host: '0.0.0.0' // default: localhost,
+    // timing: false
   },
   env: {
-    baseURL: 'http://0.0.0.0:80',
+    baseURL: 'http://0.0.0.0:80'
   }
 }
