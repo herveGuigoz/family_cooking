@@ -9,9 +9,9 @@ export default async function ({ store, $axios }) {
     }
     */
     await $axios
-      .get('http://0.0.0.0:8000/recipes.json')
+      .get('/recipes.json')
       .then((response) => {
-        store.commit('recipes/SET_RECIPES', response)
+        store.commit('recipes/SET_RECIPES_LIST', response)
       })
       .catch(e => console.log(e))
   }

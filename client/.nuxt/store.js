@@ -19,9 +19,7 @@ void (function updateModules () {
   // Enforce store modules
   store.modules = store.modules || {}
 
-  resolveStoreModules(require('../store/recipes/getters.js'), 'recipes/getters.js')
-  resolveStoreModules(require('../store/recipes/mutations.js'), 'recipes/mutations.js')
-  resolveStoreModules(require('../store/recipes/state.js'), 'recipes/state.js')
+  resolveStoreModules(require('../store/recipes.js'), 'recipes.js')
 
   // If the environment supports hot reloading...
 
@@ -29,9 +27,7 @@ void (function updateModules () {
     // Whenever any Vuex module is updated...
     module.hot.accept([
       '../store/index.js',
-      '../store/recipes/getters.js',
-      '../store/recipes/mutations.js',
-      '../store/recipes/state.js',
+      '../store/recipes.js',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()

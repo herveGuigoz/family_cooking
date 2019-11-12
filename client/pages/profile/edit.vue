@@ -23,51 +23,51 @@
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <darthvader width="w-10" height="h-10" />
-                <input id="darthVader" v-model="form.avatar" class="mt-2" type="radio" value="darthVader">
+                <input id="darthvader" v-model="form.avatar" class="mt-2" type="radio" value="darthvader">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramaamy width="w-10" height="h-10" />
-                <input id="futuramaAmy" v-model="form.avatar" class="mt-2" type="radio" value="futuramaAmy">
+                <input id="futuramaamy" v-model="form.avatar" class="mt-2" type="radio" value="futuramaamy">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramabender width="w-10" height="h-10" />
-                <input id="futuramaBender" v-model="form.avatar" class="mt-2" type="radio" value="futuramaBender">
+                <input id="futuramabender" v-model="form.avatar" class="mt-2" type="radio" value="futuramabender">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramafry width="w-10" height="h-10" />
-                <input id="futuramaFry" v-model="form.avatar" class="mt-2" type="radio" value="futuramaFry">
+                <input id="futuramafry" v-model="form.avatar" class="mt-2" type="radio" value="futuramafry">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramahermes width="w-10" height="h-10" />
-                <input id="futuramaHermes" v-model="form.avatar" class="mt-2" type="radio" value="futuramaHermes">
+                <input id="futuramahermes" v-model="form.avatar" class="mt-2" type="radio" value="futuramahermes">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramaleela width="w-10" height="h-10" />
-                <input id="futuramaLeela" v-model="form.avatar" class="mt-2" type="radio" value="futuramaLeela">
+                <input id="futuramaleela" v-model="form.avatar" class="mt-2" type="radio" value="futuramaleela">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramamom width="w-10" height="h-10" />
-                <input id="futuramaMom" v-model="form.avatar" class="mt-2" type="radio" value="futuramaMom">
+                <input id="futuramamom" v-model="form.avatar" class="mt-2" type="radio" value="futuramamom">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramanibbler width="w-10" height="h-10" />
-                <input id="futuramaNibbler" v-model="form.avatar" class="mt-2" type="radio" value="futuramaNibbler">
+                <input id="futuramanibbler" v-model="form.avatar" class="mt-2" type="radio" value="futuramanibbler">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramaprofessor width="w-10" height="h-10" />
-                <input id="futuramaProfessor" v-model="form.avatar" class="mt-2" type="radio" value="futuramaProfessor">
+                <input id="futuramaprofessor" v-model="form.avatar" class="mt-2" type="radio" value="futuramaprofessor">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <futuramazoidberg width="w-10" height="h-10" />
-                <input id="futuramaZoidberg" v-model="form.avatar" class="mt-2" type="radio" value="futuramaZoidberg">
+                <input id="futuramazoidberg" v-model="form.avatar" class="mt-2" type="radio" value="futuramazoidberg">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <homersimpson width="w-10" height="h-10" />
-                <input id="homerSimpson" v-model="form.avatar" class="mt-2" type="radio" value="homerSimpson">
+                <input id="homersimpson" v-model="form.avatar" class="mt-2" type="radio" value="homersimpson">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <ironman width="w-10" height="h-10" />
-                <input id="ironMan" v-model="form.avatar" class="mt-2" type="radio" value="ironMan">
+                <input id="ironman" v-model="form.avatar" class="mt-2" type="radio" value="ironman">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <mermaid width="w-10" height="h-10" />
@@ -99,7 +99,7 @@
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <supermario width="w-10" height="h-10" />
-                <input id="superMario" v-model="form.avatar" class="mt-2" type="radio" value="superMario">
+                <input id="supermario" v-model="form.avatar" class="mt-2" type="radio" value="supermario">
               </div>
               <div class="flex flex-col justify-center items-center p-2">
                 <unicorn width="w-10" height="h-10" />
@@ -249,7 +249,6 @@ export default {
   },
   methods: {
     handleSubmit () {
-      this.$nuxt.$loading.start()
       this.$v.form.$touch()
       if (this.$v.form.$error) {
         this.errors.email = !this.$v.form.email.required || !this.$v.form.email.email ? 'Cet email n\'est pas valide' : null
@@ -270,10 +269,11 @@ export default {
       }
       user.newPassword = this.form.newPassword.length > 0 ? this.form.newPassword : null
 
+      this.$nuxt.$loading.start()
       this.$axios
         .$post('/edit', user)
         .then((response) => {
-          this.$store.dispatch('auth', { token: response.token })
+          this.$store.dispatch('auth', response.token)
           this.$noty.success(`${this.form.username} your profile has been updated`)
           this.$router.push('/')
         }).catch((error) => {
