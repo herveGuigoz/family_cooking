@@ -23,9 +23,14 @@ export default {
   },
   /*
   ** Customize the progress-bar color
+  * default: loading: { color: '#00D1B2', height: '5px', continuous: true },
   */
-  // loading: { color: '#00D1B2', height: '5px', continuous: true },
   loading: '~/components/Loading.vue',
+  loadingIndicator: {
+    name: 'three-bounce',
+    color: '#4dbd9c',
+    background: '#555555'
+  },
   /*
   ** Global CSS
   */
