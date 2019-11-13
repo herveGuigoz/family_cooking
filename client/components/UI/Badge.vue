@@ -86,11 +86,11 @@ export default {
     },
     iconHeight: {
       type: String,
-      default: 'h-8'
+      default: 'h-7'
     },
     iconWidth: {
       type: String,
-      default: 'w-8'
+      default: 'w-7'
     }
   },
   computed: {
