@@ -80,7 +80,7 @@ back-db-reset: ## Reset the database with alice fixtures data
 	docker-compose exec php bin/console hautelook:fixtures:load -n --purge-with-truncate
 
 back-rm-cache: ## Clear cache
-	docker-compose exec php rm -rf var/cache
+	docker-compose exec php bin/console cache:clear
 
 ##
 ## Frontend specific

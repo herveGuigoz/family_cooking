@@ -34,11 +34,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "security_message"="Il faut etre connecté pour creer une recette"
  *          }
  *     },
+ *     shortName="recipe",
  *     attributes={
- *          "pagination_items_per_page"=50
- *     },
- *     normalizationContext={"groups"={"recipe:read"}},
- *     denormalizationContext={"groups"={"recipe:write"}}
+ *          "pagination_items_per_page"=50,
+ *          "formats"={"json"}
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
  * @ORM\EntityListeners({"App\Doctrine\RecipeSetAuthorListener"})
@@ -89,7 +89,7 @@ class Recipe
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message = "Preparation time is missing, your must set it to 0 or more")
-     * @Assert\PositiveOrZero
+     * @Assert\PositiveOrZero(message="Le temps de préparation ne peut pas être inférieur à 0")
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $prepTime;
@@ -97,7 +97,7 @@ class Recipe
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message = "Cook time is missing, your must set it to 0 or more")
-     * @Assert\PositiveOrZero
+     * @Assert\PositiveOrZero(message="Le temps de cuisson ne peut pas être inférieur à 0")
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $cookTime;
@@ -211,7 +211,7 @@ class Recipe
     /**
      * How long ago in text that this recipe was added.
      *
-     * @Groups({"recipe:read"})
+     * @Groups({"recipe:collection:get"})
      */
     public function getCreatedAtAgo(): string
     {
@@ -307,7 +307,7 @@ class Recipe
      *
      * @Groups({"recipe:read"})
      */
-    public function getInteractionsCount(): int
+    public function getTotalInteractionsCount(): int
     {
         $count = 0;
         $this->interactionCounters->map(static function ($interaction) use (&$count) {
