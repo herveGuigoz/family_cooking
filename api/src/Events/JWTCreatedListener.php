@@ -31,6 +31,7 @@ class JWTCreatedListener
         $payload = $event->getData();
         $payload['email'] = $personEntity->getEmail();
         $payload['avatar'] = $personEntity->getAvatar();
+        $payload['id'] = $personEntity->getId();
 
         $event->setData($payload);
     }

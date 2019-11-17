@@ -2,28 +2,27 @@
 
 namespace App\Tests;
 
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
 use App\Entity\Person;
 use App\Repository\PersonRepository;
 use Hautelook\AliceBundle\PhpUnit\RecreateDatabaseTrait;
 use Hautelook\AliceBundle\PhpUnit\RefreshDatabaseTrait;
 use Hautelook\AliceBundle\PhpUnit\ReloadDatabaseTrait;
 
-class UserActionsTest extends ApiTestCase
+class UserActionsTest extends AbstractTestCase
 {
     // Erase and recreate database schema before each tests.
     // Useful if we want to skip initialize env test database every time we make start
-    //use RecreateDatabaseTrait;
+    // use RecreateDatabaseTrait;
     // Refresh the database content to put it in a known state between every tests
-    // use RefreshDatabaseTrait;
+    use RefreshDatabaseTrait;
     // Resetting the database Between tests /!\ id's & iri changed
-    use ReloadDatabaseTrait;
+    // use ReloadDatabaseTrait;
 
     public function testRegisterUser(): void
     {
         $client = self::createClient();
 
-        $client->request('POST', '/register', [
+        $client->request('POST', '/people', [
             'json' => [
                 'email' => 'bob@mail.com',
                 'username' => 'bob',
@@ -31,9 +30,8 @@ class UserActionsTest extends ApiTestCase
             ],
         ]);
 
-        // We log the user returning JWT token
         self::assertResponseIsSuccessful();
-        self::assertResponseStatusCodeSame(200);
+        self::assertResponseStatusCodeSame(201);
 
         /** @var PersonRepository $personRepository */
         $personRepository = self::$container->get('doctrine')->getManager()->getRepository(Person::class);
@@ -45,45 +43,18 @@ class UserActionsTest extends ApiTestCase
     public function testLoginUser(): void
     {
         $client = self::createClient();
-        $em = self::$container->get('doctrine')->getManager();
 
-        $user = new Person();
-        $user->setEmail('pepito@mail.com');
-        $user->setUsername('pepito');
-        $user->setAvatar('walterwhite');
+        $user = $this->createUser('pepito@mail.com', 'password');
 
-        $encoded = self::$container->get('security.password_encoder')
-            ->encodePassword($user, '123456');
-        $user->setPassword($encoded);
-        $em->persist($user);
-        $em->flush();
-
-        $client->request('POST', '/login', [
-            'json' => [
-                'username' => $user->getUsername(),
-                'password' => '123456',
-            ],
-        ]);
-
-        self::assertResponseStatusCodeSame(200);
+        $this->logIn($client, $user->getUsername(), 'password');
     }
 
     public function testResetPassword(): void
     {
         $client = self::createClient();
-        $em = self::$container->get('doctrine')->getManager();
-
-        $user = new Person();
-        $user->setEmail('louis@mail.com');
-        $user->setUsername('louis');
-        $user->setAvatar('moustache');
-
         $passwordManager = self::$container->get('security.password_encoder');
-        $encoded = $passwordManager->encodePassword($user, '123456');
 
-        $user->setPassword($encoded);
-        $em->persist($user);
-        $em->flush();
+        $user = $this->createUser('louis@mail.com', '123456');
 
         $client->request('POST', '/edit', [
             'json' => [
@@ -97,5 +68,27 @@ class UserActionsTest extends ApiTestCase
 
         self::assertResponseStatusCodeSame(200);
         self::assertEquals(true, $passwordManager->isPasswordValid($user, '654321'));
+    }
+
+    public function testDefaultAvatar()
+    {
+        $client = self::createClient();
+
+        $client->request('POST', '/people', [
+            'json' => [
+                'username' => 'gerard',
+                'email' => 'gerard@mail.com',
+                'password' => 'password',
+            ],
+        ]);
+
+        $em = $this->getEntityManager();
+        /** @var PersonRepository $personRepository * */
+        $personRepository = $em->getRepository(Person::class);
+        /** @var Person $user */
+        $user = $personRepository->findOneBy(['username' => 'gerard']);
+
+        self::assertInstanceOf(Person::class, $user);
+        self::assertEquals('baby', $user->getAvatar());
     }
 }

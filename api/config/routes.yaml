@@ -2,16 +2,16 @@ api_login_check:
     path: /login
     methods: ['POST']
 # Register new User
-register:
-    path: /register
-    controller: App\Controller\AuthController::register
-    methods: ['POST']
+#register:
+#    path: /register
+#    controller: App\Controller\AuthController::register
+#    methods: ['POST']
 # Refresh password
-edit:
-    path: /edit
-    controller: App\Controller\AuthController::edit
-    methods: ['POST']
-    
+#edit:
+#    path: /edit
+#    controller: App\Controller\AuthController::edit
+#    methods: ['POST']
+#    
 handle_bookmark:
     path: /bookmark
     controller: App\Controller\BookmarkController::index
