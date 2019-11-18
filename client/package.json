@@ -17,7 +17,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.8.0",
     "babel-eslint": "^10.0.3",
-    "cookie-universal-nuxt": "^2.0.18",
+    "cookie-universal-nuxt": "^2.0.19",
     "jwt-js-decode": "^1.4.0",
     "nuxt": "^2.10.2",
     "nuxt-purgecss": "^0.2.1",
