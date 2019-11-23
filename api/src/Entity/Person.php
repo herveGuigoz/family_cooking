@@ -4,22 +4,46 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
- * @ORM\HasLifecycleCallbacks()
+ * @ApiResource(
+ *     shortName="person",
+ *     accessControl="is_granted('ROLE_USER')",
+ *     collectionOperations={
+ *          "get"={"security"="is_granted('ROLE_ADMIN')"},
+ *          "post"={
+ *              "security"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')",
+ *              "validation_groups"={"Default", "create"}
+ *          },
+ *     },
+ *     itemOperations={
+ *          "get"={"security"="is_granted('ROLE_ADMIN')"},
+ *          "put"={
+ *              "security"="is_granted('ROLE_USER') and object == user",
+ *              "validation_groups"={"Default", "update"}
+ *          },
+ *          "delete"={"security"="is_granted('ROLE_ADMIN')"}
+ *     }
+ * )
  * @UniqueEntity(
  *      fields={"email"},
  *      message= "Un utilisateur uilise daja l'adresse mail '{{ value }}'"
  *  )
+ * @UniqueEntity(
+ *      fields={"username"},
+ *      message= "Un utilisateur uilise daja '{{ value }}'"
+ *  )
+ * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Person implements UserInterface
 {
@@ -27,29 +51,39 @@ class Person implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @ApiProperty(identifier=true)
+     * @Groups({"admin:read", "person:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="Il vous faut renseigner un email")
-     * @Assert\Email(message = "Cet email:  '{{ value }}' n'est pas valide.")
-     * @Assert\Unique(message= "Un utilisateur uilise daja l'adresse mail '{{ value }}'")
-     */
-    private $email;
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Unique(message= "Un utilisateur uilise daja le surnom '{{ value }}'")
-     * @Groups({"recipe:read"})
+     * @Assert\NotBlank(groups={"create"}, message="Il vous faut renseigner un nom d'utilisateur")
+     * @Groups({"admin:read", "recipe:read", "person:collection:post"})
      */
     private $username;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(groups={"create", "update"}, message="Il vous faut renseigner un email")
+     * @Assert\Email(groups={"create", "update"}, message = "Cet email:  '{{ value }}' n'est pas valide.")
+     * @Groups({"admin:read", "person:collection:post", "person:item:put"})
+     */
+    private $email;
+
+    /**
      * @ORM\Column(type="json")
+     * @Groups({"admin:read", "admin:write"})
      */
     private $roles = [];
+
+    /**
+     * Not stored in db. Used in PersonDataPersister.
+     *
+     * @Groups("person:write")
+     * @Assert\NotBlank(groups={"create"}, message="Veuillez renseigner un mot de passe")
+     * @SerializedName("password")
+     */
+    private $plainPassword;
 
     /**
      * @var string The hashed password
@@ -59,22 +93,25 @@ class Person implements UserInterface
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"admin:read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="string")
      * @Assert\Choice(choices=Person::AVATAR_NAMES, message="Choose a valid avatar.")
+     * @Assert\NotBlank(groups={"update"})
+     * @Groups({"admin:read", "person:item:put"})
      */
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="Author")
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="Author", orphanRemoval=true)
      */
     private $recipes;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarks", orphanRemoval=true)
      */
     private $bookmarks;
 
@@ -164,6 +201,18 @@ class Person implements UserInterface
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
+
+        return $this;
+    }
+
     /**
      * @see UserInterface
      */
@@ -193,7 +242,7 @@ class Person implements UserInterface
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->plainPassword = null;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

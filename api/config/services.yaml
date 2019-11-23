@@ -35,3 +35,11 @@ services:
                 
     App\Doctrine\RecipeSetAuthorListener:
         tags: [doctrine.orm.entity_listener]
+
+    App\Serializer\AdminGroupsContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: [ '@App\Serializer\AdminGroupsContextBuilder.inner' ]
+
+    App\ApiPlatform\AutoGroupResourceMetadataFactory:
+        decorates: 'api_platform.metadata.resource.metadata_factory'
+        arguments: ['@App\ApiPlatform\AutoGroupResourceMetadataFactory.inner']

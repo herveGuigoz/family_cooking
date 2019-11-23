@@ -9,6 +9,7 @@ use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -34,11 +35,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *              "security_message"="Il faut etre connecté pour creer une recette"
  *          }
  *     },
+ *     shortName="recipe",
  *     attributes={
  *          "pagination_items_per_page"=50
- *     },
- *     normalizationContext={"groups"={"recipe:read"}},
- *     denormalizationContext={"groups"={"recipe:write"}}
+ *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
  * @ORM\EntityListeners({"App\Doctrine\RecipeSetAuthorListener"})
@@ -89,7 +89,7 @@ class Recipe
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message = "Preparation time is missing, your must set it to 0 or more")
-     * @Assert\PositiveOrZero
+     * @Assert\PositiveOrZero(message="Le temps de préparation ne peut pas être inférieur à 0")
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $prepTime;
@@ -97,7 +97,7 @@ class Recipe
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank(message = "Cook time is missing, your must set it to 0 or more")
-     * @Assert\PositiveOrZero
+     * @Assert\PositiveOrZero(message="Le temps de cuisson ne peut pas être inférieur à 0")
      * @Groups({"recipe:read", "recipe:write"})
      */
     private $cookTime;
@@ -120,11 +120,12 @@ class Recipe
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="bookmarks")
      * @JoinTable(name="bookmarks")
+     * @JoinColumn(onDelete="CASCADE")
      */
     private $bookmarks;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="recipe", orphanRemoval=true)
      */
     private $interactionCounters;
 
@@ -307,7 +308,7 @@ class Recipe
      *
      * @Groups({"recipe:read"})
      */
-    public function getInteractionsCount(): int
+    public function getTotalInteractionsCount(): int
     {
         $count = 0;
         $this->interactionCounters->map(static function ($interaction) use (&$count) {

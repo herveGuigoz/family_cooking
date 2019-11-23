@@ -6,7 +6,8 @@ const decodeJWT = function (token) {
     username: jwt.payload.username,
     email: jwt.payload.email,
     avatar: jwt.payload.avatar,
-    expire: jwt.payload.exp
+    expire: jwt.payload.exp,
+    id: jwt.payload.id
   }
 }
 
@@ -28,12 +29,13 @@ export const getters = {
 export const mutations = {
   RESET (state) {
     state.isAuth = false
-    state.user = { username: null, email: null, avatar: null, token: null, expire: null }
+    state.user = { id: null, username: null, email: null, avatar: null, token: null, expire: null }
   },
   SET_USER (state, token) {
     try {
       const user = decodeJWT(token)
       if (user && nowInSeconds < user.expire) {
+        state.user.id = user.id
         state.user.username = user.username
         state.user.email = user.email
         state.user.avatar = user.avatar
@@ -43,10 +45,10 @@ export const mutations = {
         return
       }
       state.isAuth = false
-      state.user = { username: null, email: null, avatar: null, token: null, expire: null }
+      state.user = { id: null, username: null, email: null, avatar: null, token: null, expire: null }
     } catch (e) {
       state.isAuth = false
-      state.user = { username: null, email: null, avatar: null, token: null, expire: null }
+      state.user = { id: null, username: null, email: null, avatar: null, token: null, expire: null }
     }
   }
 }
