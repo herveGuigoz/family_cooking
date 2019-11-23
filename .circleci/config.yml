@@ -71,6 +71,11 @@ jobs:
                   paths:
                       - api/vendor
                   key: vendor-{{ checksum "api/composer.lock" }}
+            # Init jwt bundle
+            - run:
+                  name: init JWT
+                  working_directory: api
+                  command: mkdir -p config/jwt && openssl genrsa -out config/jwt/private.pem -aes256 4096 && openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
             # PHP Unit
             - run:
                   name: PHPUnit
