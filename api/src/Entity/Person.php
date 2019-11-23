@@ -106,12 +106,12 @@ class Person implements UserInterface
     private $avatar;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="Author")
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="Author", orphanRemoval=true)
      */
     private $recipes;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarks")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarks", orphanRemoval=true)
      */
     private $bookmarks;
 

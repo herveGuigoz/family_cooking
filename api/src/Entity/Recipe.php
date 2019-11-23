@@ -9,6 +9,7 @@ use Carbon\CarbonInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -36,8 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     shortName="recipe",
  *     attributes={
- *          "pagination_items_per_page"=50,
- *          "formats"={"json"}
+ *          "pagination_items_per_page"=50
  *     }
  * )
  * @ORM\Entity(repositoryClass="App\Repository\RecipeRepository")
@@ -120,11 +120,12 @@ class Recipe
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Person", inversedBy="bookmarks")
      * @JoinTable(name="bookmarks")
+     * @JoinColumn(onDelete="CASCADE")
      */
     private $bookmarks;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="recipe")
+     * @ORM\OneToMany(targetEntity="App\Entity\InteractionCounter", mappedBy="recipe", orphanRemoval=true)
      */
     private $interactionCounters;
 
@@ -211,7 +212,7 @@ class Recipe
     /**
      * How long ago in text that this recipe was added.
      *
-     * @Groups({"recipe:collection:get"})
+     * @Groups({"recipe:read"})
      */
     public function getCreatedAtAgo(): string
     {

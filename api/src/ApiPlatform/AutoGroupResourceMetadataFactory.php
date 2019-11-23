@@ -17,10 +17,12 @@ class AutoGroupResourceMetadataFactory implements ResourceMetadataFactoryInterfa
     public function create(string $resourceClass): ResourceMetadata
     {
         $resourceMetadata = $this->decorated->create($resourceClass);
+
         $itemOperations = $resourceMetadata->getItemOperations();
         $resourceMetadata = $resourceMetadata->withItemOperations(
             $this->updateContextOnOperations($itemOperations, $resourceMetadata->getShortName(), true)
         );
+
         $collectionOperations = $resourceMetadata->getCollectionOperations();
         $resourceMetadata = $resourceMetadata->withCollectionOperations(
             $this->updateContextOnOperations($collectionOperations, $resourceMetadata->getShortName(), false)
@@ -29,7 +31,7 @@ class AutoGroupResourceMetadataFactory implements ResourceMetadataFactoryInterfa
         return $resourceMetadata;
     }
 
-    private function updateContextOnOperations(array $operations, string $shortName, bool $isItem): array
+    private function updateContextOnOperations(array $operations, string $shortName, bool $isItem)
     {
         foreach ($operations as $operationName => $operationOptions) {
             $operationOptions['normalization_context'] = $operationOptions['normalization_context'] ?? [];
@@ -38,19 +40,21 @@ class AutoGroupResourceMetadataFactory implements ResourceMetadataFactoryInterfa
                 $operationOptions['normalization_context']['groups'],
                 $this->getDefaultGroups($shortName, true, $isItem, $operationName)
             ));
+
             $operationOptions['denormalization_context'] = $operationOptions['denormalization_context'] ?? [];
             $operationOptions['denormalization_context']['groups'] = $operationOptions['denormalization_context']['groups'] ?? [];
             $operationOptions['denormalization_context']['groups'] = array_unique(array_merge(
                 $operationOptions['denormalization_context']['groups'],
                 $this->getDefaultGroups($shortName, false, $isItem, $operationName)
             ));
+
             $operations[$operationName] = $operationOptions;
         }
 
         return $operations;
     }
 
-    private function getDefaultGroups(string $shortName, bool $normalization, bool $isItem, string $operationName): array
+    private function getDefaultGroups(string $shortName, bool $normalization, bool $isItem, string $operationName)
     {
         $shortName = strtolower($shortName);
         $readOrWrite = $normalization ? 'read' : 'write';

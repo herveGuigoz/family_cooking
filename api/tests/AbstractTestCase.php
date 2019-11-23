@@ -3,7 +3,6 @@
 namespace App\Tests;
 
 use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
-use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
 use App\Entity\Person;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -28,20 +27,9 @@ abstract class AbstractTestCase extends ApiTestCase
         return $user;
     }
 
-    protected function logIn(Client $client, string $username, string $password): array
+    protected function logIn(Person $user)
     {
-        $client->request('POST', '/login', [
-            'json' => [
-                'username' => $username,
-                'password' => $password,
-            ],
-        ]);
-        self::assertResponseStatusCodeSame(200);
-
-        $token = $client->getResponse()->toArray();
-        $this->assertArrayHasKey('token', $token);
-
-        return $token;
+        return self::$container->get('lexik_jwt_authentication.jwt_manager')->create($user);
     }
 
     protected function getEntityManager(): EntityManagerInterface
