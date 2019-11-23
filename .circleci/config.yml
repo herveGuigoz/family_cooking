@@ -71,31 +71,12 @@ jobs:
                   paths:
                       - api/vendor
                   key: vendor-{{ checksum "api/composer.lock" }}
+            # PHP Unit
             - run:
-                  name: Build swagger documentation
+                  name: PHPUnit
                   working_directory: api
-                  command: bin/console api:swagger:export > swagger.json
-            - store_artifacts:
-                  path: api/swagger.json
-                  destination: swagger.json
-            - persist_to_workspace:
-                  root: ./
-                  paths:
-                      - ./api
-            - run:
-                  name: Populate database
-                  working_directory: api
-                  command: bin/console hautelook:fixtures:load -n --purge-with-truncate
+                  command: bin/phpunit
 
-    doctrine_schema_validator:
-        executor: php-executor
-        steps:
-            - attach_workspace:
-                  at: ./
-            - run:
-                  name: Doctrine schema validator
-                  working_directory: api
-                  command: bin/console doctrine:schema:validate --skip-sync
 
     php_cs_fixer:
         executor: php-executor
@@ -116,38 +97,15 @@ jobs:
                   name: PHPStan
                   working_directory: api
                   command: vendor/bin/phpstan analyse -c phpstan.neon -l6 --ansi src
-            
-    phpunit:
-        executor: php-executor
-        steps:
-            - attach_workspace:
-                  at: ./
-            -   run:
-                    name: Install dependencies
-                    working_directory: api
-                    command: composer install --prefer-dist --no-progress --no-suggest --no-interaction
-                        #command: composer install --prefer-dist --no-suggest
-            - run:
-                  name: PHPUnit
-                  working_directory: api
-                  command: bin/phpunit -d memory_limit=512M
 
 workflows:
     version: 2
     test-and-deploy:
         jobs:
-            # API
             - init-api
-            #- doctrine_schema_validator:
-            #      requires:
-            #          - init-api
             - php_cs_fixer:
                   requires:
                       - init-api
             - phpstan:
                   requires:
                       - init-api
-            #- phpunit:
-            #      requires:
-            #          - doctrine_schema_validator
-            #          - init-api
