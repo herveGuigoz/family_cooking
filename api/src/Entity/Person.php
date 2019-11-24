@@ -81,6 +81,13 @@ class Person implements UserInterface
      *
      * @Groups("person:write")
      * @Assert\NotBlank(groups={"create"}, message="Veuillez renseigner un mot de passe")
+     * @Assert\Length(
+     *     groups={"create", "update"},
+     *     min = 6,
+     *     max = 50,
+     *     minMessage = "Votre mot de passe doit contenir {{ limit }} characteres minimum",
+     *     maxMessage = "Votre mot de passe doit contenir {{ limit }} characteres maximum"
+     * )
      * @SerializedName("password")
      */
     private $plainPassword;
