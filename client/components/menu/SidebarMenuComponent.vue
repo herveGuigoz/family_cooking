@@ -4,7 +4,7 @@
       <div class="flex flex-col items-center">
         <nuxt-link to="/">
           <h1 class="brand font-semibold text-center uppercase">
-            Family <span class="text-gray-800"> cooking</span>
+            Family <span class="text-beige"> cooking</span>
           </h1>
         </nuxt-link>
         <p class="block pt-3 text-grey text-xs">
@@ -38,15 +38,15 @@
       </div>
     </div>
     <div class="flex-shrink-0 px-4 py-3 bg-brown">
-      <nuxt-link :to="isAuthenticated ? '/profile/edit' : '/login'">
-        <badge :user="user" />
+      <nuxt-link :to="auth.token ? '/profile/edit' : '/login'">
+        <badge :user="auth.user" />
       </nuxt-link>
     </div>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import UiButtonComponent from '../UI/UiButtonComponent'
 import IconSearchComponent from '../icons/IconSearchComponent'
 import IconInLoveComponent from '../icons/IconInLoveComponent'
@@ -63,10 +63,7 @@ export default {
     Badge
   },
   computed: {
-    ...mapGetters({
-      isAuthenticated: 'isAuth',
-      user: 'getUser'
-    })
+    ...mapState(['auth'])
   }
 }
 </script>

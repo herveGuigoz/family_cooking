@@ -1,66 +1,93 @@
 <?php
 
+
 namespace App\Controller;
 
-use App\Entity\InteractionCounter;
+
+use App\Entity\Interaction;
 use App\Entity\Person;
 use App\Entity\Recipe;
-use App\Repository\InteractionCounterRepository;
+use App\Manager\InteractionManager;
+use App\Repository\InteractionRepository;
 use App\Repository\RecipeRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 
 class InteractionController extends AbstractController
 {
-    private $security;
-    private $interactionCounterRepository;
     private $recipeRepository;
 
-    public function __construct(Security $security, InteractionCounterRepository $interactionCounterRepository, RecipeRepository $recipeRepository)
+    private $interactionManager;
+
+    private $user;
+
+    public function __construct(Security $security, RecipeRepository $recipeRepository, InteractionManager $interactionManager)
     {
-        $this->security = $security;
-        $this->interactionCounterRepository = $interactionCounterRepository;
         $this->recipeRepository = $recipeRepository;
+        $this->interactionManager = $interactionManager;
+        $this->user = $security->getUser();
     }
 
-    public function index(Request $request): JsonResponse
+    /**
+     * @Route("/bookmark", name="handleBookmark", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function handleBookmark(Request $request): JsonResponse
     {
-        $person = $this->security->getUser();
-        if (!$person instanceof Person) {
+
+        if (!$this->user instanceof Person) {
             return new JsonResponse(['message' => 'you must be logged in'], 403);
         }
 
         $encoder = new JsonEncoder();
         $data = $encoder->decode((string) $request->getContent(), 'json');
 
-        if (
-            !isset($data['recipe'], $data['count']) || !is_int($data['recipe']) || !is_int($data['count'])
-        ) {
+        if (!isset($data['slug'])) {
             return new JsonResponse(['message' => 'Bad Request'], 400);
         }
 
-        $recipe = $this->recipeRepository->find($data['recipe']);
-
+        $recipe = $this->recipeRepository->findOneBy(['slug' => $data['slug']]);
         if (!$recipe instanceof Recipe) {
             return new JsonResponse(['message' => 'Bad Request'], 400);
         }
 
-        $data['count'] > 100 ? $count = 100 : $count = $data['count'];
+        $interaction = $this->interactionManager->bookmarkMe($this->user, $recipe);
 
-        $interactionCounter = $this->interactionCounterRepository->findOneByUserIdAndRecipeId($person, $recipe);
+        return new JsonResponse(['isBookmarked' => $interaction->getIsBookmarked()], 200);
+    }
 
-        if (!$interactionCounter instanceof InteractionCounter) {
-            $interactionCounter = new InteractionCounter();
-            $interactionCounter->setPerson($person);
-            $interactionCounter->setRecipe($recipe);
+    /**
+     * @Route("/love", name="getLove", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getLove(Request $request): JsonResponse
+    {
+        if (!$this->user instanceof Person) {
+            return new JsonResponse(['message' => 'you must be logged in'], 403);
         }
 
-        $interactionCounter->setInteractionCount($count);
-        $this->interactionCounterRepository->save($interactionCounter);
+        $encoder = new JsonEncoder();
+        $data = $encoder->decode((string) $request->getContent(), 'json');
+        if (
+            !isset($data['slug'], $data['count'])
+            || !is_int($data['count'])
+        ) {
+            return new JsonResponse(['message' => 'Bad Request'], 400);
+        }
 
-        return new JsonResponse(['count' => $count], 200);
+        $recipe = $this->recipeRepository->findOneBy(['slug' => $data['slug']]);
+        if (!$recipe instanceof Recipe) {
+            return new JsonResponse(['message' => 'Bad Request'], 400);
+        }
+
+        $interaction = $this->interactionManager->handleLove($this->user, $recipe, $data['count']);
+
+        return new JsonResponse(['loves' => $interaction->getInteractionCount()], 200);
     }
 }

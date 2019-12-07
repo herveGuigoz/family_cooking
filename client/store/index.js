@@ -1,78 +1,55 @@
-const jwtJsDecode = require('jwt-js-decode')
-const nowInSeconds = Date.now() / 1000
-const decodeJWT = function (token) {
-  const jwt = jwtJsDecode.jwtDecode(token)
-  return {
-    username: jwt.payload.username,
-    email: jwt.payload.email,
-    avatar: jwt.payload.avatar,
-    expire: jwt.payload.exp,
-    id: jwt.payload.id
-  }
-}
-
 // State object
 export const state = () => ({
-  isAuth: false,
-  user: { username: null, email: null, avatar: null, token: null, expire: null }
+  selected: null,
+  list: null
 })
 
 // Getter functions
 export const getters = {
-  isAuth (state) {
-    return !(!state.isAuth || nowInSeconds > state.user.expire)
+  getList (state) {
+    return state.list
   },
-  getUser: state => state.user
-}
-
-// Mutations
-export const mutations = {
-  RESET (state) {
-    state.isAuth = false
-    state.user = { id: null, username: null, email: null, avatar: null, token: null, expire: null }
-  },
-  SET_USER (state, token) {
-    try {
-      const user = decodeJWT(token)
-      if (user && nowInSeconds < user.expire) {
-        state.user.id = user.id
-        state.user.username = user.username
-        state.user.email = user.email
-        state.user.avatar = user.avatar
-        state.user.token = token
-        state.user.expire = user.expire
-        state.isAuth = true
-        return
-      }
-      state.isAuth = false
-      state.user = { id: null, username: null, email: null, avatar: null, token: null, expire: null }
-    } catch (e) {
-      state.isAuth = false
-      state.user = { id: null, username: null, email: null, avatar: null, token: null, expire: null }
+  getRecipeBySlug: (state, getters) => (slug) => {
+    if (state.list){
+      return state.list.find(recipe => recipe.slug === slug)
     }
   }
 }
 
-// Actions
-export const actions = {
-  reset (state) {
-    state.commit('RESET')
+// Mutations
+export const mutations = {
+  SET_RECIPES_LIST (state, data) {
+    state.list = data
   },
-  auth (state, token) {
-    try {
-      this.$cookie.removeAll()
-      this.$cookie.set('auth', token, { maxAge: 60 * 60 * 60 * 24 * 30 })
-      state.commit('SET_USER', token)
-    } catch (e) {
-      throw new Error(e.message)
-    }
+  SET_SELECTED (state, slug) {
+    state.selected = slug
   },
-  fetchVariable1 ({ commit }) {
-    return new Promise((resolve, reject) => {
-      // Make network request and fetch data
-      // and commit the data
-      // ex: commit('SET_VARIABLE_1', data);
-      resolve()
+  REMOVE_SELECTED (state) {
+    state.selected = null
+  },
+  UPDATE_BOOKMARKS (state, recipe, isBookmarked ) {
+    const index = state.list.findIndex((item) => {
+      return item.slug === recipe.slug
     })
+    state.list[index].isBookmarked = isBookmarked
+  }
+}
+
+// Actions
+
+export const actions = {
+//  async nuxtServerInit({ dispatch }) {
+//    await dispatch('getRecipes')
+//  },
+  async getRecipes(vuexContext) {
+    const token = this.$cookie.get('auth')
+    if (token) { this.$axios.setToken(token, 'Bearer') }
+    const response = await this.$axios.$get('/recipes')
+    vuexContext.commit('SET_RECIPES_LIST', response['hydra:member'])
+  },
+  async handleBookmarkAction(vuexContext, slug) {
+    console.log(vuexContext.state.auth.user.id)
+    // await response = this.$axios.$put('/people/' + vuexContext.state.auth.user.id, data)
+    // vuexContext.dispatch('UPDATE_BOOKMARKS', response.isBookmarked)
   }
 }

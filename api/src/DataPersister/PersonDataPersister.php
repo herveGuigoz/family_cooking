@@ -34,11 +34,9 @@ class PersonDataPersister implements DataPersisterInterface
             );
             $data->eraseCredentials();
         }
-
         if (!$data->getAvatar()) {
             $data->setAvatar('baby');
         }
-
         $this->entityManager->persist($data);
         $this->entityManager->flush();
     }

@@ -8,9 +8,6 @@ use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 
 class JWTCreatedListener
 {
-    /**
-     * @var PersonRepository
-     */
     private $personRepository;
 
     public function __construct(PersonRepository $personRepository)

@@ -1,8 +1,7 @@
-export default function ({ $axios, redirect, store }) {
+export default function ({ $axios, store }) {
   $axios.onRequest((config) => {
-    // console.log(config.headers.referer)
-    if (store.getters.isAuth) {
-      config.headers.common.Authorization = `Bearer ${store.getters.getUser.token}`
+    if (store.state.auth.token) {
+      config.headers.common.Authorization = `Bearer ${store.state.auth.token}`
     }
   })
 }

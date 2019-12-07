@@ -7,3 +7,4 @@ nelmio_alice:
         - 'file'
         - 'md5'
         - 'sha1'
+    locale: 'fr_FR'

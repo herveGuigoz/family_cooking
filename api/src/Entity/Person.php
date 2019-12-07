@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
@@ -43,7 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      message= "Un utilisateur uilise daja '{{ value }}'"
  *  )
  * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
- * @ORM\HasLifecycleCallbacks()
  */
 class Person implements UserInterface
 {
@@ -63,12 +60,20 @@ class Person implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(groups={"create", "update"}, message="Il vous faut renseigner un email")
      * @Assert\Email(groups={"create", "update"}, message = "Cet email:  '{{ value }}' n'est pas valide.")
      * @Groups({"admin:read", "person:collection:post", "person:item:put"})
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", length=50)
+     * @Assert\Choice(choices=Person::AVATAR_NAMES, message="Choose a valid avatar.")
+     * @Assert\NotBlank(groups={"update"})
+     * @Groups({"admin:read", "person:item:put"})
+     */
+    private $avatar;
 
     /**
      * @ORM\Column(type="json")
@@ -105,28 +110,9 @@ class Person implements UserInterface
     private $createdAt;
 
     /**
-     * @ORM\Column(type="string")
-     * @Assert\Choice(choices=Person::AVATAR_NAMES, message="Choose a valid avatar.")
-     * @Assert\NotBlank(groups={"update"})
-     * @Groups({"admin:read", "person:item:put"})
-     */
-    private $avatar;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="Author", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="author", orphanRemoval=true)
      */
     private $recipes;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Recipe", mappedBy="bookmarks", orphanRemoval=true)
-     */
-    private $bookmarks;
-
-    public function __construct()
-    {
-        $this->recipes = new ArrayCollection();
-        $this->bookmarks = new ArrayCollection();
-    }
 
     public const AVATAR_NAMES = [
         'moustache',
@@ -155,9 +141,32 @@ class Person implements UserInterface
         'walterwhite',
     ];
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->recipes = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -172,21 +181,16 @@ class Person implements UserInterface
         return $this;
     }
 
-    public function setUsername($username): self
+    public function getAvatar(): ?string
     {
-        $this->username = $username;
-
-        return $this;
+        return $this->avatar;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
+    public function setAvatar(string $avatar): self
     {
-        return (string) $this->username;
+        $this->avatar = $avatar;
+
+        return $this;
     }
 
     /**
@@ -206,6 +210,23 @@ class Person implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getPlainPassword(): ?string
@@ -235,48 +256,9 @@ class Person implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getSalt()
-    {
-        // not needed when using the "bcrypt" algorithm in security.yaml
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        $this->plainPassword = null;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
-    }
-
-    /**
-     * @ORM\PrePersist
-     */
-    public function setCreatedAt(): self
-    {
-        $this->createdAt = new \DateTime();
-
-        return $this;
-    }
-
-    public function getAvatar()
-    {
-        return $this->avatar;
-    }
-
-    public function setAvatar(string $avatar): self
-    {
-        $this->avatar = $avatar;
-
-        return $this;
     }
 
     /**
@@ -305,34 +287,6 @@ class Person implements UserInterface
             if ($recipe->getAuthor() === $this) {
                 $recipe->setAuthor(null);
             }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Recipe[]
-     */
-    public function getBookmarks(): Collection
-    {
-        return $this->bookmarks;
-    }
-
-    public function addBookmark(Recipe $bookmark): self
-    {
-        if (!$this->bookmarks->contains($bookmark)) {
-            $this->bookmarks[] = $bookmark;
-            $bookmark->addBookmark($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBookmark(Recipe $bookmark): self
-    {
-        if ($this->bookmarks->contains($bookmark)) {
-            $this->bookmarks->removeElement($bookmark);
-            $bookmark->removeBookmark($this);
         }
 
         return $this;

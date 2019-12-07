@@ -1,11 +1,11 @@
 
 export default {
-  mode: 'spa',
+  mode: 'universal',
   /*
   ** Headers of the page
   */
   head: {
-    title: 'Family Cooking',
+    title: process.env.npm_package_name || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -16,21 +16,9 @@ export default {
     ]
   },
   /*
-   * Global Middleware
-   */
-  router: {
-    middleware: 'auth'
-  },
-  /*
   ** Customize the progress-bar color
-  * default: loading: { color: '#00D1B2', height: '5px', continuous: true },
   */
-  loading: '~/components/Loading.vue',
-  loadingIndicator: {
-    name: 'three-bounce',
-    color: '#4dbd9c',
-    background: '#555555'
-  },
+  loading: { color: '#fff' },
   /*
   ** Global CSS
   */
@@ -51,20 +39,17 @@ export default {
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/moment'
   ],
   /*
   ** Nuxt.js modules
   */
   modules: [
     '@nuxtjs/axios',
-    ['cookie-universal-nuxt', { alias: 'cookie' }],
-    'nuxt-purgecss'
+    ['cookie-universal-nuxt', { alias: 'cookie' }]
   ],
   axios: {
-    baseURL: 'http://0.0.0.0:8000' // See https://github.com/nuxt-community/axios-module#options
-  },
-  moment: {
+    baseURL: 'http://api:80',
+    browserBaseURL: 'https://api.localhost' //can use environment variables to fill both..
   },
   /*
   ** Build configuration
@@ -73,32 +58,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    postcss: {
-      plugins: {
-        tailwindcss: './tailwind.config.js'
-      }
-    },
     extend (config, ctx) {
-      /*
-      if (ctx.isDev && ctx.isClient) {
-        config.module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|vue)$/,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/,
-          options: {
-            fix: true
-          }
-        })
-      }
-      */
     }
-  },
-  transition: {
-    name: 'fade',
-    mode: 'out-in'
-  },
-  env: {
-    baseURL: 'http://0.0.0.0:80'
   }
 }

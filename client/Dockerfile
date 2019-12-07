@@ -1,4 +1,6 @@
-FROM node:11.5-alpine
+ARG NODE_VERSION=13
+
+FROM node:${NODE_VERSION}-alpine
 
 ENV HOST 0.0.0.0
 
@@ -15,3 +17,5 @@ RUN yarn install
 COPY . ./
 
 CMD yarn dev
+
+EXPOSE 3000

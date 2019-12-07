@@ -10,7 +10,7 @@ export default {
       skipTimerCount: 0,
       rtl: false,
       throttle: 200,
-      duration: 3000,
+      duration: 5000,
       continuous: false
     }
   },
@@ -152,3 +152,26 @@ export default {
   }
 }
 </script>
+
+<style>
+.nuxt-progress {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  height: 2px;
+  width: 0%;
+  opacity: 1;
+  transition: width 0.1s, opacity 0.4s;
+  background-color: #fff;
+  z-index: 999999;
+}
+
+.nuxt-progress.nuxt-progress-notransition {
+  transition: none;
+}
+
+.nuxt-progress-failed {
+  background-color: red;
+}
+</style>

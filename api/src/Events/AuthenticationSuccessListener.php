@@ -11,12 +11,14 @@ class AuthenticationSuccessListener
     {
         $data = $event->getData();
         $person = $event->getUser();
+
         if (!$person instanceof Person) {
             return;
         }
 
         $data['id'] = $person->getId();
         $data['email'] = $person->getEmail();
+        $data['avatar'] = $person->getAvatar();
 
         $event->setData($data);
     }

@@ -1,92 +1,191 @@
 version: '3.4'
 
-x-cache:
-  &cache
-  cache_from:
-    - ${CONTAINER_REGISTRY_BASE}/php
-    - ${CONTAINER_REGISTRY_BASE}/nginx
+x-cache-from:
+  - &api-cache-from
+    cache_from:
+      - ${NGINX_IMAGE:-quay.io/api-platform/nginx}
+      - ${PHP_IMAGE:-quay.io/api-platform/php}
 
 services:
-  php:
-    image: ${CONTAINER_REGISTRY_BASE}/php
-    build:
-      context: ./api
-      target: api_platform_php
-      <<: *cache
-    depends_on:
-      - db
-    volumes:
-      - ./api:/srv/api:cached
-
-  api:
-    image: ${CONTAINER_REGISTRY_BASE}/nginx
-    build:
-      context: ./api
-      target: api_platform_nginx
-      <<: *cache
-    depends_on:
-      - php
-    volumes:
-      - ./api/public:/srv/api/public:ro
+  traefik:
+    image: "traefik:v2.0.1"
+    container_name: traefik_${PROJECT_NAME}
+    command:
+      - --providers.docker.network=${PROJECT_NAME}
     ports:
-      - '8000:80'
-
-  # Using PostgresSQL
-  db:
-    image: postgres:10-alpine
-    environment:
-      - POSTGRES_DB=family_cooking
-      - POSTGRES_PASSWORD=pswd
-      - POSTGRES_USER=herveGuigoz
-    volumes:
-      #- db-data:/var/lib/postgresql/data:rw
-      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      - ./api/docker/db/data:/var/lib/postgresql/data:rw
-    ports:
-      - target: 5432
-        published: 5432
-        protocol: tcp
-
-  # Using mySQL
-  #db:
-  #  image: mysql:5.7
-  #  environment:
-  #    MYSQL_ROOT_PASSWORD: root
-  #    MYSQL_DATABASE: family_cooking
-  #    MYSQL_USER: herveGuigoz
-  #    MYSQL_PASSWORD: pswd
-  #  volumes:
-  #    - ./.docker/db/data:/var/lib/mysql:rw
-  #  ports:
-  #    - '3307:3306'
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - '8998:8080'
+      - "80:80"
+      - "8080:8080"
+      - "443:443"
     depends_on:
-      - db
+      - dev-tls
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # On map la conf statique dans le conteneur
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml:ro
+      # On map la conf dynamique dans le conteneur
+      - ./traefik/dynamic-conf.toml:/etc/traefik/dynamic-conf.toml:ro
+      # On map les certificats dans le conteneur | use self-generated certificate only in dev, IT IS NOT SECURE!
+      - dev-certs:/certs:ro
 
   client:
     build:
       context: ./client
-      cache_from:
-        - ${CONTAINER_REGISTRY_BASE}/client
+    container_name: client_${PROJECT_NAME}
     volumes:
       - ./client:/usr/src/client:rw,cached
       - /usr/src/client/node_modules
-      - ./.docker/api/var:/usr/src/client/static/data:ro
-    ports:
-      - '82:3000'
+    extra_hosts:
+      - "localhost:127.0.0.1"
+    labels:
+      # Explicitly tell Traefik to expose this container
+      - traefik.enable=true
+      # URL HTTP
+      - traefik.http.routers.client-http-${PROJECT_NAME}.rule=HostRegexp(`{subdomains:(www.)?}${DOMAIN_NAME}`)
+      # URL HTTPS
+      - traefik.http.routers.client-https-${PROJECT_NAME}.rule=HostRegexp(`{subdomains:(www.)?}${DOMAIN_NAME}`)
+      # Point d'entré web (http)
+      - traefik.http.routers.client-http-${PROJECT_NAME}.entrypoints=web
+      # Point d'entré web-secure (https)
+      - traefik.http.routers.client-https-${PROJECT_NAME}.entrypoints=web-secure
+      # Activation de TLS
+      - traefik.http.routers.client-https-${PROJECT_NAME}.tls=true
+      # HTTP to HTTPS Redirection
+      - traefik.http.routers.client-http-${PROJECT_NAME}.middlewares=redirect@file
 
-  h2-proxy:
+  php:
     build:
-      context: ./h2-proxy
+      context: ./api
+      target: api_platform_php
+      <<: *api-cache-from
+    image: ${PHP_IMAGE:-quay.io/api-platform/php}
+    container_name: php_${PROJECT_NAME}
+    healthcheck:
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 30s
     depends_on:
-      - api
-      - client
+      - db
+    environment:
+      - APP_ENV=${APP_ENV}
+      - TRUSTED_HOSTS=^((${SUBDOMAINS_LIST}\.)?${DOMAIN_NAME})$$
+      - CORS_ALLOW_ORIGIN=^(${HTTP_OR_SSL}(${SUBDOMAINS_LIST}.)?${DOMAIN_NAME})$$
+      - DATABASE_URL=postgres://${DATABASE_USER}:${DATABASE_PASS}@db/${DATABASE_NAME}
+    volumes:
+      - ./api:/srv/api:rw,cached
+      - ./api/docker/php/conf.d/api-platform.dev.ini/:/usr/local/etc/php/conf.d/api-platform.ini
+      # if you develop on Linux, you may use a bind-mounted host directory instead
+      # - ./api/var:/srv/api/var:rw
+
+  api:
+    build:
+      context: ./api
+      target: api_platform_nginx
+      <<: *api-cache-from
+    container_name: api_${PROJECT_NAME}
+    image: ${NGINX_IMAGE:-quay.io/api-platform/nginx}
+    depends_on:
+      - php
+    volumes:
+      - ./api/public:/srv/api/public:ro
+    extra_hosts:
+      - "localhost:127.0.0.1"
+    labels:
+      # Explicitly tell Traefik to expose this container
+      - traefik.enable=true
+      # URL HTTP
+      - traefik.http.routers.api-http-${PROJECT_NAME}.rule=Host(`api.${DOMAIN_NAME}`)
+      # URL HTTPS
+      - traefik.http.routers.api-https-${PROJECT_NAME}.rule=Host(`api.${DOMAIN_NAME}`)
+      # Point d'entré web (http)
+      - traefik.http.routers.api-http-${PROJECT_NAME}.entrypoints=web
+      # Point d'entré web-secure (https)
+      - traefik.http.routers.api-https-${PROJECT_NAME}.entrypoints=web-secure
+      # Activation de TLS
+      - traefik.http.routers.api-https-${PROJECT_NAME}.tls=true
+      # HTTP to HTTPS Redirection
+      - traefik.http.routers.api-http-${PROJECT_NAME}.middlewares=redirect@file
+    
+  db:
+    image: postgres:12-alpine
+    container_name: db_${PROJECT_NAME}
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASS}
+      - POSTGRES_USER=${DATABASE_USER}
+    volumes:
+      - db-data:/var/lib/postgresql/data:rw
+      # you may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
+      # - ./api/docker/db/data:/var/lib/postgresql/data:rw
     ports:
-      - '454:444'
-      - '8453:8443'
-      - '8454:8444'
+      - "5432:5432"
+
+  adminer:
+    image: adminer
+    container_name: adminer_${PROJECT_NAME}
+    restart: always
+    expose:
+      - "8080"
+    depends_on:
+      - db
+    labels:
+    # Explicitly tell Traefik to expose this container
+    - traefik.enable=true
+    # URL HTTP
+    - traefik.http.routers.adminer-http-${PROJECT_NAME}.rule=Host(`adminer.${DOMAIN_NAME}`)
+    # URL HTTPS
+    - traefik.http.routers.adminer-https-${PROJECT_NAME}.rule=Host(`adminer.${DOMAIN_NAME}`)
+    # Point d'entré web (http)
+    - traefik.http.routers.adminer-http-${PROJECT_NAME}.entrypoints=web
+    # Point d'entré web-secure (https)
+    - traefik.http.routers.adminer-https-${PROJECT_NAME}.entrypoints=web-secure
+    # Activation de TLS
+    - traefik.http.routers.adminer-https-${PROJECT_NAME}.tls=true
+    # HTTP to HTTPS Redirection
+    - traefik.http.routers.adminer-http-${PROJECT_NAME}.middlewares=redirect@file
+
+  dev-tls:
+    build:
+      context: ./docker/dev-tls
+    container_name: dev_tls_${PROJECT_NAME}
+    volumes:
+      - dev-certs:/certs:rw
+
+#  vulcain:
+#    image: dunglas/vulcain
+#    environment:
+#      - CERT_FILE=/certs/localhost.crt
+#      - KEY_FILE=/certs/localhost.key
+#      - UPSTREAM=http://api
+#    depends_on:
+#      - api
+#      - dev-tls
+#    volumes:
+#      - dev-certs:/certs:ro
+#    ports:
+#      - target: 443
+#        published: 8443
+#        protocol: tcp
+
+#  mercure:
+#    image: dunglas/mercure
+#    environment:
+#      - ALLOW_ANONYMOUS=1
+#      - CERT_FILE=/certs/localhost.crt
+#      - CORS_ALLOWED_ORIGINS=*
+#      - DEMO=1
+#      - JWT_KEY=!ChangeMe!
+#      - KEY_FILE=/certs/localhost.key
+#      - PUBLISH_ALLOWED_ORIGINS=https://localhost:1337 # required for publishing from the demo page
+#    depends_on:
+#      - dev-tls
+#    volumes:
+#      - dev-certs:/certs:ro
+#    ports:
+#      - target: 443
+#        published: 1337
+#        protocol: tcp
+
+volumes:
+  db-data: {}
+  dev-certs: {}

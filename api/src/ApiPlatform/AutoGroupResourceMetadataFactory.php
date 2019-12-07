@@ -17,7 +17,6 @@ class AutoGroupResourceMetadataFactory implements ResourceMetadataFactoryInterfa
     public function create(string $resourceClass): ResourceMetadata
     {
         $resourceMetadata = $this->decorated->create($resourceClass);
-
         $itemOperations = $resourceMetadata->getItemOperations();
         $resourceMetadata = $resourceMetadata->withItemOperations(
             $this->updateContextOnOperations($itemOperations, $resourceMetadata->getShortName(), true)

@@ -1,8 +1,4 @@
-# Familly_Cooking
-
-> Cooking recipe website
-
-## Build Setup
+# Build Setup
 
 ``` bash
 # install dependencies
