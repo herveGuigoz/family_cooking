@@ -1,0 +1,17 @@
+App\Entity\Person:
+    person1:
+        username: herveGuigoz
+        email: herve@mail.com
+        avatar: moustache
+        password: password
+        roles: ['ROLE_ADMIN']
+    person2:
+        username: Andy
+        email: andy@mail.com
+        avatar: baby
+        password: password
+    person{3..9}:
+        username (unique): <firstName()> <lastName()>
+        email (unique): <email()>
+        avatar: moustache
+        password: password
