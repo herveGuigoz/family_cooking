@@ -2,6 +2,8 @@
 
 ### Install Project
 - Run `make install`
+- Run `make back-db-schema-update`
+- Run `make back-db-reset`
 
 ## Routes: 
 
