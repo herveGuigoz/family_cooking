@@ -32,15 +32,22 @@ export const mutations = {
       return item.slug === recipe.slug
     })
     state.list[index].isBookmarked = isBookmarked
+  },
+  UPDATE_LOVE_COUNTER (state, slug, count) {
+    const index = state.list.findIndex((item) => {
+      return item.slug === slug
+    })
+    state.list[index].totalInteractionsCount = state.list[index].totalInteractionsCount - state.list[index].userInteractionCount + count
+    state.list[index].userInteractionCount = count
   }
 }
 
 // Actions
-
 export const actions = {
-//  async nuxtServerInit({ dispatch }) {
-//    await dispatch('getRecipes')
-//  },
+  async nuxtServerInit({ dispatch }) {
+    await dispatch('getRecipes')
+    await dispatch('auth/initAuth')
+  },
   async getRecipes(vuexContext) {
     const token = this.$cookie.get('auth')
     if (token) { this.$axios.setToken(token, 'Bearer') }
@@ -48,8 +55,11 @@ export const actions = {
     vuexContext.commit('SET_RECIPES_LIST', response['hydra:member'])
   },
   async handleBookmarkAction(vuexContext, slug) {
-    console.log(vuexContext.state.auth.user.id)
-    // await response = this.$axios.$put('/people/' + vuexContext.state.auth.user.id, data)
-    // vuexContext.dispatch('UPDATE_BOOKMARKS', response.isBookmarked)
+    const response = await this.$axios.$post('/bookmark', { slug })
+    vuexContext.dispatch('UPDATE_BOOKMARKS', response.isBookmarked)
+  },
+  async handleSendLoveAction(vuexContext, slug, count) {
+    const response = await this.$axios.$post('/bookmark', { slug: slug, count: count })
+    vuexContext.dispatch('UPDATE_LOVE_COUNTER', slug, response.loves)
   }
 }

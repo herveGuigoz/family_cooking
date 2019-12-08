@@ -155,6 +155,8 @@ class Recipe
 
     /**
      * How long ago in text that this recipe was added.
+     *
+     * @Groups({"recipe:read"})
      */
     public function getPublishedAt(): string
     {
@@ -210,6 +212,14 @@ class Recipe
         $this->cookTime = $cookTime;
 
         return $this;
+    }
+
+    /**
+     * @Groups({"recipe:read"})
+     */
+    public function getTotalTime(): int
+    {
+        return $this->cookTime + $this->prepTime;
     }
 
     public function getAuthor(): ?Person

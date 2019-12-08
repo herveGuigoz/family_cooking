@@ -37,8 +37,8 @@
         </div>
       </div>
     </div>
-    <div class="flex-shrink-0 px-4 py-3 bg-brown">
-      <nuxt-link :to="auth.token ? '/profile/edit' : '/login'">
+    <div class="flex-shrink-0 flex justify-center py-3">
+      <nuxt-link :to="auth.token ? '/profile/edit' : '/auth/login'">
         <badge :user="auth.user" />
       </nuxt-link>
     </div>

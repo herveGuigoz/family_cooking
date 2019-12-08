@@ -55,7 +55,7 @@ export const actions = {
     if (this.$cookie.get('auth')) {
       this.$cookie.remove('auth')
     }
-    this.$cookie.set('auth', response.token, { maxAge: 2592000 }) // 60 * 60 * 24 * 30 = 2592000
+    this.$cookie.set('auth', response.token, { maxAge: 3600 }) // 60 * 60 * 24 * 30 = 2592000
     vuexContext.dispatch('getRecipes', null, { root: true }) // https://vuex.vuejs.org/guide/modules.html#accessing-global-assets-in-namespaced-modules
   },
   async registerUser(vuexContext, registerData) {
@@ -68,8 +68,7 @@ export const actions = {
   },
   async updateUser(vuexContext, updateData) {
     const data = { email: updateData.email, avatar: updateData.avatar}
-    if (updateData.newPassword.length > 0) { data.password = updateData.newPassword}
-    console.log(data)
+    if (updateData.newPassword) { data.password = updateData.newPassword}
     await this.$axios.$put('/people/' + vuexContext.state.user.id, data)
     vuexContext.dispatch('authenticateUser', { username: updateData.username, password: updateData.password })
   },

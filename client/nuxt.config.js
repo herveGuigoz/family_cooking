@@ -16,9 +16,19 @@ export default {
     ]
   },
   /*
+   * Global Middleware
+   */
+  router: {
+    middleware: 'auth'
+  },
+  transition: {
+    name: 'fade',
+    mode: 'out-in'
+  },
+  /*
   ** Customize the progress-bar color
   */
-  loading: { color: '#fff' },
+  loading: { color: 'rgb(0, 209, 178)', height: '5px' },
   /*
   ** Global CSS
   */
