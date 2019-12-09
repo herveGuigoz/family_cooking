@@ -9,6 +9,24 @@ export const getters = {
   getList (state) {
     return state.list
   },
+  getPreviousRecipeInList: (state) => (slug) => {
+    const index = state.list.findIndex((item) => {
+      return item.slug === slug
+    })
+    if (index === 0 ) {
+      return null
+    }
+    return state.list[index - 1].slug
+  },
+  getNextRecipeInList: (state) => (slug) => {
+    const index = state.list.findIndex((item) => {
+      return item.slug === slug
+    })
+    if (index === state.list.length -1 ) {
+      return null
+    }
+    return state.list[index + 1].slug
+  },
   getRecipeBySlug: (state, getters) => (slug) => {
     if (state.list){
       return state.list.find(recipe => recipe.slug === slug)
