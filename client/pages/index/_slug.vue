@@ -14,7 +14,7 @@
           </button>
         </div>
         <div class="flex items-center">
-          <button>
+          <button v-if="$store.getters.getNextRecipeInList(this.slug)" @click="toNextRecipe">
             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
               <path fill="#72caaf" d="M32.04 62.12L59.04 35.12 54.8 30.88 34.92 50.76 34.92 3 28.92 3 28.92 50.76 9.04 30.88 4.79 35.12 31.8 62.12 31.92 62 32.04 62.12z"/>
               <path fill="#97e0bb" d="M9.42,26.5h42a3,3,0,0,1,3,3v0a0,0,0,0,1,0,0h-48a0,0,0,0,1,0,0v0A3,3,0,0,1,9.42,26.5Z" transform="rotate(90 30.42 28)"/>
@@ -22,7 +22,7 @@
               <path fill="#8d6c9f" d="M59.71,34.29l-4-4a1,1,0,0,0-1.41,0L36,48.59V3a1,1,0,0,0-1-1H29a1,1,0,0,0-1,1V48.59L9.71,30.29a1,1,0,0,0-1.41,0l-4,4a1,1,0,0,0,0,1.41l27,27a1,1,0,0,0,1.41,0l27-27A1,1,0,0,0,59.71,34.29ZM32,60.59,6.41,35,9,32.41,28.29,51.71A1,1,0,0,0,30,51V4h4V51a1,1,0,0,0,1.71.71L55,32.41,57.59,35Z"/>
             </svg>
           </button>
-          <button class="ml-2">
+          <button v-if="$store.getters.getPreviousRecipeInList(this.slug)" class="ml-2" @click="toPreviousRecipe">
             <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
               <path fill="#72caaf" d="M31.88 1.88L4.88 28.88 9.12 33.12 29 13.24 29 61 35 61 35 13.24 54.88 33.12 59.12 28.88 32.12 1.88 32 2 31.88 1.88z"/>
               <path fill="#5dbc9d" d="M12.5,34.5h42a3,3,0,0,1,3,3v0a0,0,0,0,1,0,0H9.5a0,0,0,0,1,0,0v0A3,3,0,0,1,12.5,34.5Z" transform="rotate(-90 33.5 36)"/>
@@ -39,7 +39,7 @@
           <claps-component :total-count="totalInteractionsCount" :user-interaction-count="isUserInteractionCountAvailable" @click="sendLove"/>
         </div>
         <div>
-          <h1 class="ml-6 mt-3 font-bold text-2xl">{{ title | truncate(36) }}</h1>
+          <h1 class="ml-6 mt-3 font-bold text-2xl">{{ title | truncate(36) }} {{ getNextSlug }}</h1>
         </div>
         <div class="ml-auto flex flex-col text-xs mt-3">
           <p>Publiée {{ publishedAt }},</p>
@@ -105,8 +105,10 @@
       if (!recipe) {
         return error({ message: 'Recipe not found', statusCode: 404 })
       }
-      store.commit('SET_SELECTED', params.slug)
       return recipe
+    },
+    created() {
+      this.$store.commit('SET_SELECTED', this.slug)
     },
     computed: {
       isBookmarkAvailable () {
@@ -123,6 +125,12 @@
         } catch (e) {
           console.log(e)
         }
+      },
+      toPreviousRecipe () {
+        this.$router.push('/' + this.$store.getters.getPreviousRecipeInList(this.slug))
+      },
+      toNextRecipe () {
+        this.$router.push('/' + this.$store.getters.getNextRecipeInList(this.slug))
       },
       quit () {
         this.$router.push('/')

@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <recipes-list-component :recipes="recipes" />
-    <div>
+    <div class="w-full">
       <NuxtChild :key="$route.params.slug" />
     </div>
   </div>
