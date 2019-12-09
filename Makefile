@@ -51,7 +51,7 @@ uninstall:
 	$(DC) kill
 	# Remove containers.
 	$(DC) down --volumes --remove-orphans
-	./scripts/uninstall.sh
+#	./scripts/uninstall.sh
 
 ##
 ## Backend specific
