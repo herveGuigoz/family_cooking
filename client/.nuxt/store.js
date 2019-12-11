@@ -20,6 +20,7 @@ void (function updateModules () {
   store.modules = store.modules || {}
 
   resolveStoreModules(require('../store/auth.js'), 'auth.js')
+  resolveStoreModules(require('../store/notification.js'), 'notification.js')
 
   // If the environment supports hot reloading...
 
@@ -28,6 +29,7 @@ void (function updateModules () {
     module.hot.accept([
       '../store/auth.js',
       '../store/index.js',
+      '../store/notification.js',
     ], () => {
       // Update `root.modules` with the latest definitions.
       updateModules()

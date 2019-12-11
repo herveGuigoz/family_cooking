@@ -44,7 +44,6 @@
 </template>
 
 <script>
-import 'vuejs-noty/dist/vuejs-noty.css'
 import { required, minLength } from 'vuelidate/lib/validators'
 import InputComponent from "../../components/form/InputComponent";
 import BaseButton from "../../components/UI/BaseButton";
@@ -93,13 +92,13 @@ export default {
       }
       try {
         await this.$store.dispatch('auth/authenticateUser', this.form)
-        this.$noty.success(`Welcome Back ${this.form.username}`)
+        this.$notifications(`Welcome Back ${this.form.username}`, { style: 'success' })
         this.$router.push('/')
       } catch (e) {
         if (e.response.status === 401) {
-          this.$noty.error(`${error.response.data.message} 😨`)
+          this.$notifications(`${e.response.data.message} 😨`, { style: 'error' })
         } else {
-          this.$noty.error('Something went wrong 😨')
+          this.$notifications('Something went wrong 😨', { style: 'error' })
         }
       }
       this.$nuxt.$loading.finish()

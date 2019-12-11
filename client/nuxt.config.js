@@ -41,7 +41,7 @@ export default {
     '~/plugins/axios.js',
     '~/plugins/filters.js',
     '~/plugins/vuelidate.js',
-    { src: '~/plugins/vueNoty.js', ssr: false }
+    { src: '~/plugins/notifications.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules

@@ -39,7 +39,7 @@
           <claps-component :total-count="totalInteractionsCount" :user-interaction-count="isUserInteractionCountAvailable" @click="sendLove"/>
         </div>
         <div>
-          <h1 class="ml-6 mt-3 font-bold text-2xl">{{ title | truncate(36) }} {{ getNextSlug }}</h1>
+          <h1 class="ml-6 mt-3 font-bold text-2xl">{{ title | truncate(36) }}</h1>
         </div>
         <div class="ml-auto flex flex-col text-xs mt-3">
           <p>Publiée {{ publishedAt }},</p>
@@ -119,6 +119,14 @@
       }
     },
     methods: {
+      async handleBookmarkAction () {
+        try {
+          await this.$store.dispatch('handleBookmarkAction', this.slug)
+          this.isBookmarked = !this.isBookmarked
+        } catch (e) {
+          console.log(e)
+        }
+      },
       async sendLove () {
         try {
           await this.$store.dispatch('handleSendLoveAction', this.userInteractionCount)
@@ -134,14 +142,6 @@
       },
       quit () {
         this.$router.push('/')
-      },
-      async handleBookmarkAction () {
-        try {
-          await this.$store.dispatch('handleBookmarkAction', this.slug)
-          this.isBookmarked = !this.isBookmarked
-        } catch (e) {
-          console.log(e)
-        }
       }
     },
     beforeDestroy () {
