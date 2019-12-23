@@ -148,7 +148,7 @@
           </div>
         </div>
         <div class="w-24 ml-3 mt-6 xl:mt-0">
-          <base-button>Submit</base-button>
+          <base-button outline>Submit</base-button>
         </div>
       </form>
     </div>

@@ -27,11 +27,11 @@
         </div>
         <div class="p-3 flex flex-nowrap">
           <div class="w-24">
-            <base-button>Submit</base-button>
+            <base-button outline>Submit</base-button>
           </div>
           <div class="text-xs flex-1 flex justify-center items-center">
             <nuxt-link to="/auth/register">
-              New to FamilyCooking? <span class="text-verve-500">Create an account!</span>
+              New to FamilyCooking? <span class="text-teal-500">Create an account!</span>
             </nuxt-link>
           </div>
         </div>

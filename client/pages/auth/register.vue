@@ -43,7 +43,7 @@
         </div>
         <div class="p-3 flex flex-nowrap">
           <div class="w-24">
-            <base-button>Submit</base-button>
+            <base-button outline>Submit</base-button>
           </div>
           <div class="text-xs flex-1 flex flex-nowrap justify-center items-center">
             <nuxt-link to="/auth/login">

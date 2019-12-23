@@ -34,7 +34,7 @@ class InteractionManager
         return $interaction;
     }
 
-    public function handleLove(Person $person, Recipe $recipe, int $count): Interaction
+    public function handleLove(Person $person, Recipe $recipe): Interaction
     {
         $interaction = $this->interactionRepository->findOneByUserIdAndRecipeId($person, $recipe);
 
@@ -42,9 +42,13 @@ class InteractionManager
             $interaction = new Interaction();
             $interaction->setPerson($person);
             $interaction->setRecipe($recipe);
+            $interaction->setInteractionCount(1);
+            $this->interactionRepository->save($interaction);
+
+            return $interaction;
         }
 
-        $interaction->setInteractionCount($count + $interaction->getInteractionCount() > 100 ? 100 : $interaction->getInteractionCount() + $count);
+        $interaction->setInteractionCount($interaction->getInteractionCount() >= 100 ? 100 : $interaction->getInteractionCount() + 1);
         $this->interactionRepository->save($interaction);
 
         return $interaction;

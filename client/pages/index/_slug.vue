@@ -34,20 +34,18 @@
       </div>
     </div>
     <div class="p-3 flex-1 overflow-y-auto">
-      <div class="flex items-center px-3 justify-start my-6">
-        <div>
-          <claps-component :total-count="totalInteractionsCount" :user-interaction-count="isUserInteractionCountAvailable" @click="sendLove"/>
+      <div class="recipe-header flex px-3 my-6">
+        <div class="flex">
+          <claps-component :total-count="getTotalInteractionsCount" :user-interaction-count="isUserInteractionCountAvailable" @handleClick="sendLove"/>
+          <h1 class="ml-6 mt-6 font-bold text-2xl">{{ title | truncate(36) }}</h1>
         </div>
-        <div>
-          <h1 class="ml-6 mt-3 font-bold text-2xl">{{ title | truncate(36) }}</h1>
-        </div>
-        <div class="ml-auto flex flex-col text-xs mt-3">
-          <p>Publiée {{ publishedAt }},</p>
-          <p>par @{{ author.username }}</p>
+        <div class="recipe-author flex mt-3">
+          <p>Publiée {{ publishedAt }}, </p>
+          <p>&ensp;par @{{ author.username }}</p>
         </div>
       </div>
-      <div class="flex sm:flex-col sm:items-center md:flex-row md:items-start flex-wap w-full my-12">
-        <div class="md:w-1/3 flex flex-col">
+      <div class="recipe-wrapper flex w-full my-12">
+        <div class="left-side flex flex-col">
           <div class="mr-3 p-3">
             <span class="text-xs font-bold text-brown">Durée</span>
             <ul class="list-disc ml-4 pt-3 text-brown">
@@ -61,7 +59,7 @@
               </li>
             </ul>
           </div>
-          <div class="mt-6 mr-3 p-3 border-t">
+          <div class="mr-3 p-3 border-t">
             <h2
               v-if="recipeIngredients.length > 0"
               class="text-xs font-bold text-brown"
@@ -75,7 +73,7 @@
             </ul>
           </div>
         </div>
-        <div class="w-full md:w-2/3 flex flex-col mt-6 px-6 pt-3 md:mt-0 border-l">
+        <div class="right-side w-full flex flex-col mt-6 p-3 md:mt-0">
           <span class="text-xs font-bold text-brown mb-3">Etapes :</span>
           <div v-for="(step, index) in recipeInstructions" :key="index" class="my-3 flex">
             <p class="font-bold text-verve">{{ index + 1 }}.</p>
@@ -116,6 +114,9 @@
       },
       isUserInteractionCountAvailable () {
         return this.hasOwnProperty('userInteractionCount') ? this.userInteractionCount : 0
+      },
+      getTotalInteractionsCount() {
+        return this.totalInteractionsCount
       }
     },
     methods: {
@@ -128,8 +129,14 @@
         }
       },
       async sendLove () {
+        if (this.userInteractionCount === undefined) {
+          this.$notifications(`Loves shows ${this.author.username} how much you appreciated this recipe.`, { delay: 10000, style: 'lock', links: [{title: 'REGISTER', to: 'auth/register'}, {title: 'LOGIN', to: 'auth/login'}] })
+          return
+        }
         try {
-          await this.$store.dispatch('handleSendLoveAction', this.userInteractionCount)
+          this.userInteractionCount++
+          this.totalInteractionsCount++
+          await this.$store.dispatch('handleSendLoveAction', { slug: this.slug, count: this.userInteractionCount })
         } catch (e) {
           console.log(e)
         }
@@ -151,5 +158,43 @@
 </script>
 
 <style scoped>
+.recipe-header {
+    flex-direction: column
+  }
+.recipe-author {
+  font-size: .6rem;
+}
+.left-side {
+  min-width: 215px;
+}
+.right-side {
+  min-width: 450px;
+  border-top-width: 1px;
+}
+.recipe-wrapper {
+  flex-direction: column
+}
+@media (min-width: 1200px) {
+  .recipe-header {
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row
+  }
+  .recipe-author {
+    margin-left: auto;
+    flex-direction: column;
+  }
+  .recipe-wrapper {
+    flex-direction: row
+  }
+  .left-side {
+    width: 33.333333%;
+  }
+  .right-side {
+    width: 66.666667%;
+    border-top-width: 0;
+    border-left-width: 1px;
+  }
+}
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col relative w-full md:max-w-xs flex-grow flex-shrink-0 border-r bg-white text-brown">
+  <div class="flex flex-col relative w-full md:max-w-xs flex-grow flex-shrink-0 border-r bg-white text-brown md:block" :class="{hidden: !isVisible}">
     <div class="px-4 py-2 flex items-center justify-between border-b h-16">
       <div class="flex items-center justify-center w-full">
         <div class="block relative w-full">
@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   name: 'RecipesListComponent',
   props: {
@@ -52,9 +53,12 @@ export default {
     }
   },
   computed: {
-    selected () {
-      return this.$store.state.selected
-    }
+    isVisible() {
+      return this.selected === null
+    },
+    ...mapState({
+      selected: state => state.selected
+    })
   },
   methods: {
     handleSelection (slug) {

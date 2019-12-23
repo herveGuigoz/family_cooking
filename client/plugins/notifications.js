@@ -3,4 +3,4 @@ export default ({ app }, inject) => {
 }
 // Arguments :
 // message -> String
-// options -> Object { delay (int) (milliseconds), style (string) (error, success, lock) }
+// options -> Object { (int)delay: milliseconds, (string)style: 'error' or 'success' or 'lock', (array)links: [{title: 'buttonTitle', to: 'path'}] }

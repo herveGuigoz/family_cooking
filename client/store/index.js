@@ -51,12 +51,12 @@ export const mutations = {
     })
     state.list[index].isBookmarked = payload.isBookmarked
   },
-  UPDATE_LOVE_COUNTER (state, slug, count) {
+  UPDATE_LOVE_COUNTER (state, payload) {
     const index = state.list.findIndex((item) => {
-      return item.slug === slug
+      return item.slug === payload.slug
     })
-    state.list[index].totalInteractionsCount = state.list[index].totalInteractionsCount - state.list[index].userInteractionCount + count
-    state.list[index].userInteractionCount = count
+    state.list[index].totalInteractionsCount++
+    state.list[index].userInteractionCount++
   }
 }
 
@@ -76,8 +76,8 @@ export const actions = {
     const response = await this.$axios.$post('/bookmark', { slug })
     vuexContext.commit('UPDATE_BOOKMARKS', { slug, isBookmarked: response.isBookmarked })
   },
-  async handleSendLoveAction(vuexContext, slug, count) {
-    const response = await this.$axios.$post('/bookmark', { slug: slug, count: count })
-    vuexContext.dispatch('UPDATE_LOVE_COUNTER', slug, response.loves)
+  async handleSendLoveAction(vuexContext, payload) {
+    const response = await this.$axios.$post('/love', { slug: payload.slug, count: payload.count })
+    vuexContext.commit('UPDATE_LOVE_COUNTER', { slug: payload.slug, count: response.loves })
   }
 }
