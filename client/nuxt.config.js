@@ -48,7 +48,7 @@ export default {
   */
   buildModules: [
     // Doc: https://github.com/nuxt-community/nuxt-tailwindcss
-    '@nuxtjs/tailwindcss',
+    '@nuxtjs/tailwindcss'
   ],
   /*
   ** Nuxt.js modules
@@ -59,7 +59,7 @@ export default {
   ],
   axios: {
     baseURL: 'http://api:80',
-    browserBaseURL: 'https://api.localhost' //can use environment variables to fill both..
+    browserBaseURL: 'https://api.localhost' // can use environment variables to fill both..
   },
   /*
   ** Build configuration

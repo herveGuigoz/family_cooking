@@ -39,8 +39,8 @@
     </div>
     <div class="flex-shrink-0 flex justify-center py-3">
       <nuxt-link :to="auth.token ? '/profile/edit' : '/auth/login'" class="flex items-center w-full px-4">
-        <base-avatar :avatar="auth.user.avatar || 'anonymous'" class="mx-2"/>
-        <span class="ml-1 text-beige-500 label tracking-wide">{{ auth.user.username || 'Login'}}</span>
+        <base-avatar :avatar="auth.user.avatar || 'anonymous'" class="mx-2" />
+        <span class="ml-1 text-beige-500 label tracking-wide">{{ auth.user.username || 'Login' }}</span>
       </nuxt-link>
     </div>
   </div>
@@ -48,7 +48,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import BaseAvatar from "../UI/BaseAvatar";
+import BaseAvatar from '../UI/BaseAvatar'
 import UiButtonComponent from '../UI/UiButtonComponent'
 import IconSearchComponent from '../icons/IconSearchComponent'
 import IconInLoveComponent from '../icons/IconInLoveComponent'
