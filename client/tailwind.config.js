@@ -12,16 +12,16 @@ module.exports = {
       fontFamily: {
         book: [
           'Avenir-Book',
-          ...defaultTheme.fontFamily.sans,
+          ...defaultTheme.fontFamily.sans
         ],
         light: [
           'Avenir-Light',
-          ...defaultTheme.fontFamily.sans,
+          ...defaultTheme.fontFamily.sans
         ],
         sans: [
           'Avenir-Book',
           'Avenir-Light',
-          ...defaultTheme.fontFamily.sans,
+          ...defaultTheme.fontFamily.sans
         ]
       },
       colors: {
@@ -30,14 +30,14 @@ module.exports = {
         verve: 'rgb(0, 209, 178)',
         beige: {
           500: 'rgb(219, 219, 219)'
-        },
+        }
       },
       spacing: {
-        '7' : '1.875rem',
-        '9': '2.18175rem',
+        7: '1.875rem',
+        9: '2.18175rem'
       },
       maxWidth: {
-        xxs: '12rem',
+        xxs: '12rem'
       }
     }
   },

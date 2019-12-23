@@ -27,7 +27,9 @@
         </div>
         <div class="p-3 flex flex-nowrap">
           <div class="w-24">
-            <base-button outline>Submit</base-button>
+            <base-button outline>
+              Submit
+            </base-button>
           </div>
           <div class="text-xs flex-1 flex justify-center items-center">
             <nuxt-link to="/auth/register">
@@ -45,9 +47,9 @@
 
 <script>
 import { required, minLength } from 'vuelidate/lib/validators'
-import InputComponent from "../../components/form/InputComponent";
-import BaseButton from "../../components/UI/BaseButton";
-import SignUp4IllustrationComponent from "../../components/illustrations/SignUp4IllustrationComponent";
+import InputComponent from '../../components/form/InputComponent'
+import BaseButton from '../../components/UI/BaseButton'
+import SignUp4IllustrationComponent from '../../components/illustrations/SignUp4IllustrationComponent'
 export default {
   components: {
     InputComponent,

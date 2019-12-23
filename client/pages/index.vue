@@ -10,14 +10,12 @@
 <script>
 import { mapState } from 'vuex'
 import RecipesListComponent from '../components/Recipes/RecipesListComponent'
-import ClapsComponent from '../components/Recipes/ClapsComponent'
 export default {
   components: {
-    ClapsComponent,
     RecipesListComponent
   },
   data: () => ({
-    errors: null,
+    errors: null
   }),
   computed: {
     ...mapState({

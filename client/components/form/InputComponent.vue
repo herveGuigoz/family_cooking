@@ -21,48 +21,48 @@
 </template>
 
 <script>
-  export default {
-    name: 'InputComponent',
-    props: {
-      value: {
-        type: String,
-        default: ''
-      },
-      error: {
-        type: String,
-        default: ''
-      },
-      v: {
-        type: Object,
-        required: true
-      },
-      type: {
-        type: String,
-        default: 'text'
-      },
-      id: {
-        type: String,
-        required: true
-      },
-      label: {
-        type: String,
-        required: true
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      }
+export default {
+  name: 'InputComponent',
+  props: {
+    value: {
+      type: String,
+      default: ''
     },
-    computed: {
-      handleInput: {
-        get () {
-          return this.value
-        },
-        set (value) {
-          this.v.$touch()
-          this.$emit('input', value)
-        }
+    error: {
+      type: String,
+      default: ''
+    },
+    v: {
+      type: Object,
+      required: true
+    },
+    type: {
+      type: String,
+      default: 'text'
+    },
+    id: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: String,
+      required: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    handleInput: {
+      get () {
+        return this.value
+      },
+      set (value) {
+        this.v.$touch()
+        this.$emit('input', value)
       }
     }
   }
+}
 </script>

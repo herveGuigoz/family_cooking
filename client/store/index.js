@@ -9,26 +9,26 @@ export const getters = {
   getList (state) {
     return state.list
   },
-  getPreviousRecipeInList: (state) => (slug) => {
+  getPreviousRecipeInList: state => (slug) => {
     const index = state.list.findIndex((item) => {
       return item.slug === slug
     })
-    if (index === 0 ) {
+    if (index === 0) {
       return null
     }
     return state.list[index - 1].slug
   },
-  getNextRecipeInList: (state) => (slug) => {
+  getNextRecipeInList: state => (slug) => {
     const index = state.list.findIndex((item) => {
       return item.slug === slug
     })
-    if (index === state.list.length -1 ) {
+    if (index === state.list.length - 1) {
       return null
     }
     return state.list[index + 1].slug
   },
   getRecipeBySlug: (state, getters) => (slug) => {
-    if (state.list){
+    if (state.list) {
       return state.list.find(recipe => recipe.slug === slug)
     }
   }
@@ -62,21 +62,21 @@ export const mutations = {
 
 // Actions
 export const actions = {
-  async nuxtServerInit({ dispatch }) {
+  async nuxtServerInit ({ dispatch }) {
     await dispatch('getRecipes')
     await dispatch('auth/initAuth')
   },
-  async getRecipes(vuexContext) {
+  async getRecipes (vuexContext) {
     const token = this.$cookie.get('auth')
     if (token) { this.$axios.setToken(token, 'Bearer') }
     const response = await this.$axios.$get('/recipes')
     vuexContext.commit('SET_RECIPES_LIST', response['hydra:member'])
   },
-  async handleBookmarkAction(vuexContext, slug) {
+  async handleBookmarkAction (vuexContext, slug) {
     const response = await this.$axios.$post('/bookmark', { slug })
     vuexContext.commit('UPDATE_BOOKMARKS', { slug, isBookmarked: response.isBookmarked })
   },
-  async handleSendLoveAction(vuexContext, payload) {
+  async handleSendLoveAction (vuexContext, payload) {
     const response = await this.$axios.$post('/love', { slug: payload.slug, count: payload.count })
     vuexContext.commit('UPDATE_LOVE_COUNTER', { slug: payload.slug, count: response.loves })
   }

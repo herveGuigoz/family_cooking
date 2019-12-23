@@ -37,84 +37,84 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
-  import IconSearchComponent from '../icons/IconSearchComponent'
-  import IconInLoveComponent from '../icons/IconInLoveComponent'
-  import IconToastComponent from '../icons/IconToastComponent'
-  import IconEditFileComponent from '../icons/IconEditFileComponent'
-  import futuramazapp from '../icons/avatars/futuramazapp'
-  import moustache from '~/components/icons/avatars/moustache'
-  import anonymous from '~/components/icons/avatars/anonymous'
-  import baby from '~/components/icons/avatars/baby'
-  import darthvader from '~/components/icons/avatars/darthvader'
-  import futuramaamy from '~/components/icons/avatars/futuramaamy'
-  import futuramabender from '~/components/icons/avatars/futuramabender'
-  import futuramafry from '~/components/icons/avatars/futuramafry'
-  import futuramahermes from '~/components/icons/avatars/futuramahermes'
-  import futuramaleela from '~/components/icons/avatars/futuramaleela'
-  import futuramamom from '~/components/icons/avatars/futuramamom'
-  import futuramanibbler from '~/components/icons/avatars/futuramanibbler'
-  import futuramaprofessor from '~/components/icons/avatars/futuramaprofessor'
-  import futuramazoidberg from '~/components/icons/avatars/futuramazoidberg'
-  import homersimpson from '~/components/icons/avatars/homersimpson'
-  import ironman from '~/components/icons/avatars/ironman'
-  import mermaid from '~/components/icons/avatars/mermaid'
-  import pennywise from '~/components/icons/avatars/pennywise'
-  import r2d2 from '~/components/icons/avatars/r2d2'
-  import songoku from '~/components/icons/avatars/songoku'
-  import stich from '~/components/icons/avatars/stich'
-  import stormtrooper from '~/components/icons/avatars/stormtrooper'
-  import supermario from '~/components/icons/avatars/supermario'
-  import unicorn from '~/components/icons/avatars/unicorn'
-  import walterwhite from '~/components/icons/avatars/walterwhite'
-  export default {
-    name: "NavbarComponent",
-    components: {
-      IconSearchComponent,
-      IconInLoveComponent,
-      IconToastComponent,
-      IconEditFileComponent,
-      moustache,
-      anonymous,
-      baby,
-      darthvader,
-      futuramaamy,
-      futuramabender,
-      futuramafry,
-      futuramahermes,
-      futuramaleela,
-      futuramamom,
-      futuramanibbler,
-      futuramaprofessor,
-      futuramazoidberg,
-      futuramazapp,
-      homersimpson,
-      ironman,
-      mermaid,
-      pennywise,
-      r2d2,
-      songoku,
-      stich,
-      stormtrooper,
-      supermario,
-      unicorn,
-      walterwhite
-    },
-    data () {
-      return {
-        isOpen: false
-      }
-    },
-    computed: {
-      ...mapState(['auth'])
-    },
-    methods: {
-      redirect (link) {
-        this.isOpen = false
-        this.$router.push(link)
-      }
+import { mapState } from 'vuex'
+import IconSearchComponent from '../icons/IconSearchComponent'
+import IconInLoveComponent from '../icons/IconInLoveComponent'
+import IconToastComponent from '../icons/IconToastComponent'
+import IconEditFileComponent from '../icons/IconEditFileComponent'
+import futuramazapp from '../icons/avatars/futuramazapp'
+import moustache from '~/components/icons/avatars/moustache'
+import anonymous from '~/components/icons/avatars/anonymous'
+import baby from '~/components/icons/avatars/baby'
+import darthvader from '~/components/icons/avatars/darthvader'
+import futuramaamy from '~/components/icons/avatars/futuramaamy'
+import futuramabender from '~/components/icons/avatars/futuramabender'
+import futuramafry from '~/components/icons/avatars/futuramafry'
+import futuramahermes from '~/components/icons/avatars/futuramahermes'
+import futuramaleela from '~/components/icons/avatars/futuramaleela'
+import futuramamom from '~/components/icons/avatars/futuramamom'
+import futuramanibbler from '~/components/icons/avatars/futuramanibbler'
+import futuramaprofessor from '~/components/icons/avatars/futuramaprofessor'
+import futuramazoidberg from '~/components/icons/avatars/futuramazoidberg'
+import homersimpson from '~/components/icons/avatars/homersimpson'
+import ironman from '~/components/icons/avatars/ironman'
+import mermaid from '~/components/icons/avatars/mermaid'
+import pennywise from '~/components/icons/avatars/pennywise'
+import r2d2 from '~/components/icons/avatars/r2d2'
+import songoku from '~/components/icons/avatars/songoku'
+import stich from '~/components/icons/avatars/stich'
+import stormtrooper from '~/components/icons/avatars/stormtrooper'
+import supermario from '~/components/icons/avatars/supermario'
+import unicorn from '~/components/icons/avatars/unicorn'
+import walterwhite from '~/components/icons/avatars/walterwhite'
+export default {
+  name: 'NavbarComponent',
+  components: {
+    IconSearchComponent,
+    IconInLoveComponent,
+    IconToastComponent,
+    IconEditFileComponent,
+    moustache,
+    anonymous,
+    baby,
+    darthvader,
+    futuramaamy,
+    futuramabender,
+    futuramafry,
+    futuramahermes,
+    futuramaleela,
+    futuramamom,
+    futuramanibbler,
+    futuramaprofessor,
+    futuramazoidberg,
+    futuramazapp,
+    homersimpson,
+    ironman,
+    mermaid,
+    pennywise,
+    r2d2,
+    songoku,
+    stich,
+    stormtrooper,
+    supermario,
+    unicorn,
+    walterwhite
+  },
+  data () {
+    return {
+      isOpen: false
+    }
+  },
+  computed: {
+    ...mapState(['auth'])
+  },
+  methods: {
+    redirect (link) {
+      this.isOpen = false
+      this.$router.push(link)
     }
   }
+}
 </script>
 
 <style scoped>

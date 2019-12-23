@@ -8,7 +8,11 @@
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "gitHooks": {
+    "pre-commit": "yarn lint"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.8.0",
@@ -19,6 +23,15 @@
     "yorkie": "^2.0.0"
   },
   "devDependencies": {
-    "@nuxtjs/tailwindcss": "^1.0.0"
+    "@nuxtjs/eslint-config": "^2.0.0",
+    "@nuxtjs/tailwindcss": "^1.0.0",
+    "babel-eslint": "^10.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "eslint-plugin-vue": "^6.0.1"
   }
 }

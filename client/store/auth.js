@@ -29,7 +29,7 @@ export const getters = {
 
 // Mutations
 export const mutations = {
-  setAuth(state, token) {
+  setAuth (state, token) {
     const JWT = decodeJWT(token)
     if (nowInSeconds < JWT.expire) {
       state.expire = JWT.expire
@@ -40,16 +40,16 @@ export const mutations = {
       state.token = token
     }
   },
-  reset(state) {
-    state.token = null,
-    state.expire = null,
+  reset (state) {
+    state.token = null
+    state.expire = null
     state.user = { id: null, username: null, email: null, avatar: null }
   }
 }
 
 // Actions
 export const actions = {
-  async authenticateUser(vuexContext, authData) {
+  async authenticateUser (vuexContext, authData) {
     const response = await this.$axios.$post('authentication_token', { username: authData.username, password: authData.password })
     vuexContext.commit('setAuth', response.token)
     if (this.$cookie.get('auth')) {
@@ -58,7 +58,7 @@ export const actions = {
     this.$cookie.set('auth', response.token, { maxAge: 2592000 }) // 60 * 60 * 24 * 30 = 2592000
     vuexContext.dispatch('getRecipes', null, { root: true }) // https://vuex.vuejs.org/guide/modules.html#accessing-global-assets-in-namespaced-modules
   },
-  async registerUser(vuexContext, registerData) {
+  async registerUser (vuexContext, registerData) {
     await this.$axios.$post('/people', {
       username: registerData.username,
       email: registerData.email,
@@ -66,19 +66,19 @@ export const actions = {
     })
     vuexContext.dispatch('authenticateUser', { username: registerData.username, password: registerData.password })
   },
-  async updateUser(vuexContext, updateData) {
-    const data = { email: updateData.email, avatar: updateData.avatar}
-    if (updateData.newPassword) { data.password = updateData.newPassword}
+  async updateUser (vuexContext, updateData) {
+    const data = { email: updateData.email, avatar: updateData.avatar }
+    if (updateData.newPassword) { data.password = updateData.newPassword }
     await this.$axios.$put('/people/' + vuexContext.state.user.id, data)
     vuexContext.dispatch('authenticateUser', { username: updateData.username, password: updateData.password })
   },
-  initAuth(vuexContext) {
+  initAuth (vuexContext) {
     const tokenInCookie = this.$cookie.get('auth')
     if (tokenInCookie) {
       vuexContext.commit('setAuth', tokenInCookie)
     }
   },
-  logOut(vuexContext) {
+  logOut (vuexContext) {
     this.$cookie.remove('auth')
     vuexContext.commit('reset')
     vuexContext.dispatch('getRecipes', null, { root: true })

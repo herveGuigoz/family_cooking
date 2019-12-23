@@ -13,35 +13,35 @@
       aria-valuemax="100"
     >
       <span class="flex items-center h-full">
-        <slot></slot>
+        <slot />
       </span>
     </div>
   </div>
 </template>
 <script>
-  export default {
-    inheritAttrs: false,
-    props: {
-      color: {
-        type: String,
-        default: "teal"
-      },
-      percentage: {
-        type: Number,
-        default: 0
-      },
-      rounded: {
-        type: Boolean,
-        default: true
-      },
-      indeterminate: Boolean,
-      back: Boolean,
-      duration: {
-        type: Number,
-        default: 0
-      }
+export default {
+  inheritAttrs: false,
+  props: {
+    color: {
+      type: String,
+      default: 'teal'
+    },
+    percentage: {
+      type: Number,
+      default: 0
+    },
+    rounded: {
+      type: Boolean,
+      default: true
+    },
+    indeterminate: Boolean,
+    back: Boolean,
+    duration: {
+      type: Number,
+      default: 0
     }
-  };
+  }
+}
 </script>
 <style scoped>
   @keyframes progress-indeterminate {

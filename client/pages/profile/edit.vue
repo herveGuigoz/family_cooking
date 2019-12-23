@@ -148,7 +148,9 @@
           </div>
         </div>
         <div class="w-24 ml-3 mt-6 xl:mt-0">
-          <base-button outline>Submit</base-button>
+          <base-button outline>
+            Submit
+          </base-button>
         </div>
       </form>
     </div>
@@ -158,7 +160,7 @@
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators'
 import InputComponent from '../../components/form/InputComponent'
-import BaseButton from "../../components/UI/BaseButton";
+import BaseButton from '../../components/UI/BaseButton'
 import moustache from '~/components/icons/avatars/moustache'
 import baby from '~/components/icons/avatars/baby'
 import darthvader from '~/components/icons/avatars/darthvader'
@@ -213,6 +215,10 @@ export default {
     unicorn,
     walterwhite
   },
+  async asyncData (context) {
+    const storedUser = await context.store.getters['auth/getUser']
+    return { storedUser }
+  },
   data: () => ({
     form: {
       avatar: '',
@@ -228,10 +234,6 @@ export default {
       newPassword: null
     }
   }),
-  async asyncData (context) {
-    const storedUser = await context.store.getters['auth/getUser']
-    return { storedUser }
-  },
   created () {
     this.form.avatar = this.storedUser.avatar
     this.form.username = this.storedUser.username
@@ -282,7 +284,6 @@ export default {
         this.$notifications(`${this.form.username} your profile has been updated`, { style: 'success' })
         this.$router.push('/')
       } catch (e) {
-        console.log(e)
         this.$notifications('Something went wrong 😨', { style: 'error' })
       }
       this.$nuxt.$loading.finish()

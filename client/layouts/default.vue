@@ -10,7 +10,7 @@
       <nuxt />
     </div>
     <transition name="slither">
-      <notification-component v-if="notification.show" :message="notification.message" :delay="notification.delay" :options="notification.options"/>
+      <notification-component v-if="notification.show" :message="notification.message" :delay="notification.delay" :options="notification.options" />
     </transition>
   </div>
 </template>
@@ -18,7 +18,7 @@
 import { mapState } from 'vuex'
 import NavbarComponent from '../components/menu/NavbarComponent'
 import SidebarMenuComponent from '../components/menu/SidebarMenuComponent'
-import NotificationComponent from "../components/NotificationComponent";
+import NotificationComponent from '../components/NotificationComponent'
 export default {
   components: {
     NavbarComponent,
