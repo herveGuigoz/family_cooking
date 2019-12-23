@@ -17,7 +17,7 @@ import nuxt_plugin_axios_31ad2cb8 from 'nuxt_plugin_axios_31ad2cb8' // Source: .
 import nuxt_plugin_axios_5659d192 from 'nuxt_plugin_axios_5659d192' // Source: ../plugins/axios.js (mode: 'all')
 import nuxt_plugin_filters_2dd71012 from 'nuxt_plugin_filters_2dd71012' // Source: ../plugins/filters.js (mode: 'all')
 import nuxt_plugin_vuelidate_4be431c8 from 'nuxt_plugin_vuelidate_4be431c8' // Source: ../plugins/vuelidate.js (mode: 'all')
-import nuxt_plugin_vueNoty_7504a07e from 'nuxt_plugin_vueNoty_7504a07e' // Source: ../plugins/vueNoty.js (mode: 'client')
+import nuxt_plugin_notifications_15a88b85 from 'nuxt_plugin_notifications_15a88b85' // Source: ../plugins/notifications.js (mode: 'client')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -194,8 +194,8 @@ async function createApp (ssrContext) {
     await nuxt_plugin_vuelidate_4be431c8(app.context, inject)
   }
 
-  if (process.client && typeof nuxt_plugin_vueNoty_7504a07e === 'function') {
-    await nuxt_plugin_vueNoty_7504a07e(app.context, inject)
+  if (process.client && typeof nuxt_plugin_notifications_15a88b85 === 'function') {
+    await nuxt_plugin_notifications_15a88b85(app.context, inject)
   }
 
   // If server-side, wait for async component to be resolved first

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center w-full h-full">
+  <div class="hidden md:flex md:justify-center md:items-center md:h-full md:block">
     <cooking-illustration-component height="h-full" width="w-2/3"/>
   </div>
 </template>

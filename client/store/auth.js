@@ -55,7 +55,7 @@ export const actions = {
     if (this.$cookie.get('auth')) {
       this.$cookie.remove('auth')
     }
-    this.$cookie.set('auth', response.token, { maxAge: 3600 }) // 60 * 60 * 24 * 30 = 2592000
+    this.$cookie.set('auth', response.token, { maxAge: 2592000 }) // 60 * 60 * 24 * 30 = 2592000
     vuexContext.dispatch('getRecipes', null, { root: true }) // https://vuex.vuejs.org/guide/modules.html#accessing-global-assets-in-namespaced-modules
   },
   async registerUser(vuexContext, registerData) {

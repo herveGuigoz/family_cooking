@@ -43,7 +43,7 @@
         </div>
         <div class="p-3 flex flex-nowrap">
           <div class="w-24">
-            <base-button>Submit</base-button>
+            <base-button outline>Submit</base-button>
           </div>
           <div class="text-xs flex-1 flex flex-nowrap justify-center items-center">
             <nuxt-link to="/auth/login">
@@ -60,7 +60,6 @@
 </template>
 
 <script>
-import 'vuejs-noty/dist/vuejs-noty.css'
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
 import InputComponent from "../../components/form/InputComponent";
 import BaseButton from "../../components/UI/BaseButton";
@@ -114,13 +113,13 @@ export default {
       }
       try {
         await this.$store.dispatch('auth/registerUser', this.form)
-        this.$noty.success(`Nice to meet you ${this.form.username}`)
+        this.$notifications(`Nice to meet you ${this.form.username}`, { style: 'success' })
         this.$router.push('/')
       } catch (e) {
         if (e.response.status === 403) {
-          this.$noty.error(`${e.response.data.error} 😨`)
+          this.$notifications(`${e.response.data.error} 😨`, { style: 'error' })
         } else {
-          this.$noty.error('Something went wrong 😨')
+          this.$notifications('Something went wrong 😨', { style: 'error' })
         }
       }
       this.$nuxt.$loading.finish()

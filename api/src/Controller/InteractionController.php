@@ -74,10 +74,8 @@ class InteractionController extends AbstractController
 
         $encoder = new JsonEncoder();
         $data = $encoder->decode((string) $request->getContent(), 'json');
-        if (
-            !isset($data['slug'], $data['count'])
-            || !is_int($data['count'])
-        ) {
+
+        if (!isset($data['slug'])) {
             return new JsonResponse(['message' => 'Bad Request'], 400);
         }
 
@@ -86,7 +84,7 @@ class InteractionController extends AbstractController
             return new JsonResponse(['message' => 'Bad Request'], 400);
         }
 
-        $interaction = $this->interactionManager->handleLove($this->user, $recipe, $data['count']);
+        $interaction = $this->interactionManager->handleLove($this->user, $recipe);
 
         return new JsonResponse(['loves' => $interaction->getInteractionCount()], 200);
     }

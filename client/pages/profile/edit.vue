@@ -148,7 +148,7 @@
           </div>
         </div>
         <div class="w-24 ml-3 mt-6 xl:mt-0">
-          <base-button>Submit</base-button>
+          <base-button outline>Submit</base-button>
         </div>
       </form>
     </div>
@@ -156,7 +156,6 @@
 </template>
 
 <script>
-import 'vuejs-noty/dist/vuejs-noty.css'
 import { required, email, minLength } from 'vuelidate/lib/validators'
 import InputComponent from '../../components/form/InputComponent'
 import BaseButton from "../../components/UI/BaseButton";
@@ -280,11 +279,11 @@ export default {
       this.$nuxt.$loading.start()
       try {
         await this.$store.dispatch('auth/updateUser', user)
-        this.$noty.success(`${this.form.username} your profile has been updated`)
+        this.$notifications(`${this.form.username} your profile has been updated`, { style: 'success' })
         this.$router.push('/')
       } catch (e) {
         console.log(e)
-        this.$noty.error('Something went wrong 😨')
+        this.$notifications('Something went wrong 😨', { style: 'error' })
       }
       this.$nuxt.$loading.finish()
     }
