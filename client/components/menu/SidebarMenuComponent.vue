@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col justify-between h-screen bg-brown">
     <div class="p-6 flex flex-no-wrap flex-col">
-      <div class="flex flex-col items-center">
+      <div class="flex flex-col">
         <nuxt-link to="/">
-          <h1 class="brand font-semibold text-center uppercase">
-            Family <span class="text-beige"> cooking</span>
+          <h1 class="brand font-semibold uppercase">
+            Kukku
           </h1>
         </nuxt-link>
         <p class="block pt-3 text-grey text-xs">
