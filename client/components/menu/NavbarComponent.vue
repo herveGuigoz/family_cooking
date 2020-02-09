@@ -1,8 +1,8 @@
 <template>
-  <header class="bg-gray-900 sm:flex sm:justify-around sm:items-center sm:px-4 sm:py-3">
+  <header class="bg-brown sm:flex sm:justify-around sm:items-center sm:px-4 sm:py-3">
     <div class="flex items-center justify-between px-4 py-3 sm:p-0 sm:hidden">
       <p class="brand font-semibold text-center uppercase">
-        Family<span class="text-gray-800"> cooking</span>
+        Family<span class="text-white"> cooking</span>
       </p>
       <button type="button" class="block text-teal-500 hover:text-gray-500 focus:text-white focus:outline-none" @click="isOpen = !isOpen">
         <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
