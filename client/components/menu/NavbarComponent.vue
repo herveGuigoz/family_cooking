@@ -16,9 +16,9 @@
         <icon-search-component />
         <span class="px-2">Rechercher</span>
       </div>
-      <div class="block flex flex-nowrap items-center px-2 py-1 text-white font-semibold rounded hover:bg-gray-800 cursor-pointer" @click="redirect('/')">
+      <div class="block flex flex-nowrap items-center px-2 py-1 text-white font-semibold rounded hover:bg-gray-800 cursor-pointer" @click="redirect('/bookmarked')">
         <icon-in-love-component />
-        <a href="#" class="px-2">Favoris</a>
+        <a class="px-2">Favoris</a>
       </div>
       <div class="block flex flex-nowrap items-center px-2 py-1 text-white font-semibold rounded hover:bg-gray-800 cursor-pointer" @click="redirect('/')">
         <icon-toast-component />

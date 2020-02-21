@@ -20,7 +20,7 @@
           <ui-button-component text="Rechercher" link="/">
             <icon-search-component />
           </ui-button-component>
-          <ui-button-component text="Favoris" link="/">
+          <ui-button-component text="Favoris" link="/bookmarked">
             <icon-in-love-component />
           </ui-button-component>
         </div>
@@ -28,7 +28,7 @@
           Mes Recettes
         </p>
         <div>
-          <ui-button-component text="Poster" link="/new">
+          <ui-button-component text="Poster" link="/edit">
             <icon-toast-component />
           </ui-button-component>
           <ui-button-component text="Modifier" link="/">
