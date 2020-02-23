@@ -1,6 +1,6 @@
 <template>
   <div class="flex">
-    <recipes-list-component :recipes="recipes" />
+    <recipes-list-component :recipes="getRecipesList" :path="getPath" />
     <div class="w-full">
       <NuxtChild :key="$route.params.slug" />
     </div>
@@ -20,8 +20,17 @@ export default {
   computed: {
     ...mapState({
       user: state => state.user,
-      recipes: state => state.list
-    })
+      recipes: state => state.list,
+      bookmarked: state => state.list.filter(recipe => recipe.isBookmarked)
+    }),
+    getRecipesList() {
+      const patern = /\/bookmarked/
+      return patern.test(this.$nuxt.$route.path) ? this.bookmarked : this.recipes
+    },
+    getPath() {
+      const patern = /\/bookmarked/
+      return patern.test(this.$nuxt.$route.path) ? '/bookmarked/' : '/'
+    }
   }
 }
 </script>

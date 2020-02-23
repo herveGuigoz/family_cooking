@@ -21,7 +21,7 @@
         :class="{'border-teal-500 bg-grey': recipe.slug === selected}"
         @click="handleSelection(recipe.slug)"
       >
-        <NuxtLink :to="'/' + recipe.slug">
+        <NuxtLink :to="path + recipe.slug">
           <p class="text-sm font-semibold">
             {{ recipe.title | truncate(38) }}
           </p>
@@ -51,6 +51,10 @@ export default {
     recipes: {
       type: Array,
       default: null
+    },
+    path: {
+      type: String,
+      default: '/'
     }
   },
   computed: {
