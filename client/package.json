@@ -15,7 +15,7 @@
     "pre-commit": "yarn lint"
   },
   "dependencies": {
-    "@nuxtjs/axios": "^5.8.0",
+    "@nuxtjs/axios": "^5.13.5",
     "cookie-universal-nuxt": "^2.0.18",
     "jwt-js-decode": "^1.4.0",
     "nuxt": "^2.0.0",
